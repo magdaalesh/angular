@@ -1,0 +1,41 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+@Component({
+  selector: 'app-root',
+  selector: 'app-rot',
+
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+<p *ngFor="let product of products" *ngIf="selectedProduct">
+<li *ngIf="selectedProduct">
+hello </li></p>
+  <p *ngIf="selectedProduct">hello </p>
+  <li *ngFor="let prodct of products" >fgfgd</p>
+
+  `,
+ template: `
+<p *ngFor="let product of products">
+<li *ngIf="selectedProduct">
+hello </li></p>
+  <p *ngIf="selectedProduct">hello </p>
+  <li *ngFor="let prodct of products" >fgfgd</p>
+
+  `,
+
+})
+
+@Component({
+  selector: 'app-rt',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+  <p  >hello </p>
+  <li >fgfgd</p>
+
+  `
+})
+export class AppComponent{
+myVar: string = "value1";
+  myVar: number = 42;
+}

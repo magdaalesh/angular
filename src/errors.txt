@@ -1,0 +1,10 @@
+===== SEMANTICS ERRORS =====
+Total Errors: 5
+
+1) [Cannot use both *ngIf and *ngFor on the same element ] Line : 10
+2) [error in your html code closing tag  ] Line : 14
+3) [error in your html code closing tag  ] Line : 22
+4) [Multiple component definitions are not allowed ] Line : 28
+5) [error in your html code closing tag  ] Line : 34
+
+===== END OF REPORT =====

@@ -1,0 +1,19 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+    <div [style.background]="backgroundColor" style="height: 100vh; display: flex; justify-content: center; align-items: center;">
+      <button (click)="changeBackgroundColor()" style="padding: 20px 40px; font-size: 18px; cursor: pointer; background-color: #333; color: white; border: none; border-radius: 5px;">
+      </button>
+    </div>`,
+})
+export class AppComponent {
+  backgroundColor: string = '#222';
+  changeBackgroundColor() {
+    const colors = ['#FF0000', '#00FF00', '#0000FF'];
+    this.backgroundColor = colors.sort(() => Math.random() - 0.5)[0];
+  }
+}

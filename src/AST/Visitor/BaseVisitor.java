@@ -6,7 +6,6 @@ import gen.myParserBaseVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import sementicserror.*;
 import symboletable.symboletable;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +19,7 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
     htmlopenandclosesame htmlopenandclosesamesymboletable = new htmlopenandclosesame();
     duplicateselectorsymboltable selectorTable = new duplicateselectorsymboltable();
     ngifandngforatsametime ngifngforsymboletable = new ngifandngforatsametime();
-    duplicateselectorsymboltable variableTable =new duplicateselectorsymboltable();
+    variableSymbolTable variableTable =new variableSymbolTable();
     List<symboletable> s;
     private final handleerror error = handleerror.getInstance();
     public BaseVisitor(List<symboletable> symbole){
@@ -132,18 +131,14 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
 
             if (m != null) {
 
-
-                
                 if (m instanceof SelectorEntry) {
                     String selectorValue = ((SelectorEntry) m).getSelector();
                     int line = ctx.metadataEntry(i).getStart().getLine();
 
                     try {
                         if (!selectorTable.checkAndAdd(selectorValue, line)) {
-                            throw new sementicsexcep ("dublicate :"+ selectorValue  );
+                            throw new sementicsexcep (selectorValue );
                         }
-                        selectorTable.add(selectorValue , line);
-
                     } catch (sementicsexcep e) {
                         error.addError(e.getMessage(),line);
                         s.add(selectorTable.symbole);
@@ -240,8 +235,8 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
         try {
             if(!htmlopenandclosesamesymboletable.checkhtmlendandstartname(name,nameClose))
                 throw new sementicsexcep("error in your html code closing tag  ");
-            htmlopenandclosesamesymboletable.add("html tags","unnesecciry",
-                    ctx.htmlopen().getText()
+            htmlopenandclosesamesymboletable.add("html tags","Html tages",
+                    ctx.getText()
                     ,ctx.htmlopen().getStart().getLine());
         } catch (sementicsexcep e) {
             error.addError(e.getMessage(),ctx.htmlclose().getStart().getLine());
@@ -425,7 +420,7 @@ s.add(htmlopenandclosesamesymboletable.symbole);
 
             for (HtmlAttribute attr : artti) {
                 ngifngforsymboletable.add(
-                        attr.toString(), attr.toString(), attr.toString().split("\\{")[0], ctx.getStart().getLine());
+                        attr.toString().split("\\{")[0], attr.toString().split("\\{")[1], attr.toString().split("\\{")[0], ctx.getStart().getLine());
             }
         } catch (sementicsexcep e) {
             error.addError(e.getMessage(),ctx.getStart().getLine());
@@ -505,14 +500,15 @@ s.add(htmlopenandclosesamesymboletable.symbole);
         String propertyName = ctx.ID().getText();
 
         String type = null;
+        String val = null;
         if (ctx.TYPE() != null) {
             type = ctx.TYPE().toString();
-        }
+            val = ctx.value().toString();        }
 
         int line = ctx.getStart().getLine();
 
         try {
-            if (!variableTable.checkAndAdd(propertyName, line)) {
+            if (!variableTable.checkAndAddv(propertyName,type,val, line)) {
                 throw new sementicsexcep(propertyName );
             }
         } catch (sementicsexcep e) {

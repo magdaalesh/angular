@@ -10,17 +10,12 @@ public class duplicateselectorsymboltable {
         symbole = new symboletable();
     }
 
-    public void add(String name ,int line){
-        symbole.addRow(name, name, name, line);
-
-    }
-
   public boolean  checksinglehtmltamplet(String name , int line ){
 
       if (symbole.getRowlist().stream().anyMatch(row -> row.getName().equals(name))) {
           return false;
       }
-
+      symbole.addRow("tamplet", name, name, line);
       return  true;
     }
     public boolean checkAndAdd(String selector, int line) {
@@ -30,7 +25,7 @@ public class duplicateselectorsymboltable {
         }
 
 
-
+        symbole.addRow("Selector", selector, selector, line);
         return true;
     }
 

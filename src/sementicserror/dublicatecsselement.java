@@ -7,8 +7,6 @@ public class dublicatecsselement {
         symbole = new symboletable();
     }
 
-
-
     public boolean checkAndAddngif(String key, int line) {
         if (symbole.getRowlist().stream().anyMatch(row -> row.getName().equals(key))) {
             return false;

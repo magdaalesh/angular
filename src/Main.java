@@ -6,17 +6,12 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import sementicserror.*;
-
 import java.io.IOException;
-
 import static org.antlr.v4.runtime.CharStreams.fromFileName;
-
 public class Main {
     public static void main(String[] args) throws IOException {
         String source = "test4.txt";
-
         handleerror handle = handleerror.getInstance();
-
         CharStream cs = fromFileName(source);
         lexicalanalysis lexer = new lexicalanalysis(cs);
         CommonTokenStream token = new CommonTokenStream(lexer);

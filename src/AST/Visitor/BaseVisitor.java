@@ -20,6 +20,7 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
     duplicateselectorsymboltable selectorTable = new duplicateselectorsymboltable();
     ngifandngforatsametime ngifngforsymboletable = new ngifandngforatsametime();
     variableSymbolTable variableTable =new variableSymbolTable();
+    importslivalueinitbefor importlistiit = new importslivalueinitbefor();
     List<symboletable> s;
     private final handleerror error = handleerror.getInstance();
     public BaseVisitor(List<symboletable> symbole){
@@ -49,7 +50,9 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
 
                 importsEntries = (List<String>) result;
 
-
+for (int i = 0 ;i<importsEntries.size(); i ++ ){
+    importlistiit.addto(importsEntries.get(i));
+}
 
         if(ctx.importStatement().importpath() != null) {
             Object res = visitImportpath(ctx.importStatement().importpath());
@@ -86,6 +89,7 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
         List<String> entries = new ArrayList<>();
          for(int i=0 ; i<ctx.IMPORTLIST().size();i++){
              entries.add(ctx.IMPORTLIST(i).getText());
+
          }
         return entries;
     }
@@ -456,15 +460,31 @@ s.add(htmlopenandclosesamesymboletable.symbole);
     public String visitHtmlclose(myParser.HtmlcloseContext ctx) {
         return ctx.name().getText();
     }
-
     @Override
     public Object visitImportsdata(myParser.ImportsdataContext ctx) {
         List<String> imports = new ArrayList<>();
-        if(ctx.importList() != null){
+        if(ctx.importList() != null) {
             Object importlist = visit(ctx.importList());
             imports = (List<String>) importlist;
-        }
 
+            int line = ctx.start.getLine();
+            for (String componentImport : imports) {
+                try {
+
+                    if (!importlistiit.check(componentImport)) {
+
+                        throw new sementicsexcep(
+                                "Module '" + componentImport + "' is not imported. It must be at the top of the file.");
+                    }
+                } catch (sementicsexcep e) {
+
+                    error.addError(e.getMessage(),line );
+
+//                     s.add(importlistiit.());
+                    System.out.println(importlistiit.toString());
+                }
+            }
+        }
         return new ImportsEntry(imports);
     }
 

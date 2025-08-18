@@ -6,8 +6,9 @@ import symboletable.symboletable;
 import java.util.List;
 
 public class ngifandngforatsametime {
+
    public  symboletable symbole ;
-    boolean contantngfor=false , contentnfig= false;
+
     public ngifandngforatsametime(){ symbole = new symboletable();}
 
     public void  add(String type,String value , String Name , int line){

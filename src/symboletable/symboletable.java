@@ -38,7 +38,7 @@ public class symboletable {
                     row.getName() != null ? row.getName() : "null",
                     row.getType() != null ? row.getType() : "null",
                     row.getValue() != null ? row.getValue() : "null",
-                    row.getLine()));  // تأكد أن getLine() يرجع int
+                    row.getLine()));
         }
 
         return sb.toString();

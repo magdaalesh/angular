@@ -244,8 +244,8 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
                     ,ctx.htmlopen().getStart().getLine());
         } catch (sementicsexcep e) {
             error.addError(e.getMessage(),ctx.htmlclose().getStart().getLine());
-s.add(htmlopenandclosesamesymboletable.symbole);
-//            System.err.println(e.getMessage());
+
+            System.out.println(htmlopenandclosesamesymboletable.toString());
         }
 
 

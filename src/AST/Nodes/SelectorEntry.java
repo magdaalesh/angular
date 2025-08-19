@@ -19,5 +19,15 @@ public class SelectorEntry extends MetadataEntry {
     public String toString() {
         return "SelectorEntry{selector='" + selector + "'}";
     }
+
+    @Override
+    public String getValue() {
+        return selector;
+    }
+
+    @Override
+    public String getKey() {
+        return "selector:";
+    }
 }
 

@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-root',
+  selector: 'app-rt',
   standalone: true,
+    standalone: false,
   imports: [CommonModule],
   template: `
 <p *ngFor="let product of products">
@@ -13,18 +15,3 @@ hello </li></p>
 
   `,
 })
-
-@Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
-  <p  >hello </p>
-  <li >fgfgd</p>
-
-  `,
-})
-export class AppComponent{
-myVar: string = "value1";
-  myVar: number = 42;
-}

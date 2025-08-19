@@ -20,5 +20,15 @@ public class ImportsEntry extends MetadataEntry {
     public String toString() {
         return "ImportsEntry{imports=" + imports + "}";
     }
+
+    @Override
+    public String getKey() {
+        return "imports:";
+    }
+
+    @Override
+    public String getValue() {
+        return imports.toString();
+    }
 }
 

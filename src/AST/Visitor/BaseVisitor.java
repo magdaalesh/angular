@@ -17,7 +17,7 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
 
     onlyonecomponentsymboltyble componentSymbolTable = new onlyonecomponentsymboltyble();
     htmlopenandclosesame htmlopenandclosesamesymboletable = new htmlopenandclosesame();
-    duplicateselectorsymboltable selectorTable = new duplicateselectorsymboltable();
+    duplicatecomponentkeysymboltable selectorTable = new duplicatecomponentkeysymboltable();
     ngifandngforatsametime ngifngforsymboletable = new ngifandngforatsametime();
     variableSymbolTable variableTable =new variableSymbolTable();
     importslivalueinitbefor importlistiit = new importslivalueinitbefor();
@@ -135,22 +135,25 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
 
             if (m != null) {
 
-                if (m instanceof SelectorEntry) {
-                    String selectorValue = ((SelectorEntry) m).getSelector();
+
+                    String Value = m.getValue();
+                    String key = m.getKey();
                     int line = ctx.metadataEntry(i).getStart().getLine();
 
                     try {
-                        if (!selectorTable.checkAndAdd(selectorValue, line)) {
-                            throw new sementicsexcep (selectorValue );
+                        selectorTable.addto(key, Value);
+                        if (selectorTable.checkifduplicate(key)) {
+
+                            throw new sementicsexcep (" duplicate entry:  " +key);
                         }
                     } catch (sementicsexcep e) {
                         error.addError(e.getMessage(),line);
-                        s.add(selectorTable.symbole);
-//                        System.err.println("Semantic error" + e);
+
+                        System.out.println(selectorTable.toString());
 //                        System.out.println(selectorTable.toString());
-                        return null;
+
                     }
-                }
+
 
                 metadataEntries.add(m);
             }

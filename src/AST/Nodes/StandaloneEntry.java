@@ -19,5 +19,16 @@ public class StandaloneEntry extends MetadataEntry {
     public String toString() {
         return "StandaloneEntry{standalone=" + standalone + "}";
     }
+
+    @Override
+    public String getValue() {
+        return String.valueOf(standalone);
+    }
+
+    @Override
+    public String getKey() {
+        return "standalone:";
+    }
 }
+
 

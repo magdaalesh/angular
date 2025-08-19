@@ -6,8 +6,8 @@ public class StyleBackAttribute extends CssAttribute {
     public StyleBackAttribute(String value) {
         this.value = value;
     }
-
-    public String getValue() {
+@Override
+    public String getvalue() {
         return value;
     }
 

@@ -18,10 +18,10 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
     duplicatecomponentkeysymboltable selectorTable = new duplicatecomponentkeysymboltable();
     importslivalueinitbefor importlistiit = new importslivalueinitbefor();
     dublicatecsselement dublicatecsselementsymboltable = new dublicatecsselement();
+    ngifandngforatsametime ngifngforsymboletable = new ngifandngforatsametime();
 
     //
     onlyonecomponentsymboltyble componentSymbolTable = new onlyonecomponentsymboltyble();
-    ngifandngforatsametime ngifngforsymboletable = new ngifandngforatsametime();
     variableSymbolTable variableTable =new variableSymbolTable();
     List<symboletable> s;
     private final handleerror error = handleerror.getInstance();
@@ -439,14 +439,16 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
 
             for (HtmlAttribute attr : attributes) {
                 ngifngforsymboletable.add(
-                        name, // استخدم اسم العنصر الصحيح
-                        attr.getname(), // اسم الـ attribute
-                        attr.toString(),
+
+                        attr.getvalue(),
+
+                        attr.getname(),
                         ctx.getStart().getLine()
                 );
             }
         } catch (sementicsexcep e) {
             error.addError(e.getMessage(), line);
+            System.out.println(ngifngforsymboletable.toString());
         }
 
         Map<String, List<HtmlAttribute>> result = new HashMap<>();

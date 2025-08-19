@@ -22,4 +22,9 @@ public class ImageAttribute extends HtmlAttribute {
     public String getname() {
         return path.toString();
     }
+
+    @Override
+    public String getvalue() {
+        return path.toString();
+    }
 }

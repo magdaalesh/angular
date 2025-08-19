@@ -1,18 +1,20 @@
 package sementicserror;
 
 import AST.Nodes.HtmlAttribute;
-import symboletable.symboletable;
+import symboletable.Row;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ngifandngforatsametime {
 
-   public  symboletable symbole ;
+   public  List <Row> symbole ;
 
-    public ngifandngforatsametime(){ symbole = new symboletable();}
+    public ngifandngforatsametime(){ symbole = new ArrayList<>();}
 
-    public void  add(String type,String value , String Name , int line){
-        symbole.addRow(type , value , Name ,line);
+    public void  add(String value , String Name , int line){
+        Row row= new Row(null,value,Name , line);
+        symbole.add(row);
 
     }
     public boolean checkngifandngfor(List<HtmlAttribute> attributes) {
@@ -30,6 +32,26 @@ public class ngifandngforatsametime {
 
     @Override
     public String toString() {
-        return symbole.toString();
+        if (symbole == null || symbole.isEmpty()) {
+            return "No attributes recorded.";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%-5s | %-15s | %-15s | %-15s \n",
+                "ID", "Name", "Value", "Line"));
+        sb.append("---------------------------------------------------------------\n");
+
+        int id = 1;
+        for (Row row : symbole) {
+            sb.append(String.format("%-5d | %-15s  | %-15s | %-6d\n",
+                    id++,
+                    row.getName() != null ? row.getName() : "null",
+
+                    row.getValue() != null ? row.getValue() : "null",
+                    row.getLine()));
+        }
+
+        return sb.toString();
     }
+
 }

@@ -8,9 +8,9 @@ public class StyleAttribute extends CssAttribute {
     public StyleAttribute(Map<String, String> styles) {
         this.styles = styles;
     }
-
-    public Map<String, String> getStyles() {
-        return styles;
+@Override
+    public String getvalue() {
+        return styles.toString();
     }
 
     @Override

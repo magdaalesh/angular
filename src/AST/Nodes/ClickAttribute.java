@@ -28,4 +28,9 @@ public class ClickAttribute extends CssAttribute  {
     public String getname() {
         return "click";
     }
+
+    @Override
+    public String getvalue() {
+        return methodName;
+    }
 }

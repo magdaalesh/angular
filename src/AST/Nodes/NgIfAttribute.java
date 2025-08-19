@@ -7,7 +7,8 @@ public class NgIfAttribute extends CssAttribute  {
         this.condition = condition;
     }
 
-    public String getCondition() {
+    @Override
+    public String getvalue() {
         return condition;
     }
 

@@ -15,4 +15,9 @@ public class StyleBackAttribute extends CssAttribute {
     public String toString() {
         return "StyleBackgroundAttribute{value='" + value + "'}";
     }
+
+    @Override
+    public String getname() {
+        return "styleback";
+    }
 }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class htmlopenandclosesame {
-    private List<Row> rowList;
+    private final List<Row> rowList;
     public htmlopenandclosesame(){
         rowList= new ArrayList<>();
     }

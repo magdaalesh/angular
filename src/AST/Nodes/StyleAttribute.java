@@ -17,4 +17,9 @@ public class StyleAttribute extends CssAttribute {
     public String toString() {
         return "StyleAttribute{styles=" + styles + '}';
     }
+
+    @Override
+    public String getname() {
+        return "style";
+    }
 }

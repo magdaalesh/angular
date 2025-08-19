@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
     standalone: false,
   imports: [CommonModule],
   template: `
-<p *ngFor="let product of products">
+<p *ngFor="let product of products" *ngFor="let product of products">
 <li *ngIf="selectedProduct">
 hello </li></p>
   <p *ngFor="let product of products" *ngIf="selectedProduct">hello </p>

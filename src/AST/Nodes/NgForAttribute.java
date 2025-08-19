@@ -21,4 +21,9 @@ public class NgForAttribute extends CssAttribute  {
     public String toString() {
         return "NgForAttribute{let " + variable + " of " + collection + "}";
     }
+
+    @Override
+    public String getname() {
+        return "ngfor";
+    }
 }

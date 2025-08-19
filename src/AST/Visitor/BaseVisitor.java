@@ -14,13 +14,15 @@ import java.util.Map;
 
 public class BaseVisitor extends myParserBaseVisitor<Object> {
 
-
-    onlyonecomponentsymboltyble componentSymbolTable = new onlyonecomponentsymboltyble();
     htmlopenandclosesame htmlopenandclosesamesymboletable = new htmlopenandclosesame();
     duplicatecomponentkeysymboltable selectorTable = new duplicatecomponentkeysymboltable();
+    importslivalueinitbefor importlistiit = new importslivalueinitbefor();
+    dublicatecsselement dublicatecsselementsymboltable = new dublicatecsselement();
+
+    //
+    onlyonecomponentsymboltyble componentSymbolTable = new onlyonecomponentsymboltyble();
     ngifandngforatsametime ngifngforsymboletable = new ngifandngforatsametime();
     variableSymbolTable variableTable =new variableSymbolTable();
-    importslivalueinitbefor importlistiit = new importslivalueinitbefor();
     List<symboletable> s;
     private final handleerror error = handleerror.getInstance();
     public BaseVisitor(List<symboletable> symbole){
@@ -222,8 +224,19 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
             if (!res.isEmpty()) {
                 name = res.keySet().iterator().next();
                 attributes = res.get(name);
+
+                for (HtmlAttribute attr : attributes) {
+                    String attrName = attr.getname();
+                    int line = ctx.htmlopen().getStart().getLine();
+
+                    if (dublicatecsselementsymboltable.addandcheckduplicate(name, attrName,line)) {
+
+                        error.addError("Duplicate attribute '" + attrName + "' in element " + name, line);
+                        System.out.println(dublicatecsselementsymboltable.toString());
+                    }}
             }
         }
+        dublicatecsselementsymboltable.closetag(name);
         String nameClose = "";
         if (ctx.htmlclose() != null) {
           nameClose  = (String) visitHtmlclose(ctx.htmlclose());
@@ -403,41 +416,44 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
          }
         return  new ImageNode(imageNode.getAttributes());
     }
-
     @Override
     public Object visitHtmlopen(myParser.HtmlopenContext ctx) {
-      String name ="";
-        int line;
-      List<HtmlAttribute> artti = new ArrayList<>();
-       if(ctx.name() != null){
-         name = ctx.name().getText();
-       }
-       for (int i=0 ; i<ctx.csselement().size();i++){
-           if(ctx.csselement(i) !=null) {
-               Object res = visit(ctx.csselement(i));
-               HtmlAttribute hh = (HtmlAttribute) res;
-               artti.add(hh);
-              }}
+        String name = ctx.name().getText();
+
+
+        int line = ctx.getStart().getLine();
+
+        List<HtmlAttribute> attributes = new ArrayList<>();
+        for (int i = 0; i < ctx.csselement().size(); i++) {
+            if (ctx.csselement(i) != null) {
+                HtmlAttribute attr = (HtmlAttribute) visit(ctx.csselement(i));
+                attributes.add(attr);
+            }
+        }
+
         try {
-            if (ngifngforsymboletable.checkngifandngfor(artti)) {
-              line  = ctx.getStart().getLine();
+            if (ngifngforsymboletable.checkngifandngfor(attributes)) {
                 throw new sementicsexcep(
                         "Cannot use both *ngIf and *ngFor on the same element ");
             }
 
-            for (HtmlAttribute attr : artti) {
+            for (HtmlAttribute attr : attributes) {
                 ngifngforsymboletable.add(
-                        attr.toString().split("\\{")[0], attr.toString().split("\\{")[1], attr.toString().split("\\{")[0], ctx.getStart().getLine());
+                        name, // استخدم اسم العنصر الصحيح
+                        attr.getname(), // اسم الـ attribute
+                        attr.toString(),
+                        ctx.getStart().getLine()
+                );
             }
         } catch (sementicsexcep e) {
-            error.addError(e.getMessage(),ctx.getStart().getLine());
-            s.add(ngifngforsymboletable.symbole);
-//            System.err.println(e.getMessage());
+            error.addError(e.getMessage(), line);
         }
-       Map<String , List> result = new HashMap<>();
-        result.put(name,artti);
+
+        Map<String, List<HtmlAttribute>> result = new HashMap<>();
+        result.put(name, attributes);
         return result;
     }
+
 
     @Override
     public Object visitElementdata(myParser.ElementdataContext ctx) {

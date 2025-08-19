@@ -15,4 +15,9 @@ public class NgIfAttribute extends CssAttribute  {
     public String toString() {
         return "NgIfAttribute{condition='" + condition + "'}";
     }
+
+    @Override
+    public String getname() {
+        return "ngif";
+    }
 }

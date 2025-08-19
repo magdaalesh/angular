@@ -21,15 +21,29 @@ public boolean checkifduplicate(String componententry){
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("symbol table duplicate semantics error : \n");
+        sb.append("symbol table component key duplicate semantics error : \n");
         sb.append("------------------------\n");
-        sb.append(String.format("%-20s | %-10s\n", "name :", "value:"));
+        sb.append(String.format("%-20s | %-30s\n", "name :", "value:"));
         sb.append("------------------------\n");
 
         for (String key : componentcontain.keySet()) {
-            sb.append(String.format("%-20s | %-10s\n", key, componentcontain.get(key)));
+            List<String> valuesList = componentcontain.get(key);
+            List<String> displayValues = new ArrayList<>();
+
+            for (String val : valuesList) {
+                // لو القيمة تمثل Template/Node نطبع ملخص فقط
+                if (val.startsWith("HtmlTemplate") || val.startsWith("ElementNode")) {
+                    displayValues.add(val.split("\\{")[0] + "{...}");
+                } else {
+                    displayValues.add(val);
+                }
+            }
+
+            String values = String.join(", ", displayValues);
+            sb.append(String.format("%-20s | %-30s\n", key, values));
         }
 
         return sb.toString();
     }
-    }
+
+}

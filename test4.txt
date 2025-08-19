@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-rt',
   standalone: true,
     standalone: false,
-  imports: [CommonModule],
+  imports: [ EventEmitter ],
   template: `
 <p *ngFor="let product of products" *ngFor="let product of products">
 <li *ngIf="selectedProduct">

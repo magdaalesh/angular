@@ -22,7 +22,7 @@ public class Main {
         System.out.println(doc);
         System.out.println("END");
         handle.generateErrorFile();
-//        handle.printSymboletable();
+        handle.printSymboletable();
 //        onlyonecomponentsymboltyble componentSymbolTable= new onlyonecomponentsymboltyble();
 //        System.out.println(componentSymbolTable.getSymbole().toString());
 //        System.out.println("Abstract Syntax Tree (AST):\n");

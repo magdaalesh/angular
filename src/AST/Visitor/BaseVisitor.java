@@ -5,7 +5,7 @@ import gen.myParser;
 import gen.myParserBaseVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import sementicserror.*;
-import symboletable.symboletable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,11 +23,11 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
     //
     onlyonecomponentsymboltyble componentSymbolTable = new onlyonecomponentsymboltyble();
     variableSymbolTable variableTable =new variableSymbolTable();
-    List<symboletable> s;
+    List<String> s;
     private final handleerror error = handleerror.getInstance();
-    public BaseVisitor(List<symboletable> symbole){
+    public BaseVisitor(List<String> symbole){
         s= new ArrayList<>();
-        s=symbole;
+        s = symbole;
     }
 
     @Override
@@ -117,7 +117,7 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
         }catch (sementicsexcep e){
 
             error.addError(e.getMessage(),line);
-            s.add(componentSymbolTable.getSymbole());
+//            s.add(componentSymbolTable.getSymbole());
 //            System.err.println(e.getMessage());
 //            System.out.println(componentSymbolTable.toString());
         }
@@ -136,33 +136,29 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
             MetadataEntry m = (MetadataEntry) visit(ctx.metadataEntry(i));
 
             if (m != null) {
+                String Value = m.getValue();
+                String key = m.getKey();
+                int line = ctx.metadataEntry(i).getStart().getLine();
 
-
-                    String Value = m.getValue();
-                    String key = m.getKey();
-                    int line = ctx.metadataEntry(i).getStart().getLine();
-
-                    try {
-                        selectorTable.addto(key, Value);
-                        if (selectorTable.checkifduplicate(key)) {
-
-                            throw new sementicsexcep (" duplicate entry:  " +key);
-                        }
-                    } catch (sementicsexcep e) {
-                        error.addError(e.getMessage(),line);
-
-                        System.out.println(selectorTable.toString());
-//                        System.out.println(selectorTable.toString());
-
+                try {
+                    selectorTable.addto(key, Value);
+                    if (selectorTable.checkifduplicate(key)) {
+                        throw new sementicsexcep("duplicate entry: " + key);
                     }
-
+                } catch (sementicsexcep e) {
+                    error.addError(e.getMessage(), line);
+                }
 
                 metadataEntries.add(m);
             }
         }
 
+
+        s.add(selectorTable.toString());
+
         return new ComponentMetadata(metadataEntries);
     }
+
 
     @Override
     public Object visitSelectoredata(myParser.SelectoredataContext ctx) {
@@ -232,11 +228,13 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
                     if (dublicatecsselementsymboltable.addandcheckduplicate(name, attrName,line)) {
 
                         error.addError("Duplicate attribute '" + attrName + "' in element " + name, line);
-                        System.out.println(dublicatecsselementsymboltable.toString());
+                        s.add(dublicatecsselementsymboltable.toString());
+
                     }}
             }
         }
         dublicatecsselementsymboltable.closetag(name);
+
         String nameClose = "";
         if (ctx.htmlclose() != null) {
           nameClose  = (String) visitHtmlclose(ctx.htmlclose());
@@ -255,13 +253,13 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
         try {
             if(!htmlopenandclosesamesymboletable.checkhtmlendandstartname(name,nameClose))
                 throw new sementicsexcep("error in your html code closing tag  ");
-            htmlopenandclosesamesymboletable.add("html tags","Html tages",
-                    ctx.getText()
+            htmlopenandclosesamesymboletable.add("html tags",
+                    ctx.htmlopen().name().getText()
                     ,ctx.htmlopen().getStart().getLine());
         } catch (sementicsexcep e) {
             error.addError(e.getMessage(),ctx.htmlclose().getStart().getLine());
 
-            System.out.println(htmlopenandclosesamesymboletable.toString());
+            s.add(htmlopenandclosesamesymboletable.toString());
         }
 
 
@@ -448,7 +446,7 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
             }
         } catch (sementicsexcep e) {
             error.addError(e.getMessage(), line);
-            System.out.println(ngifngforsymboletable.toString());
+            s.add(ngifngforsymboletable.toString());
         }
 
         Map<String, List<HtmlAttribute>> result = new HashMap<>();
@@ -502,7 +500,7 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
                     error.addError(e.getMessage(),line );
 
 //                     s.add(importlistiit.());
-                    System.out.println(importlistiit.toString());
+                    s.add(importlistiit.toString());
                 }
             }
         }
@@ -554,7 +552,7 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
             }
         } catch (sementicsexcep e) {
             error.addError(e.getMessage(),line);
-            s.add(variableTable.symbole);
+//            s.add(variableTable.symbole);
 //            System.err.println("Semantic error" + e);
 
 

@@ -37,6 +37,8 @@ public class ngifandngforatsametime {
         }
 
         StringBuilder sb = new StringBuilder();
+        sb.append("ngfor ngif in same element semantics error symbol table :\n");
+
         sb.append(String.format("%-5s | %-15s | %-15s | %-15s \n",
                 "ID", "Name", "Value", "Line"));
         sb.append("---------------------------------------------------------------\n");

@@ -1,7 +1,5 @@
 package sementicserror;
 
-import symboletable.symboletable;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,7 +8,7 @@ import java.util.List;
 public class handleerror {
     private static handleerror instance;
     private final List<String> errors = new ArrayList<>();
-    private List<symboletable> symboles = new ArrayList<>();
+    private List<String> symboles = new ArrayList<>();
     private handleerror() {}
 
     public static handleerror getInstance() {
@@ -57,11 +55,11 @@ public class handleerror {
         }
     }
 
-    public List<symboletable> getSymboles() {
+    public List<String> getSymboles() {
         return symboles;
     }
 
-    public void setSymboles(List<symboletable> symboles) {
+    public void setSymboles(List<String> symboles) {
         this.symboles = symboles;
     }
 }

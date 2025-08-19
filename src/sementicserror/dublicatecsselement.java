@@ -30,6 +30,7 @@ public void  closetag (String  elementname){
         }
 
         StringBuilder sb = new StringBuilder();
+        sb.append("css semantics error symbol table\n");
         sb.append(String.format("%-5s | %-20s | %-30s | %-5s\n", "ID", "Element", "Attributes", "Line"));
         sb.append("-------------------------------------------------------------------\n");
 

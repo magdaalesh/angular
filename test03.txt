@@ -1,0 +1,37 @@
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { ProductService } from '../../services/product.service';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-add-product',
+  standalone: true,
+  templateUrl: './add-product.html',
+  styleUrls: ['./add-product.css'],
+  imports: [FormsModule]
+})
+export class AddProductComponent {
+  name: string = '';
+  image: string = '';
+  description: string = '';
+
+  constructor(
+    private productService: ProductService,
+    private router: Router
+  ) {}
+
+  addProduct() {
+    if (!this.name || !this.image || !this.description) {
+      alert('Please fill all fields.');
+      return;
+    }
+
+    this.productService.add({
+      name: this.name,
+      image: this.image,
+      description: this.description
+    });
+
+    this.router.navigate(['/']);
+  }
+}

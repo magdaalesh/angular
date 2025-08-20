@@ -1,0 +1,13 @@
+<h2>Add New Product</h2>
+
+<form (ngSubmit)="addProduct()">
+  <input type="text" placeholder="Name" [(ngModel)]="name" name="name" required />
+  <br>
+  <input type="text" placeholder="Image path (e.g. /assets/product4.jpg)" [(ngModel)]="image" name="image" required />
+  <br>
+  <textarea placeholder="Description" [(ngModel)]="description" name="description" required></textarea>
+  <br>
+  <button type="submit">Add</button>
+</form>
+
+<a routerLink="/"> Back to list</a>

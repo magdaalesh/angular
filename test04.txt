@@ -1,0 +1,54 @@
+
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ProductService, Product } from '../../services/product.service';
+
+@Component({
+  selector: 'app-product-details',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './product-details.html',
+  styleUrls: ['./product-details.css']
+})
+export class ProductDetailsComponent {
+  product?: Product;
+  isEditing = false;
+  edited = {
+    name: '',
+    image: '',
+    description: ''
+  };
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private productService: ProductService
+  ) {}
+
+  ngOnInit() {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.product = this.productService.getById(id);
+
+    if (this.product) {
+      this.edited = {
+        name: this.product.name,
+        image: this.product.image,
+        description: this.product.description
+      };
+    }
+  }
+
+  toggleEdit() {
+    this.isEditing = !this.isEditing;
+  }
+
+  saveChanges() {
+    if (this.product) {
+      this.productService.update(this.product.id, this.edited);
+      this.isEditing = false;
+      this.router.navigate(['/']); // ارجع للقائمة
+    }
+  }
+

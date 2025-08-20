@@ -1,0 +1,18 @@
+<div *ngIf="product">
+  <h2>{{ product.name }}</h2>
+  <img [src]="product.image" width="200">
+  <p>{{ product.description }}</p>
+
+  <button (click)="toggleEdit()">Edit</button>
+
+  <div *ngIf="isEditing">
+    <h3>Edit Product</h3>
+    <input type="text" [(ngModel)]="edited.name" placeholder="Name" />
+    <input type="text" [(ngModel)]="edited.image" placeholder="Image path (e.g. /assets/product4.jpg)" />
+    <textarea [(ngModel)]="edited.description" placeholder="Description"></textarea>
+    <br>
+    <button (click)="saveChanges()">Save</button>
+  </div>
+
+  <br>
+</div>

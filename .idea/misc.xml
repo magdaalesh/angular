@@ -6,18 +6,18 @@
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/src/lexicalanalysis.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="C:\Users\USER\Desktop\angular" />
-          <option name="libDir" value="C:\Users\USER\Desktop\angular" />
+          <option name="outputDir" value="C:\Users\HP\IdeaProjects\comp\angular" />
+          <option name="libDir" value="C:\Users\HP\IdeaProjects\comp\angular" />
           <option name="encoding" value="" />
           <option name="pkg" value="gen" />
-          <option name="language" value="" />
+          <option name="language" value="Java" />
           <option name="generateVisitor" value="true" />
         </PerGrammarGenerationSettings>
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/src/myParser.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="C:\Users\USER\Desktop\angular" />
-          <option name="libDir" value="C:\Users\USER\Desktop\angular" />
+          <option name="outputDir" value="C:\Users\HP\IdeaProjects\comp\angular" />
+          <option name="libDir" value="C:\Users\HP\IdeaProjects\comp\angular" />
           <option name="encoding" value="" />
           <option name="pkg" value="gen" />
           <option name="language" value="Java" />

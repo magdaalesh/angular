@@ -40,9 +40,9 @@ public class Main {
         ProgramNode doc = (ProgramNode) new BaseVisitor(handle.getSymboles()).visit(tree);
         System.out.println("Start AST tree");
         System.out.println(doc);
-        System.out.println("END");
+        System.out.println("END");}
         handle.generateErrorFile();
-        handle.printSymboletable();}
+        handle.printSymboletable();
 //        onlyonecomponentsymboltyble componentSymbolTable= new onlyonecomponentsymboltyble();
 //        System.out.println(componentSymbolTable.getSymbole().toString());
 //        System.out.println("Abstract Syntax Tree (AST):\n");

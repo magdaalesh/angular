@@ -15,15 +15,16 @@ node : importStatement       #imports
 
 importStatement: IMPORT LCURLY importList RCURLY FROM importpath;
 importpath: QUOTE AT* ID (SLASH ID)+ QUOTE SEMI;
-importList: IMPORTLIST (COMMA IMPORTLIST)*
-          |  ID (COMMA ID)*;
+importList: IMPORTLIST (COMMA IMPORTLIST)*  #importStateme
+          |  ID (COMMA ID)*                  #imortid
+          ;
 componentDefinition: COMPONENT LPAREN componentMetadata RPAREN ;
 componentMetadata: LCURLY metadataEntry (COMMA metadataEntry)* RCURLY;
-metadataEntry:  SELECTOR COLON QUOTE ID QUOTE              #selectoredata
-              | STANDALONE COLON BOOLEAN                  #standalonedata
-              | TEMPLATE COLON htmlTemplate               #templetedata
-              | IMPORTS COLON LBRACK importList RBRACK    #importsdata
-              | URLTEMPLATE COLON QUOTE DOT (SLASH ID)* QUOTE    #urltamplate
+metadataEntry:  SELECTOR COLON QUOTE ID QUOTE                              #selectoredata
+              | STANDALONE COLON BOOLEAN                                   #standalonedata
+              | TEMPLATE COLON htmlTemplate                                #templetedata
+              | IMPORTS COLON LBRACK importList RBRACK                     #importsdata
+              | URLTEMPLATE COLON QUOTE DOT (SLASH ID)* QUOTE              #urltamplate
               | STYLEURL  COLON LBRACK QUOTE DOT (SLASH ID)* QUOTE RBRACK  #urlstyle
               ;
 htmlTemplate: TH htmlpage*  TH COMMA*;
@@ -70,33 +71,32 @@ content : htmlpage                                               #htmlpageconten
 img: TAG_OPEN IMG imgarti+ csselement* TAG_CLOSE;
 imgarti:LBRACK IMG_ATTRIBUTE RBRACK EQUAL QUOTE  ID (DOT ID)* QUOTE #atbuterimg
         | ATTRBUTE EQUAL QUOTE ID QUOTE #arrti ;
-classDefinition: EXPORT CLASS ID (IMPLEMENT (ID|IMPORTLIST)? )*LCURLY classBody* RCURLY;
+classDefinition: EXPORT CLASS ID (IMPLEMENT (ID|IMPORTLIST))? LCURLY classBody* RCURLY;
 classBody:   propertyDefinition    #propertydata
             |constructor           #cconstruct
             |arrayDefinition       #arraydata
             |methodDefinition      #methoddata
 
             ;
-propertyDefinition: ID QMARK* COLON  (ID |TYPE)* ( EQUAL value)* SEMI #value1
-                  | MODIFIER ID EQUAL value SEMI       #value2
-                  |  ID QMARK* COLON  (ID |TYPE)* EQUAL QUOTE value*  QUOTE SEMI                #definition
-                  |CONST ID EQUAL ID LPAREN parameterList*  RPAREN                           #constpro
-                  | ID EQUAL BOOLEAN SEMI #booleanvalue
-                  |ID EQUAL LCURLY (ID COLON QUOTE* value* QUOTE* COMMA*)* RCURLY SEMI #mapdefinition
-
+propertyDefinition: ID QMARK? COLON  (ID |TYPE) ( EQUAL value)? SEMI              #value1
+                  | MODIFIER ID EQUAL value SEMI                                   #value2
+                  |  ID QMARK? COLON  (ID |TYPE) EQUAL QUOTE value?  QUOTE SEMI   #definition
+                  |CONST ID EQUAL ID LPAREN parameterList*  RPAREN                 #constpro
+                  | ID EQUAL BOOLEAN SEMI                                          #booleanvalue
+                  |ID EQUAL LCURLY (ID COLON QUOTE? value* QUOTE? COMMA*)* RCURLY SEMI #mapdefinition
                   ;
 
-value:QUOTE (ID COLON)* (SLASH ID)+ QUOTE          #idcolon
+value:QUOTE (ID COLON)? (SLASH ID)+ QUOTE          #idcolon
      | BOOLEAN                                     #boolean
      | ID+  COMMA*                                        #id
-     | QUOTE HASH* ID+ (COMMA ID)* QUOTE           #colorvalue
+     | Q*UOTE (HASH ID)+ (COMMA ID)* QUOTE           #colorvalue
      | HASH ID                                     #hashid
      | ID  LPAREN (ID|parameterList)*  RPAREN  SEMI*  #lparen
-     | ID LPAREN  P ARROW ID operation ID RPAREN   #equalsExpr
      | ID LPAREN LBRACK QUOTE SLASH ID* QUOTE (COMMA ID)* RBRACK RPAREN #lpranqoute
       |ID LPAREN LCURLY (ID COLON ID  COMMA*)* RCURLY RPAREN    #callfun
+      |QUOTE  ID+ QUOTE                         #stringvalue
      ;
-arrayDefinition:(CONST|MODIFIER)* ID COLON* (TYPE|ID LBRACK  RBRACK)* EQUAL LBRACK arrayList* RBRACK SEMI;
+arrayDefinition:(CONST|MODIFIER)? ID COLON* (TYPE|ID LBRACK  RBRACK) ?EQUAL LBRACK arrayList* RBRACK SEMI;
 arrayList: LCURLY ID COLON value (COMMA ID COLON value)* RCURLY COMMA*   #includearray
          | value (COMMA value)*  COMMA*                                  #valdata
          ;
@@ -105,19 +105,12 @@ parameterListconstructer: MODIFIER ID COLON (ID | IMPORTLIST) COMMA*;
 ///
 methodDefinition
     : ID LPAREN parameterList* RPAREN (COLON typeAnnotation)? LCURLY methodBody* RCURLY
-
     ;
-
 typeAnnotation
     : ID (LBRACK RBRACK)? (PIPE ID)?
-
     ;
-
-
-
-
 parameterList: ID COLON ID? (TYPE| TAG_OPEN ID COMMA QUOTE ID QUOTE  TAG_CLOSE) COMMA? #type11
-| value  #type21;
+             | value  #type21;
 
 
 methodBody
@@ -142,16 +135,15 @@ methodBody
 spreadExpressionList
     : (SPREAD? expression) (COMMA SPREAD? expression)*
     ;
-
-
-
-
-
 calcualtecolor:ID EQUAL ID LPAREN contenetcolorcal RPAREN LBRACK ID RBRACK SEMI;
 contenetcolorcal:LPAREN RPAREN ARROW ID LPAREN RPAREN CALCULAATE ID;
+
 interface: EXPORT INTERFACE ID LCURLY interfacecontent  RCURLY ;
+
 interfacecontent :  (propertyDefinition)*;
+
 injectableDefinition : INJECTABLE LPAREN LCURLY PROVIDIN  COLON  QUOTE ID QUOTE RCURLY RPAREN ;
+
 objectdefinetion : CONST* ID (COLON ID|LBRACK ID RBRACK) EQUAL LCURLY contentt * RCURLY SEMI;
 contentt: ID COLON ID PLUS PLUS COMMA* #type1
         |  spreadExpressionList COMMA*  #sparetedd;

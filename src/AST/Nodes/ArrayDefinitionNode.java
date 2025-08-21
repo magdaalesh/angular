@@ -3,34 +3,30 @@ package AST.Nodes;
 import java.util.List;
 
 public class ArrayDefinitionNode extends ClassBodyEntry   {
-    private String name;
-    private String type;
-    private List<Object> values;
+    private String modifier;       // CONST أو MODIFIER
+    private String name;           // اسم المصفوفة
+    private String type;           // النوع (TYPE أو ID[])
+    private List<ArrayItemNode> items; // عناصر المصفوفة
 
-    public ArrayDefinitionNode(String name, String type, List<Object> values) {
+    public ArrayDefinitionNode(String modifier, String name, String type, List<ArrayItemNode> items) {
+        this.modifier = modifier;
         this.name = name;
         this.type = type;
-        this.values = values;
+        this.items = items;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public List<Object> getValues() {
-        return values;
-    }
+    public String getModifier() { return modifier; }
+    public String getName() { return name; }
+    public String getType() { return type; }
+    public List<ArrayItemNode> getItems() { return items; }
 
     @Override
     public String toString() {
         return "ArrayDefinitionNode{" +
-                "name='" + name + '\'' +
+                "modifier='" + modifier + '\'' +
+                ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
-                ", values=" + values +
+                ", items=" + items +
                 '}';
     }
 }

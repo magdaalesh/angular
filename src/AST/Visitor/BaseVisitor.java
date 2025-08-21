@@ -1,9 +1,9 @@
 package AST.Visitor;
 
 import AST.Nodes.*;
-import AST.Nodes.ProgramNode;
 import gen.myParser;
 import gen.myParserBaseVisitor;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import sementicserror.*;
 
 import java.util.ArrayList;
@@ -20,158 +20,211 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
 
     //
     onlyonecomponentsymboltyble componentSymbolTable = new onlyonecomponentsymboltyble();
-    variableSymbolTable variableTable =new variableSymbolTable();
+    variableSymbolTable variableTable = new variableSymbolTable();
     List<String> s;
     private final handleerror error = handleerror.getInstance();
-    public BaseVisitor(List<String> symbole){
-        s= new ArrayList<>();
+
+    public BaseVisitor(List<String> symbole) {
+        s = new ArrayList<>();
         s = symbole;
     }
 
     @Override
     public Object visitProgram(myParser.ProgramContext ctx) {
-        List <Node> prog = new ArrayList<>();
-        for(int i =0;i<ctx.node().size();i++){
+        List<Node> prog = new ArrayList<>();
+        for (int i = 0; i < ctx.node().size(); i++) {
             Node chil = (Node) visit(ctx.node(i));
-           if( chil != null) prog.add(chil) ;
+            if (chil != null) prog.add(chil);
         }
 
 
-     return new ProgramNode(prog);
+        return new ProgramNode(prog);
     }
 
     @Override
     public Object visitImports(myParser.ImportsContext ctx) {
-        List<String> importsEntries = new ArrayList<>();
-        String path = "";
-
-        if(ctx.importStatement().importList() != null) {
-            Object result = visitImportList(ctx.importStatement().importList());
-
-                importsEntries = (List<String>) result;
-
-for (int i = 0 ;i<importsEntries.size(); i ++ ){
-    importlistiit.addto(importsEntries.get(i));
-}
-
-        if(ctx.importStatement().importpath() != null) {
-            Object res = visitImportpath(ctx.importStatement().importpath());
-
-                path = (String) res;
-
-
-
-
-            return new ImportNode(importsEntries, path);
-        }
-        else {
-        return  new ImportNode(importsEntries);
-        }}
-        else{
-
-            if(ctx.importStatement().importpath() != null) {
-                Object res = visitImportpath(ctx.importStatement().importpath());
-
-                    path = (String) res;
-
-
-
-                return new ImportNode(path);
-            }
-            }
-
-        return new ImportNode();
-
+        return visit(ctx.importStatement());
     }
 
     @Override
-    public Object visitImportList(myParser.ImportListContext ctx) {
-        List<String> entries = new ArrayList<>();
-         for(int i=0 ; i<ctx.IMPORTLIST().size();i++){
-             entries.add(ctx.IMPORTLIST(i).getText());
+    public Object visitImportStatement(myParser.ImportStatementContext ctx) {
+        List<String> importsEntries = new ArrayList<>();
+        String path = null;
 
-         }
-        return entries;
+        if (ctx.importList() != null) {
+            importsEntries = (List<String>) visit(ctx.importList());
+
+
+            for (int i = 0; i < importsEntries.size(); i++) {
+                importlistiit.addto(importsEntries.get(i));
+            }
+        }
+
+        if (ctx.importpath() != null) {
+            path = (String) visit(ctx.importpath());
+        }
+
+        if (!importsEntries.isEmpty() && path != null) {
+            return new ImportNode(importsEntries, path);
+        } else if (!importsEntries.isEmpty()) {
+            return new ImportNode(importsEntries);
+        } else if (path != null) {
+            return new ImportNode(path);
+        } else {
+            return new ImportNode();
+        }
     }
 
     @Override
     public Object visitImportpath(myParser.ImportpathContext ctx) {
-        return  ctx.getText();
+        return ctx.getText();
 
     }
 
-//    @Override
-//    public Object visitComponentDefinition(myParser.ComponentDefinitionContext ctx) {
-//
-//        int line = ctx.COMPONENT().getSymbol().getLine();
-//
-//        ComponentNode componentNode = new ComponentNode();
-//        try
-//        {
-//           if(!componentSymbolTable.checkSingleComponent())
-//
-//               throw  new sementicsexcep("Multiple component definitions are not allowed " );
-//           componentSymbolTable.add(ctx.COMPONENT().toString() ,ctx.COMPONENT().toString(), "component",line);
-//        }catch (sementicsexcep e){
-//
-//            error.addError(e.getMessage(),line);
-////            s.add(componentSymbolTable.getSymbole());
-////            System.err.println(e.getMessage());
-////            System.out.println(componentSymbolTable.toString());
-//        }
-//        if(ctx.componentMetadata() !=null){
-//            Object result = visitComponentMetadata(ctx.componentMetadata());
-//            componentNode = new ComponentNode((ComponentMetadata) result);
-//        }
-//        return componentNode;
-//    }
-//
-//    @Override
-//    public Object visitComponentMetadata(myParser.ComponentMetadataContext ctx) {
-//        List<MetadataEntry> metadataEntries = new ArrayList<>();
-//
-//        for (int i = 0; i < ctx.metadataEntry().size(); i++) {
-//            MetadataEntry m = (MetadataEntry) visit(ctx.metadataEntry(i));
-//
-//            if (m != null) {
-//                String Value = m.getValue();
-//                String key = m.getKey();
-//                int line = ctx.metadataEntry(i).getStart().getLine();
-//
-//                try {
-//                    selectorTable.addto(key, Value);
-//                    if (selectorTable.checkifduplicate(key)) {
-//                        throw new sementicsexcep("duplicate entry: " + key);
-//                    }
-//                } catch (sementicsexcep e) {
-//                    error.addError(e.getMessage(), line);
-//                }
-//
-//                metadataEntries.add(m);
-//            }
-//        }
-//
-//
-//        s.add(selectorTable.toString());
-//
-//        return new ComponentMetadata(metadataEntries);
-//    }
-//
-//
-//    @Override
-//    public Object visitSelectoredata(myParser.SelectoredataContext ctx) {
-//
-//        return new SelectorEntry(ctx.ID().getText()) ;
-//    }
-//
-//    @Override
-//    public Object visitStandalonedata(myParser.StandalonedataContext ctx) {
-//        String booleanText = ctx.BOOLEAN().getText();
-//        boolean value = Boolean.parseBoolean(booleanText);
-//        return new StandaloneEntry(value);
-//    }
-//
-//    @Override
+    @Override
+    public Object visitImportStateme(myParser.ImportStatemeContext ctx) {
+        List<String> imports = new ArrayList<>();
+        for (int i = 0; i < ctx.IMPORTLIST().size(); i++) {
+            imports.add(ctx.IMPORTLIST(i).getText());
+        }
+        return imports;
+    }
+
+    @Override
+    public Object visitImortid(myParser.ImortidContext ctx) {
+        List<String> imports = new ArrayList<>();
+        for (int i = 0; i < ctx.ID().size(); i++) {
+            imports.add(ctx.ID(i).getText());
+        }
+        return imports;
+    }
+
+    @Override
+    public Object visitComponent(myParser.ComponentContext ctx) {
+        return visitComponentDefinition(ctx.componentDefinition());
+    }
+
+    @Override
+    public Object visitComponentDefinition(myParser.ComponentDefinitionContext ctx) {
+
+        int line = ctx.COMPONENT().getSymbol().getLine();
+
+        ComponentNode componentNode = new ComponentNode();
+        try {
+            if (!componentSymbolTable.checkSingleComponent())
+
+                throw new sementicsexcep("Multiple component definitions are not allowed ");
+            componentSymbolTable.add(ctx.COMPONENT().toString(), ctx.COMPONENT().toString(), "component", line);
+        } catch (sementicsexcep e) {
+
+            error.addError(e.getMessage(), line);
+//            s.add(componentSymbolTable.getSymbole());
+//            System.err.println(e.getMessage());
+//            System.out.println(componentSymbolTable.toString());
+        }
+        if (ctx.componentMetadata() != null) {
+            Object result = visitComponentMetadata(ctx.componentMetadata());
+            componentNode = new ComponentNode((ComponentMetadata) result);
+        }
+        return componentNode;
+    }
+
+    @Override
+    public Object visitComponentMetadata(myParser.ComponentMetadataContext ctx) {
+        List<MetadataEntry> metadataEntries = new ArrayList<>();
+
+        for (int i = 0; i < ctx.metadataEntry().size(); i++) {
+            MetadataEntry m = (MetadataEntry) visit(ctx.metadataEntry(i));
+            if (m != null) {
+                String Value = m.getValue();
+                String key = m.getKey();
+                int line = ctx.metadataEntry(i).getStart().getLine();
+
+                try {
+                    selectorTable.addto(key, Value);
+                    if (selectorTable.checkifduplicate(key)) {
+                        throw new sementicsexcep("duplicate entry: " + key);
+                    }
+                } catch (sementicsexcep e) {
+                    error.addError(e.getMessage(), line);
+                }
+
+                metadataEntries.add(m);
+            }
+        }
+
+
+        s.add(selectorTable.toString());
+
+        return new ComponentMetadata(metadataEntries);
+    }
+
+    @Override
+    public Object visitSelectoredata(myParser.SelectoredataContext ctx) {
+
+        return new SelectorEntry(ctx.ID().getText());
+    }
+
+    @Override
+    public Object visitStandalonedata(myParser.StandalonedataContext ctx) {
+        String booleanText = ctx.BOOLEAN().getText();
+        boolean value = Boolean.parseBoolean(booleanText);
+        return new StandaloneEntry(value);
+    }
+
+    @Override
+    public Object visitImportsdata(myParser.ImportsdataContext ctx) {
+        List<String> imports = new ArrayList<>();
+        if (ctx.importList() != null) {
+            Object importlist = visit(ctx.importList());
+            imports = (List<String>) importlist;
+
+            int line = ctx.start.getLine();
+            for (String componentImport : imports) {
+                try {
+
+                    if (!importlistiit.check(componentImport)) {
+
+                        throw new sementicsexcep(
+                                "Module '" + componentImport + "' is not imported. It must be at the top of the file.");
+                    }
+                } catch (sementicsexcep e) {
+
+                    error.addError(e.getMessage(), line);
+
+
+                    s.add(importlistiit.toString());
+                }
+            }
+        }
+        return new ImportsEntry(imports);
+    }
+
+    @Override
+    public Object visitUrlstyle(myParser.UrlstyleContext ctx) {
+
+        String raw = ctx.getText();
+        int start = raw.indexOf('\'') + 1;
+        int end = raw.lastIndexOf('\'');
+        String stylePath = raw.substring(start, end);
+        return new StyleURLNode(stylePath);
+    }
+
+    @Override
+    public Object visitUrltamplate(myParser.UrltamplateContext ctx) {
+
+        String raw = ctx.getText();
+        int start = raw.indexOf('\'') + 1;
+        int end = raw.lastIndexOf('\'');
+        String template = raw.substring(start, end);
+        return new URLTemplateNode(template);
+    }
+
+    @Override
+    public Object visitHtmlpagenode(myParser.HtmlpagenodeContext ctx) {
+       return visit(ctx.htmlpage());
+    }
+    //    @Override
 //    public Object visitTempletedata(myParser.TempletedataContext ctx) {
 //            TemplateEntry templateEntry = null ;
 //        if(ctx.htmlTemplate() !=null){
@@ -477,128 +530,70 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
 //    public String visitHtmlclose(myParser.HtmlcloseContext ctx) {
 //        return ctx.name().getText();
 //    }
-//    @Override
-//    public Object visitImportsdata(myParser.ImportsdataContext ctx) {
-//        List<String> imports = new ArrayList<>();
-//        if(ctx.importList() != null) {
-//            Object importlist = visit(ctx.importList());
-//            imports = (List<String>) importlist;
-//
-//            int line = ctx.start.getLine();
-//            for (String componentImport : imports) {
-//                try {
-//
-//                    if (!importlistiit.check(componentImport)) {
-//
-//                        throw new sementicsexcep(
-//                                "Module '" + componentImport + "' is not imported. It must be at the top of the file.");
-//                    }
-//                } catch (sementicsexcep e) {
-//
-//                    error.addError(e.getMessage(),line );
-//
-////                     s.add(importlistiit.());
-//                    s.add(importlistiit.toString());
-//                }
-//            }
-//        }
-//        return new ImportsEntry(imports);
-//    }
-//
-//    @Override
-//    public Object visitClass(myParser.ClassContext ctx) {
-//        ClassNode classNode = (ClassNode)visitClassDefinition(ctx.classDefinition());
-//        return  classNode;
-//    }
-//
-//    @Override
-//    public Object visitClassDefinition(myParser.ClassDefinitionContext ctx) {
-//        String className = ctx.ID().getText();
-//        List<ClassBodyEntry> bodyEntries = new ArrayList<>();
-//
-//        for (myParser.ClassBodyContext bodyCtx : ctx.classBody()) {
-//            ClassBodyEntry entry = (ClassBodyEntry) visit(bodyCtx);
-//
-//            bodyEntries.add(entry);
-//        }
-//
-//
-//        ClassNode classnode =new ClassNode(className, bodyEntries);
-//        return classnode;
-//    }
-//
-//    @Override
-//    public Object visitPropertydata(myParser.PropertydataContext ctx) {
-//      return visit(ctx.propertyDefinition());
-//    }
-//
-//
-////
-////    @Override
-////    public Object visitPropertyDefinition(myParser.PropertyDefinitionContext ctx) {
-////        if (ctx instanceof myParser.Value1Context) {
-////            return visitValue1((myParser.Value1Context) ctx);
-////        } else if (ctx instanceof myParser.Value2Context) {
-////            return visitValue2((myParser.Value2Context) ctx);
-////        }
-////        return null; // حالة افتراضية
-////    }
-//@Override
-//public Object visitValue1(myParser.Value1Context ctx) {
-//    String name = ctx.ID().toString();
-//    String type = ctx.TYPE() != null ? ctx.TYPE().toString() : null;
-//    Value val = ctx.value() != null ? (Value) visit(ctx.value()) : null;
-//    return new value1(name, type, val);
-//}
-//
-//    @Override
-//    public Object visitValue2(myParser.Value2Context ctx) {
-//        String modifier = ctx.MODIFIER().getText();
-//        String name = ctx.ID().getText();
-//        Value val = (Value) visit(ctx.value());
-//        return new value2(name, modifier, val);
-//    }
-//    ///
-//    @Override
-//    public Object visitColorvalue(myParser.ColorvalueContext ctx) {
-//        StringBuilder colorBuilder = new StringBuilder();
-//
-//
-//        for (TerminalNode hash : ctx.HASH()) {
-//            colorBuilder.append(hash.getText());
-//        }
-//
-//
-//        List<String> colorParts = new ArrayList<>();
-//        for (TerminalNode id : ctx.ID()) {
-//            colorParts.add(id.getText());
-//        }
-//
-//
-////        String colorCode = );
-//
-//        return new ColorValue(colorBuilder.toString() + String.join(",", colorParts));
-//    }
-//
-//    @Override
-//    public Object visitBoolean(myParser.BooleanContext ctx) {
-//        return ctx.BOOLEAN();
-//    }
-//
-//    @Override
-//    public Object visitId(myParser.IdContext ctx) {
-//        List<String> identifiers = new ArrayList<>();
-//
-//
-//        for (int i = 0; i < ctx.ID().size(); i++) {
-//            identifiers.add(ctx.ID(i).getText());
-//        }
-//
-//
-//        return new IdValue(identifiers);
-//    }
-//
-//    @Override
+
+    @Override
+    public Object visitClass(myParser.ClassContext ctx) {
+        ClassNode classNode = (ClassNode) visitClassDefinition(ctx.classDefinition());
+        return classNode;
+    }
+
+    @Override
+    public Object visitClassDefinition(myParser.ClassDefinitionContext ctx) {
+
+        String className = ctx.ID(0).getText();
+
+        List<String> implementsList = new ArrayList<>();
+
+
+        if (ctx.IMPLEMENT() != null && !(ctx.IMPLEMENT().toString() == null)) {
+            for (int i = 0; i < ctx.getChildCount(); i++) {
+                if (ctx.getChild(i).getText().equals("implements")) {
+                    for (int j = i + 1; j < ctx.getChildCount(); j++) {
+                        String childText = ctx.getChild(j).getText();
+                        if (childText.equals("{")) break;
+
+                        if (!childText.equals(",") && !childText.isEmpty()) {
+                            implementsList.add(childText);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        List<ClassBodyEntry> bodyEntries = new ArrayList<>();
+        for (myParser.ClassBodyContext bodyCtx : ctx.classBody()) {
+            Object entry = visit(bodyCtx);
+            if (entry instanceof ClassBodyEntry) {
+                bodyEntries.add((ClassBodyEntry) entry);
+            }
+        }
+
+        return new ClassNode(className, implementsList, bodyEntries);
+    }
+
+    @Override
+    public Object visitPropertydata(myParser.PropertydataContext ctx) {
+        return visit(ctx.propertyDefinition());
+    }
+
+    @Override
+    public Object visitCconstruct(myParser.CconstructContext ctx) {
+        return visitConstructor(ctx.constructor());
+    }
+
+    @Override
+    public Object visitArraydata(myParser.ArraydataContext ctx) {
+        return visitArrayDefinition(ctx.arrayDefinition());
+
+    }
+
+    @Override
+    public Object visitMethoddata(myParser.MethoddataContext ctx) {
+        return visitMethodDefinition(ctx.methodDefinition());
+    }
+
+    //    @Override
 //    public Object visitVar(myParser.VarContext ctx) {
 //
 //       Object res = visit(ctx.value());
@@ -606,53 +601,140 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
 //       return res;
 //    }
 //
-//    @Override
-//    public Object visitIdcolon(myParser.IdcolonContext ctx) {
-//        List<String> identifiers = new ArrayList<>();
-//        for (int i = 0; i < ctx.ID().size(); i++) {
-//            identifiers.add(ctx.ID(i).getText());
-//        }
-//
-//        return new IdValue(identifiers);
-//    }
-//
-//    @Override
-//    public Object visitHashid(myParser.HashidContext ctx) {
-//        return ctx.getText();
-//    }
-//
-//    @Override
-//    public Object visitArraydata(myParser.ArraydataContext ctx) {
-//        return visitArrayDefinition(ctx.arrayDefinition());
-//
-//    }
-//    @Override
-//    public Object visitArrayDefinition(myParser.ArrayDefinitionContext ctx) {
-//
-//        String arrayName = ctx.ID(0).getText();
-//
-//
-//        String arrayType = null;
-//        if (ctx.ID().size() >1) {
-//            arrayType = ctx.ID(1).getText() + "[]";
-//        } else {
-//            arrayType = "Unknown[]";
-//        }
-//
-//
-//        List<Object> arrayValues = new ArrayList<>();
-//        if (ctx.arrayList() != null) {
-//            for (myParser.ArrayListContext arrayCtx : ctx.arrayList()) {
-//                Object value = visit(arrayCtx);
-//                if (value != null) {
-//                    arrayValues.add(value);
-//                }
-//            }
-//        }
-//
-//        return new ArrayDefinitionNode(arrayName, arrayType, arrayValues);
-//    }
-//
+    @Override
+    public Object visitIdcolon(myParser.IdcolonContext ctx) {
+
+        String fullText = ctx.getText();
+        fullText = fullText.substring(1, fullText.length() - 1);
+
+
+        List<String> parts = new ArrayList<>();
+
+
+        if (ctx.ID(0) != null && ctx.COLON() != null) {
+            parts.add(ctx.ID(0).getText() + ":");
+        }
+
+
+        for (int i = 1; i < ctx.ID().size(); i++) {
+            parts.add("/" + ctx.ID(i).getText());
+        }
+
+        return new IdValue(parts);
+    }
+
+    @Override
+    public Object visitBoolean(myParser.BooleanContext ctx) {
+        return ctx.BOOLEAN();
+    }
+    @Override
+    public Object visitId(myParser.IdContext ctx) {
+        List<String> identifiers = new ArrayList<>();
+
+
+        for (int i = 0; i < ctx.ID().size(); i++) {
+            identifiers.add(ctx.ID(i).getText());
+        }
+
+
+        return new IdValue(identifiers);
+    }
+    @Override
+    public Object visitColorvalue(myParser.ColorvalueContext ctx) {
+        StringBuilder colorBuilder = new StringBuilder();
+
+
+        for (TerminalNode hash : ctx.HASH()) {
+            colorBuilder.append(hash.getText());
+        }
+
+
+        List<String> colorParts = new ArrayList<>();
+        for (TerminalNode id : ctx.ID()) {
+            colorParts.add(id.getText());
+        }
+
+
+        return new ColorValue(colorBuilder.toString() + String.join(",", colorParts));
+    }
+    @Override
+    public Object visitHashid(myParser.HashidContext ctx) {
+        return ctx.getText();
+    }
+    @Override
+    public Object visitLparen(myParser.LparenContext ctx) {
+        String name = ctx.ID(0).getText();
+        List<Object> params = new ArrayList<>();
+
+        if (ctx.parameterList() != null) {
+            for (int i = 0; i < ctx.parameterList().size(); i++) {
+                params.add(visit(ctx.parameterList(i)));
+            }
+        }
+
+
+        for (int i = 1; i < ctx.ID().size(); i++) { // ID(0) هو الاسم
+            params.add(ctx.ID(i).getText());
+        }
+
+        return new LParenNode(name, params);
+    }
+
+    @Override
+    public Object visitStringvalue(myParser.StringvalueContext ctx) {
+        List<String> ids = new ArrayList<>();
+
+        for (TerminalNode id : ctx.ID()) {
+            ids.add(id.getText());
+        }
+
+        return new StringValueNode(ids);
+    }
+    @Override
+    public Object visitArrayDefinition(myParser.ArrayDefinitionContext ctx) {
+        String modifier = null;
+        if (ctx.CONST() != null) modifier = ctx.CONST().getText();
+        else if (ctx.MODIFIER() != null) modifier = ctx.MODIFIER().getText();
+
+        String name = ctx.ID(0).toString();
+
+        String type = null;
+        if (ctx.TYPE() != null) {
+            type = ctx.TYPE().getText();
+        } else if (ctx.LBRACK() != null && ctx.RBRACK() != null) {
+            type = ctx.ID(1).toString() + "[]";
+        }
+
+        List<ArrayItemNode> items = new ArrayList<>();
+        for (myParser.ArrayListContext arr : ctx.arrayList()) {
+            Object val = visit(arr);
+            if (val instanceof List) {
+                items.addAll((List<ArrayItemNode>) val);
+            } else if (val instanceof ArrayItemNode) {
+                items.add((ArrayItemNode) val);
+            }
+        }
+
+        return new ArrayDefinitionNode(modifier, name, type, items);
+    }
+    @Override
+    public Object visitIncludearray(myParser.IncludearrayContext ctx) {
+        List<ArrayItemNode> items = new ArrayList<>();
+
+        items.add(new ArrayItemNode(ctx.ID(0).getText(), (Value) visit(ctx.value(0))));
+        for (int i = 1; i < ctx.ID().size(); i++) {
+            items.add(new ArrayItemNode(ctx.ID(i).getText(), (Value) visit(ctx.value(i))));
+        }
+        return items;
+    }
+    @Override
+    public Object visitValdata(myParser.ValdataContext ctx) {
+        List<ArrayItemNode> items = new ArrayList<>();
+        for (int i = 0; i < ctx.value().size(); i++) {
+            items.add(new ArrayItemNode((Value) visit(ctx.value(i))));
+        }
+        return items;
+    }
 //    @Override
 //    public Object visitIncludearray(myParser.IncludearrayContext ctx) {
 //        Map<String, Object> objectMap = new HashMap<>();
@@ -685,11 +767,12 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
 //        return values;
 //    }
 //
-//    @Override
-//    public Object visitMethoddata(myParser.MethoddataContext ctx) {
-//        return visitMethodDefinition(ctx.methodDefinition());
-//    }
-//
+
+
+    @Override
+    public Object visitArrayDefinitiondata(myParser.ArrayDefinitiondataContext ctx) {
+        return visitArrayDefinition(ctx.arrayDefinition());
+    }
 //
 //    @Override
 //    public Object visitMethodDefinition(myParser.MethodDefinitionContext ctx) {
@@ -721,13 +804,29 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
 //        return new MethodDefinitionNode(name, psrmiter, body ,classBodyEntries,colorValues);
 //    }
 //
-//    @Override
-//    public Object visitParameterList(myParser.ParameterListContext ctx) {
-//        String paramName = ctx.ID(0).getText();
-//        String paramType = ctx.ID(1).getText();
-//        return new ParameterNode(paramName, paramType);
-//    }
-//
+
+    @Override
+    public Object visitType11(myParser.Type11Context ctx) {
+        String name = ctx.ID(0).getText();
+        String type = null;
+        if (ctx.TYPE() != null) {
+            type = ctx.TYPE().getText();
+        } else if (ctx.TAG_OPEN() != null) {
+            type = ctx.ID(1).getText(); // النوع بين القوسين
+        } else if (ctx.ID().size() > 1) {
+            type = ctx.ID(1).getText();
+        }
+
+        return new ParameterNode(name, type);
+    }
+
+    @Override
+    public Object visitType21(myParser.Type21Context ctx) {
+        Object val = visit(ctx.value());
+        return new ParameterNode((Value) val);
+    }
+
+
 //    @Override
 //    public Object visitCalcolor(myParser.CalcolorContext ctx) {
 //        return visitCalcualtecolor(ctx.calcualtecolor());
@@ -758,53 +857,128 @@ for (int i = 0 ;i<importsEntries.size(); i ++ ){
 //        return value ;
 //    }
 //
-//    @Override
-//    public Object visitPropertyDefinitiondata(myParser.PropertyDefinitiondataContext ctx) {
-//       return visit(ctx.propertyDefinition());
-//    }
-//
-//    @Override
-//    public Object visitArrayDefinitiondata(myParser.ArrayDefinitiondataContext ctx) {
-//        return visitArrayDefinition(ctx.arrayDefinition());
-//    }
-//
-//    @Override
-//    public Object visitInterfaces(myParser.InterfacesContext ctx) {
-//        return visitInterface(ctx.interface_());
-//    }
-//    @Override
-//    public Object visitInterface(myParser.InterfaceContext ctx) {
-//        String interfaceName = ctx.ID().getText();
-//        interfacescontent content = (interfacescontent) visit(ctx.interfacecontent());
-//
-//        return new InterfaceNode(interfaceName, content);
-//    }
-//    @Override
-//    public Object visitInterfacecontent(myParser.InterfacecontentContext ctx) {
-//        List<PropertyDefinitionNode> props = new ArrayList<>();
-//        for (myParser.PropertyDefinitionContext pctx : ctx.propertyDefinition()) {
-//            Object res = visit(pctx);
-//            if (res instanceof PropertyDefinitionNode) {
-//                props.add((PropertyDefinitionNode) res);
-//            }
-//        }
-//        return new interfacescontent(props);
-//    }
-//
-//    @Override
-//    public Object visitInjectableDefinition(myParser.InjectableDefinitionContext ctx) {
-//        String id = ctx.ID().getText();
-//
-//        String providin = ctx.PROVIDIN() != null ? ctx.PROVIDIN().getText() : null;
-//
-//        return new injectableDefination(id, providin);
-//    }
-//
-//
-//    @Override
-//    public Object visitInjectable(myParser.InjectableContext ctx) {
-//        return visitInjectableDefinition(ctx.injectableDefinition());
-//    }
+
+    @Override
+    public Object visitPropertyDefinitiondata(myParser.PropertyDefinitiondataContext ctx) {
+       return visit(ctx.propertyDefinition());
+    }
+    @Override
+    public Object visitValue1(myParser.Value1Context ctx) {
+        String name = ctx.ID(0).toString();
+        boolean isOptional = ctx.QMARK() != null;
+
+
+        String type = "";
+        if (ctx.ID(1) != null) {
+            type = ctx.ID(1).getText();
+        } else if (ctx.TYPE() != null) {
+            type = ctx.TYPE().getText();
+        }
+
+        Value defaultValue = null;
+        if (ctx.value() != null) {
+            defaultValue = (Value) visit(ctx.value());
+        }
+
+        return new value1(name, type, isOptional, defaultValue);
+    }
+    @Override
+    public Object visitValue2(myParser.Value2Context ctx) {
+        String modifier = ctx.MODIFIER().getText();
+        String name = ctx.ID().getText();
+        Value val = (Value) visit(ctx.value());
+        return new value2(name, modifier, val);
+    }
+    @Override
+    public Object visitDefinition(myParser.DefinitionContext ctx) {
+        String name = ctx.ID(0).getText();
+        boolean optional = ctx.QMARK() != null;
+        String type = ctx.ID().size() > 1 ? ctx.ID(1).getText() : ctx.TYPE().getText();
+        Value value = null;
+
+        if (ctx.value() != null) {
+            Object val = visit(ctx.value());
+            if (val instanceof Value) {
+                value = (Value) val;
+            }
+        }
+
+        return new DefinitionNode(name, optional, type, value);
+    }
+    @Override
+    public Object visitConstpro(myParser.ConstproContext ctx) {
+        String name = ctx.ID(0).getText();          // اسم الـ const
+        String typeOrValue = ctx.ID(1).getText();   // القيمة أو النوع بعد =
+
+        List<ParameterNode> params = new ArrayList<>();
+        if (ctx.parameterList() != null) {
+            for (int i = 0; i < ctx.parameterList().size(); i++) {
+                params.add((ParameterNode) visit(ctx.parameterList(i)));
+            }
+        }
+
+        return new ConstNode(name, typeOrValue, params);
+    }
+
+    @Override
+    public Object visitMapdefinition(myParser.MapdefinitionContext ctx) {
+        String name = ctx.ID(0).getText();
+        MapDefinitionNode mapNode = new MapDefinitionNode(name);
+
+        for (int i = 0; i < ctx.ID().size(); i++) {
+            String key = ctx.ID(i).getText();
+            Value value = null;
+
+            if (ctx.value(i) != null) {
+                Object val = visit(ctx.value(i));
+                value = val != null ? (Value) val : null;
+            }
+
+            mapNode.addEntry(key, value);
+        }
+
+        return mapNode;
+    }
+    @Override
+    public Object visitBooleanvalue(myParser.BooleanvalueContext ctx) {
+        String name = ctx.ID().getText();
+        boolean value = Boolean.parseBoolean(ctx.BOOLEAN().getText());
+        return new BooleanValueNode(name, value);
+    }
+    @Override
+    public Object visitInterfaces(myParser.InterfacesContext ctx) {
+        return visitInterface(ctx.interface_());
+    }
+    @Override
+    public Object visitInterface(myParser.InterfaceContext ctx) {
+        String interfaceName = ctx.ID().getText();
+        interfacescontent content = (interfacescontent) visit(ctx.interfacecontent());
+
+        return new InterfaceNode(interfaceName, content);
+    }
+    @Override
+    public Object visitInterfacecontent(myParser.InterfacecontentContext ctx) {
+        List<PropertyDefinitionNode> props = new ArrayList<>();
+        for (myParser.PropertyDefinitionContext pctx : ctx.propertyDefinition()) {
+            Object res = visit(pctx);
+            if (res instanceof PropertyDefinitionNode) {
+                props.add((PropertyDefinitionNode) res);
+            }
+        }
+        return new interfacescontent(props);
+    }
+    @Override
+    public Object visitInjectableDefinition(myParser.InjectableDefinitionContext ctx) {
+        String id = ctx.ID().getText();
+
+        String providin = ctx.PROVIDIN() != null ? ctx.PROVIDIN().getText() : null;
+
+        return new injectableDefination(id, providin);
+    }
+    @Override
+    public Object visitInjectable(myParser.InjectableContext ctx) {
+        return visitInjectableDefinition(ctx.injectableDefinition());
+    }
 }
 
 

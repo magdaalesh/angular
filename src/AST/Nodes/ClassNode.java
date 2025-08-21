@@ -2,17 +2,23 @@ package AST.Nodes;
 
 import java.util.List;
 
-public class ClassNode extends Node{
+public class ClassNode extends Node {
     private String className;
+    private List<String> implementsList;
     private List<ClassBodyEntry> body;
 
-    public ClassNode(String className, List<ClassBodyEntry> body) {
+    public ClassNode(String className, List<String> implementsList, List<ClassBodyEntry> body) {
         this.className = className;
+        this.implementsList = implementsList;
         this.body = body;
     }
 
     public String getClassName() {
         return className;
+    }
+
+    public List<String> getImplementsList() {
+        return implementsList;
     }
 
     public List<ClassBodyEntry> getBody() {
@@ -23,6 +29,7 @@ public class ClassNode extends Node{
     public String toString() {
         return "ClassNode{" +
                 "className='" + className + '\'' +
+                ", implements=" + implementsList +
                 ", body=" + body +
                 '}';
     }

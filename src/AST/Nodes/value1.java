@@ -1,10 +1,10 @@
 package AST.Nodes;
 
 public class value1 extends PropertyDefinitionNode{
-    private String name;          // اسم الخاصية
-    private String type;          // نوع الخاصية
-    private boolean isOptional;   // هل الخاصية اختيارية؟
-    private Value defaultValue;  // القيمة الافتراضية إذا وجدت
+    private String name;
+    private String type;
+    private boolean isOptional;
+    private Value defaultValue;
 
     public value1() {
         this.name = "";

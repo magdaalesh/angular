@@ -3,7 +3,7 @@ package AST.Nodes;
 import java.util.List;
 
 public class VariableNode extends HtmlNode {
-    private List<String> variablePath; // مثلاً [user, name]
+    private List<String> variablePath;
 
     public VariableNode(List<String> variablePath) {
         this.variablePath = variablePath;

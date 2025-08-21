@@ -89,8 +89,9 @@ propertyDefinition: ID QMARK? COLON  (ID |TYPE) ( EQUAL value)? SEMI            
 value:QUOTE (ID COLON)? (SLASH ID)+ QUOTE          #idcolon
      | BOOLEAN                                     #boolean
      | ID+  COMMA*                                        #id
-     | Q*UOTE (HASH ID)+ (COMMA ID)* QUOTE           #colorvalue
+     | QUOTE (HASH ID)+ (COMMA ID)* QUOTE           #colorvalue
      | HASH ID                                     #hashid
+        | ID LPAREN  P ARROW ID operation ID RPAREN   #equalsExpr
      | ID  LPAREN (ID|parameterList)*  RPAREN  SEMI*  #lparen
      | ID LPAREN LBRACK QUOTE SLASH ID* QUOTE (COMMA ID)* RBRACK RPAREN #lpranqoute
       |ID LPAREN LCURLY (ID COLON ID  COMMA*)* RCURLY RPAREN    #callfun

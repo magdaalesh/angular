@@ -3,7 +3,7 @@ package AST.Nodes;
 import java.util.Map;
 
 public class StyleAttribute extends CssAttribute {
-    private Map<String, String> styles; // مثال: "width" → "100px"
+    private Map<String, String> styles;
 
     public StyleAttribute(Map<String, String> styles) {
         this.styles = styles;

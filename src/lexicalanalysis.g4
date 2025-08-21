@@ -4,7 +4,7 @@ COMPONENT: '@Component';
 INJECTABLE:'@Injectable';
 EXPORT: 'export';
 CONSTRUCTOR :'constructor';
-IMPORTLIST: 'ActivatedRoute'|'FormsModule'|'Router'|'OnInit'| 'Injectable'|'EventEmitter'|'Component'|'CommonModule'|'Input'|'Output';
+IMPORTLIST: 'ActivatedRoute'| 'FormsModule'|'Router'|'OnInit'| 'Injectable'|'EventEmitter'|'Component'|'CommonModule'|'Input'|'Output';
 LET:'let';
 OF:'of';
 THIS:'this';

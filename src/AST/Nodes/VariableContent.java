@@ -3,8 +3,7 @@ package AST.Nodes;
 import java.util.List;
 
 public class VariableContent extends Content {
-    private List<String> path; // مثال: user.profile.name → ["user", "profile", "name"]
-
+    private List<String> path;
     public VariableContent(List<String> path) {
         this.path = path;
     }

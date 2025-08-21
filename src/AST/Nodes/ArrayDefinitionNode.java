@@ -3,11 +3,10 @@ package AST.Nodes;
 import java.util.List;
 
 public class ArrayDefinitionNode extends ClassBodyEntry   {
-    private String modifier;       // CONST أو MODIFIER
-    private String name;           // اسم المصفوفة
-    private String type;           // النوع (TYPE أو ID[])
-    private List<ArrayItemNode> items; // عناصر المصفوفة
-
+    private String modifier;
+    private String name;
+    private String type;
+    private List<ArrayItemNode> items;
     public ArrayDefinitionNode(String modifier, String name, String type, List<ArrayItemNode> items) {
         this.modifier = modifier;
         this.name = name;

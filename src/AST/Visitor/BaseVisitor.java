@@ -6,7 +6,7 @@ import gen.myParserBaseVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import sementicserror.*;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 
@@ -661,6 +661,28 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
     public Object visitHashid(myParser.HashidContext ctx) {
         return ctx.getText();
     }
+
+    @Override
+    public Object visitEqualsExpr(myParser.EqualsExprContext ctx) {
+
+            String functionName = ctx.ID(0).getText();
+
+            String lambdaVar = ctx.P().getText();
+            String leftVar = ctx.ID(1).getText();
+
+
+            String operation = ctx.operation().getText();
+
+            String rightVar = ctx.ID(2).getText();
+
+
+            EqualsExprNode node = new EqualsExprNode(functionName, lambdaVar, leftVar, operation, rightVar);
+
+            return node;
+
+    }
+
+
     @Override
     public Object visitLparen(myParser.LparenContext ctx) {
         String name = ctx.ID(0).getText();
@@ -673,12 +695,52 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
         }
 
 
-        for (int i = 1; i < ctx.ID().size(); i++) { // ID(0) هو الاسم
+        for (int i = 1; i < ctx.ID().size(); i++) {
             params.add(ctx.ID(i).getText());
         }
 
         return new LParenNode(name, params);
     }
+    @Override
+    public Object visitLpranqoute(myParser.LpranqouteContext ctx) {
+        String functionName = ctx.ID(0).getText();
+
+
+        List<String> pathIds = new ArrayList<>();
+        for (int i = 1; i < ctx.ID().size(); i++) {
+            pathIds.add(ctx.ID(i).getText());
+        }
+
+
+        List<String> extraIds = new ArrayList<>();
+        if (ctx.COMMA() != null && !ctx.COMMA().isEmpty()) {
+
+            int start = pathIds.size() + 1;
+            for (int i = start; i < ctx.ID().size(); i++) {
+                extraIds.add(ctx.ID(i).getText());
+            }
+        }
+
+        return new LParenQuoteNode(functionName, pathIds, extraIds);
+    }
+
+    @Override
+    public Object visitCallfun(myParser.CallfunContext ctx) {
+        String functionName = ctx.ID(0).getText();
+
+        Map<String, String> arguments = new LinkedHashMap<>();
+
+
+        for (int i = 1; i < ctx.ID().size(); i += 2) {
+            String key = ctx.ID(i).getText();
+            String value = ctx.ID(i + 1).getText();
+            arguments.put(key, value);
+        }
+
+        return new CallFunNode(functionName, arguments);
+    }
+
+
 
     @Override
     public Object visitStringvalue(myParser.StringvalueContext ctx) {

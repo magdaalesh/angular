@@ -43,7 +43,7 @@ csselement:stylback       #styleback
            |ngfor         #ngfordata
            |click         #clickdata
            |style         #styledata
-           | arttiselftag  #selfart
+           |arttiselftag  #selfart
            |NGSUBMIT EQUAL QUOTE   ID LPAREN ID* RPAREN   QUOTE #ngsubmit
          ;
 stylback: LBRACK STYLE_BACK RBRACK EQUAL QUOTE ID  QUOTE ;
@@ -65,7 +65,7 @@ name:  DIV     #divdata
       |FORM     #formm
       ;
 content : htmlpage                                               #htmlpagecontent
-         |ID                                                     #stringdata
+         |ID+                                                     #stringdata
          |(ID COLON )* LCURLY LCURLY ID(DOT ID )* RCURLY RCURLY  #vardata
          ;
 img: TAG_OPEN IMG imgarti+ csselement* TAG_CLOSE;
@@ -103,7 +103,7 @@ arrayList: LCURLY ID COLON value (COMMA ID COLON value)* RCURLY COMMA*   #includ
          ;
 constructor: CONSTRUCTOR LPAREN parameterListconstructer* RPAREN LCURLY methodBody* RCURLY ;
 parameterListconstructer: MODIFIER ID COLON (ID | IMPORTLIST) COMMA*;
-///
+
 methodDefinition
     : ID LPAREN parameterList* RPAREN (COLON typeAnnotation)? LCURLY methodBody* RCURLY
     ;
@@ -112,8 +112,6 @@ typeAnnotation
     ;
 parameterList: ID COLON ID? (TYPE| TAG_OPEN ID COMMA QUOTE ID QUOTE  TAG_CLOSE) COMMA? #type11
              | value  #type21;
-
-
 methodBody
     :
       value                   #valuedata

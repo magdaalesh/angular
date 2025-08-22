@@ -14,7 +14,7 @@ import java.util.List;
 import static org.antlr.v4.runtime.CharStreams.fromFileName;
 public class Main {
     public static void main(String[] args) throws IOException {
-        String source = "test01.txt";
+        String source ="test01.txt";
         String source2 ="test02.txt";
         String source3 ="test03.txt";
         String source4 ="test04.txt";

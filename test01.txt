@@ -1,0 +1,61 @@
+import { Injectable } from '@angular/core';
+
+export interface Product {
+  id: number;
+  name: string;
+  image: string;
+  description: string;
+}
+
+@Injectable({ providedIn: 'root' })
+export class ProductService {
+  private products: Product[] = [
+    {
+      id: 1,
+      name: 'Headphone',
+      image: '/assets/product1.jpg',
+      description: 'Nice headphones'
+    },
+    {
+      id: 2,
+      name: 'Sunglasses',
+      image: '/assets/product2.jpg',
+      description: 'Stylish sunglasses'
+    },
+    {
+      id: 3,
+      name: 'Smartphone',
+      image: '/assets/product3.jpg',
+      description: 'Latest smartphone'
+    }
+  ];
+
+  private nextId = 4;
+
+  getAll(): Product[] {
+    return [...this.products];
+  }
+
+  getById(id: number): Product | undefined {
+    return this.products.find(p => p.id === id);
+  }
+
+  add(product: Omit<Product, 'id'>): void {
+    const newProduct: Product = {
+      id: this.nextId++,
+      ...product
+    };
+    this.products.push(newProduct);
+  }
+
+  deleteById(id: number): void {
+    this.products = this.products.filter(p => p.id !== id);
+  }
+
+  update(id: number, updated: Omit<Product, 'id'>): void {
+    const index = this.products.findIndex(p => p.id === id);
+    if (index > -1) {
+      this.products[index] = { id, ...updated };
+    }
+  }
+}

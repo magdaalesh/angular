@@ -7,7 +7,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import sementicserror.*;
 
 import java.util.*;
-import java.util.List;
 
 
 public class BaseVisitor extends myParserBaseVisitor<Object> {
@@ -40,12 +39,10 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
 
         return new ProgramNode(prog);
     }
-
     @Override
     public Object visitImports(myParser.ImportsContext ctx) {
         return visit(ctx.importStatement());
     }
-
     @Override
     public Object visitImportStatement(myParser.ImportStatementContext ctx) {
         List<String> importsEntries = new ArrayList<>();
@@ -74,13 +71,11 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
             return new ImportNode();
         }
     }
-
     @Override
     public Object visitImportpath(myParser.ImportpathContext ctx) {
         return ctx.getText();
 
     }
-
     @Override
     public Object visitImportStateme(myParser.ImportStatemeContext ctx) {
         List<String> imports = new ArrayList<>();
@@ -89,7 +84,6 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
         }
         return imports;
     }
-
     @Override
     public Object visitImortid(myParser.ImortidContext ctx) {
         List<String> imports = new ArrayList<>();
@@ -98,12 +92,10 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
         }
         return imports;
     }
-
     @Override
     public Object visitComponent(myParser.ComponentContext ctx) {
         return visitComponentDefinition(ctx.componentDefinition());
     }
-
     @Override
     public Object visitComponentDefinition(myParser.ComponentDefinitionContext ctx) {
 
@@ -128,7 +120,6 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
         }
         return componentNode;
     }
-
     @Override
     public Object visitComponentMetadata(myParser.ComponentMetadataContext ctx) {
         List<MetadataEntry> metadataEntries = new ArrayList<>();
@@ -158,20 +149,17 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
 
         return new ComponentMetadata(metadataEntries);
     }
-
     @Override
     public Object visitSelectoredata(myParser.SelectoredataContext ctx) {
 
         return new SelectorEntry(ctx.ID().getText());
     }
-
     @Override
     public Object visitStandalonedata(myParser.StandalonedataContext ctx) {
         String booleanText = ctx.BOOLEAN().getText();
         boolean value = Boolean.parseBoolean(booleanText);
         return new StandaloneEntry(value);
     }
-
     @Override
     public Object visitImportsdata(myParser.ImportsdataContext ctx) {
         List<String> imports = new ArrayList<>();
@@ -199,7 +187,6 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
         }
         return new ImportsEntry(imports);
     }
-
     @Override
     public Object visitUrlstyle(myParser.UrlstyleContext ctx) {
 
@@ -209,7 +196,6 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
         String stylePath = raw.substring(start, end);
         return new StyleURLNode(stylePath);
     }
-
     @Override
     public Object visitUrltamplate(myParser.UrltamplateContext ctx) {
 
@@ -219,324 +205,374 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
         String template = raw.substring(start, end);
         return new URLTemplateNode(template);
     }
+    @Override
+    public Object visitTempletedata(myParser.TempletedataContext ctx) {
+        TemplateEntry templateEntry = null ;
+        if(ctx.htmlTemplate() !=null){
+            Object html =  visitHtmlTemplate(ctx.htmlTemplate());
+            templateEntry   = new TemplateEntry((HtmlTemplate) html);
+        }
+        //  System.out.println( htmlopenandclosesamesymboletable.toString());
 
+        return templateEntry  ;
+    }
     @Override
     public Object visitHtmlpagenode(myParser.HtmlpagenodeContext ctx) {
        return visit(ctx.htmlpage());
     }
-    //    @Override
-//    public Object visitTempletedata(myParser.TempletedataContext ctx) {
-//            TemplateEntry templateEntry = null ;
-//        if(ctx.htmlTemplate() !=null){
-//            Object html =  visitHtmlTemplate(ctx.htmlTemplate());
-//             templateEntry   = new TemplateEntry((HtmlTemplate) html);
-//        }
-//      //  System.out.println( htmlopenandclosesamesymboletable.toString());
-//
-//        return templateEntry  ;
-//    }
-//
-//    @Override
-//    public Object visitHtmlTemplate(myParser.HtmlTemplateContext ctx) {
-//
-//        List<HtmlNode> htmlNodes = new ArrayList<>();
-//         for (int i=0 ; i<ctx.element().size(); i++){
-//             Object res = visitElement(ctx.element(i));
-//
-//             if(res  !=null ){
-//                 htmlNodes.add((HtmlNode) res);
-//             }
-//         }
-//       // System.out.println( htmlopenandclosesamesymboletable.toString());
-//         for (int i=0; i<ctx.img().size();i++){
-//             Object resalt= visitImg(ctx.img(i));
-//
-//             if(resalt !=null){
-//                 htmlNodes.add((HtmlNode) resalt);
-//             }
-//         }
-//        HtmlTemplate htmlTemplate=new HtmlTemplate(htmlNodes);
-//
-//        return  htmlTemplate;
-//    }
-//
-//    @Override
-//    public Object visitElement(myParser.ElementContext ctx) {
-//        String name = "";
-//        List<HtmlAttribute> attributes = new ArrayList<>();
-//        List<HtmlNode> children = new ArrayList<>();
-//
-//        if (ctx.htmlopen() != null) {
-//            Map<String, List> res = (Map<String, List>) visitHtmlopen(ctx.htmlopen());
-//            if (!res.isEmpty()) {
-//                name = res.keySet().iterator().next();
-//                attributes = res.get(name);
-//
-//                for (HtmlAttribute attr : attributes) {
-//                    String attrName = attr.getname();
-//                    int line = ctx.htmlopen().getStart().getLine();
-//
-//                    if (dublicatecsselementsymboltable.addandcheckduplicate(name, attrName,line)) {
-//
-//                        error.addError("Duplicate attribute '" + attrName + "' in element " + name, line);
-//                        s.add(dublicatecsselementsymboltable.toString());
-//
-//                    }}
-//            }
-//        }
-//        dublicatecsselementsymboltable.closetag(name);
-//
-//        String nameClose = "";
-//        if (ctx.htmlclose() != null) {
-//          nameClose  = (String) visitHtmlclose(ctx.htmlclose());
-//
-//        }
-//
-//        for (myParser.ContentContext content : ctx.content()) {
-//            if (!content.isEmpty()) {
-//                Object res = visit(content);
-//                if (res instanceof HtmlNode) {
-//                    children.add((HtmlNode) res);
-//                }
-//            }
-//        }
-//
-//        try {
-//            if(!htmlopenandclosesamesymboletable.checkhtmlendandstartname(name,nameClose))
-//                throw new sementicsexcep("error in your html code closing tag  ");
-//            htmlopenandclosesamesymboletable.add("html tags",
-//                    ctx.htmlopen().name().getText()
-//                    ,ctx.htmlopen().getStart().getLine());
-//        } catch (sementicsexcep e) {
-//            error.addError(e.getMessage(),ctx.htmlclose().getStart().getLine());
-//
-//            s.add(htmlopenandclosesamesymboletable.toString());
-//        }
-//
-//
-//        ElementNode elementNode =new ElementNode(name, attributes, children);
-//
-//        return elementNode;
-//    }
-//
-//    @Override
-//    public Object visitImg(myParser.ImgContext ctx) {
-//        List<HtmlAttribute> attributes = new ArrayList<>();
-//
-//
-//        if (ctx.imgarti() != null) {
-//            for (myParser.ImgartiContext imgarti : ctx.imgarti()) {
-//                Object res = visit(imgarti);
-//                if (res instanceof HtmlAttribute) {
-//                    attributes.add((HtmlAttribute) res);
-//                }
-//            }
-//        }
-//
-//       if (ctx.csselement() != null) {
-//           for (myParser.CsselementContext csselement : ctx.csselement()) {
-//                Object res = visit(csselement);
-//                if (res instanceof HtmlAttribute) {
-//                    attributes.add((HtmlAttribute) res);
-//               }
-//           }
-//        }
-//
-//        return new ImageNode(attributes);
-//    }
-//
-//    @Override
-//    public Object visitClickdata(myParser.ClickdataContext ctx) {
-//        ClickAttribute clickAttribute = null;
-//        if(ctx.click() !=null){
-//            Object res = visitClick(ctx.click());
-//            clickAttribute =(ClickAttribute) res;
-//        }
-//        return new ClickAttribute(clickAttribute.getMethodName(),clickAttribute.getArguments());
-//    }
-//
-//    @Override
-//    public Object visitClick(myParser.ClickContext ctx) {
-//
-//        String methodName = ctx.ID(0).getText();
-//
-//
-//        List<String> arguments = new ArrayList<>();
-//
-//
-//        for (int i = 1; i < ctx.ID().size(); i++) {
-//            arguments.add(ctx.ID(i).getText());
-//        }
-//
-//        return new ClickAttribute(methodName, arguments);
-//    }
-//
-//    @Override
-//    public Object visitNgfordata(myParser.NgfordataContext ctx) {
-//        NgForAttribute ngForAttribute = null;
-//        if(ctx.ngfor() !=null){
-//            Object res = visitNgfor(ctx.ngfor());
-//            ngForAttribute = (NgForAttribute) res;
-//        }
-//        return new NgForAttribute(ngForAttribute.getVariable(),ngForAttribute.getCollection());
-//    }
-//
-//    @Override
-//    public Object visitNgfor(myParser.NgforContext ctx) {
-//        String variable = "", collection="";
-//
-//        if (ctx.LET() != null) {
-//            variable = ctx.ID(0).getText();
-//            collection = ctx.ID(1).getText();
-//        }
-//
-//        return new NgForAttribute(variable, collection);
-//    }
-//
-//    @Override
-//    public Object visitNgif(myParser.NgifContext ctx) {
-//        String condition = ctx.ID().getText();
-//        return new NgIfAttribute(condition);
-//    }
-//
-//    @Override
-//    public Object visitNgifdata(myParser.NgifdataContext ctx) {
-//        NgIfAttribute ngIfAttribute = null;
-//        if(ctx.ngif()!=null){
-//            Object res =  visitNgif(ctx.ngif());
-//            ngIfAttribute=(NgIfAttribute) res;
-//        }
-//        return ngIfAttribute;
-//    }
-//
-//    @Override
-//    public Object visitStylback(myParser.StylbackContext ctx) {
-//        String bgValue = ctx.ID().getText();
-//        return new StyleBackAttribute(bgValue);
-//    }
-//
-//    @Override
-//    public Object visitStyleback(myParser.StylebackContext ctx) {
-//        Object res =(StyleBackAttribute) visitStylback(ctx.stylback());
-//        return res;
-//    }
-//
-//    @Override
-//    public Object visitStyle(myParser.StyleContext ctx) {
-//        Map<String, String> styles = new HashMap<>();
-//
-//
-//        int pairCount = ctx.ATTRBUTE().size();
-//
-//        for (int i = 0; i < pairCount; i++) {
-//            String attr = ctx.ATTRBUTE(i).getText();
-//            String val = ctx.value(i).getText();
-//
-//
-//
-//            styles.put(attr, val);
-//        }
-//
-//        return new StyleAttribute(styles);
-//    }
-//
-//    @Override
-//    public Object visitStyledata(myParser.StyledataContext ctx) {
-//        Object RES = (StyleAttribute)visitStyle(ctx.style());
-//        return RES;
-//    }
-//
-//    @Override
-//    public Object visitImgarti(myParser.ImgartiContext ctx) {
-//        List<String> imagearti = new ArrayList();
-//          if(ctx.IMG_ATTRIBUTE()!= null ){
-//              imagearti.add(ctx.getText());
-//          }
-//
-//        return  new ImageAttribute(imagearti);
-//    }
-//
-//    @Override
-//    public Object visitImgdata(myParser.ImgdataContext ctx) {
-//        ImageNode imageNode = null;
-//         if(ctx.img() !=null){
-//             Object res = visitImg(ctx.img());
-//             imageNode = (ImageNode) res;
-//         }
-//        return  new ImageNode(imageNode.getAttributes());
-//    }
-//    @Override
-//    public Object visitHtmlopen(myParser.HtmlopenContext ctx) {
-//        String name = ctx.name().getText();
-//
-//
-//        int line = ctx.getStart().getLine();
-//
-//        List<HtmlAttribute> attributes = new ArrayList<>();
-//        for (int i = 0; i < ctx.csselement().size(); i++) {
-//            if (ctx.csselement(i) != null) {
-//                HtmlAttribute attr = (HtmlAttribute) visit(ctx.csselement(i));
-//                attributes.add(attr);
-//            }
-//        }
-//
-//        try {
-//            if (ngifngforsymboletable.checkngifandngfor(attributes)) {
-//                throw new sementicsexcep(
-//                        "Cannot use both *ngIf and *ngFor on the same element ");
-//            }
-//
-//            for (HtmlAttribute attr : attributes) {
-//                ngifngforsymboletable.add(
-//
-//                        attr.getvalue(),
-//
-//                        attr.getname(),
-//                        ctx.getStart().getLine()
-//                );
-//            }
-//        } catch (sementicsexcep e) {
-//            error.addError(e.getMessage(), line);
-//            s.add(ngifngforsymboletable.toString());
-//        }
-//
-//        Map<String, List<HtmlAttribute>> result = new HashMap<>();
-//        result.put(name, attributes);
-//        return result;
-//    }
-//
-//
-//    @Override
-//    public Object visitElementdata(myParser.ElementdataContext ctx) {
-//        ElementNode elementNode = new ElementNode();
-//        if(ctx.element() !=null){
-//             Object  res = visitElement(ctx.element());
-//             elementNode = (ElementNode) res;
-//         }
-//
-//        return new ElementNode(elementNode.getTagName(),elementNode.getAttributes(),elementNode.getChildren());
-//    }
-//
-//    @Override
-//    public Object visitStringdata(myParser.StringdataContext ctx) {
-//        return ctx.getText();
-//    }
-//
-//    @Override
-//    public Object visitVardata(myParser.VardataContext ctx) {
-//        return ctx.getText();
-//    }
-//    @Override
-//    public String visitHtmlclose(myParser.HtmlcloseContext ctx) {
-//        return ctx.name().getText();
-//    }
+    @Override
+    public HtmlTemplate visitHtmlTemplate(myParser.HtmlTemplateContext ctx) {
+        HtmlTemplate template = new HtmlTemplate();
+        List<HtmlNode> children = new ArrayList<>();
 
+
+        for (myParser.HtmlpageContext pageCtx : ctx.htmlpage()) {
+            HtmlNode node = (HtmlNode) visit(pageCtx);
+            if (node != null) {
+                children.add(node);
+            }
+        }
+
+        template.setChildren(children);
+        return template;
+    }
+    @Override
+    public Object visitElementhtml(myParser.ElementhtmlContext ctx) {
+        return visitElement(ctx.element());
+    }
+    @Override
+    public Object visitImghtml(myParser.ImghtmlContext ctx) {
+        return visitImg(ctx.img());
+    }
+    @Override
+    public Object visitSelftag(myParser.SelftagContext ctx) {
+        return visitVoidtag(ctx.voidtag());
+    }
+    @Override
+    public Object visitElement(myParser.ElementContext ctx) {
+        String name = "";
+        List<HtmlAttribute> attributes = new ArrayList<>();
+        List<HtmlNode> children = new ArrayList<>();
+
+        if (ctx.htmlopen() != null) {
+            Map<String, Object> res = (Map<String, Object>) visitHtmlopen(ctx.htmlopen());
+            if (res != null && !res.isEmpty()) {
+                name = (String) res.getOrDefault("name", "");
+                Object attrsObj = res.get("attributes");
+                if (attrsObj instanceof List) {
+                    //noinspection unchecked
+                    attributes = new ArrayList<>((List<HtmlAttribute>) attrsObj);
+                }
+
+                for (HtmlAttribute attr : attributes) {
+                    String attrName = attr.getname();
+                    int line = ctx.htmlopen().getStart().getLine();
+                    if (dublicatecsselementsymboltable.addandcheckduplicate(name, attrName, line)) {
+                        error.addError("Duplicate attribute '" + attrName + "' in element " + name, line);
+                        s.add(dublicatecsselementsymboltable.toString());
+                    }
+                }
+            }
+        }
+
+        dublicatecsselementsymboltable.closetag(name);
+
+        String nameClose = "";
+        if (ctx.htmlclose() != null) {
+            nameClose = (String) visitHtmlclose(ctx.htmlclose());
+        }
+
+        for (myParser.ContentContext content : ctx.content()) {
+            if (!content.isEmpty()) {
+                Object res = visit(content);
+                if (res instanceof HtmlNode) {
+                    children.add((HtmlNode) res);
+                }
+
+            }
+        }
+
+        try {
+            if (!htmlopenandclosesamesymboletable.checkhtmlendandstartname(name, nameClose))
+                throw new sementicsexcep("error in your html code closing tag");
+            if (ctx.htmlopen().name() != null) {
+                htmlopenandclosesamesymboletable.add(
+                        "html tags",
+                        ctx.htmlopen().name().getText(),
+                        ctx.htmlopen().getStart().getLine()
+                );
+            }
+        } catch (sementicsexcep e) {
+            error.addError(e.getMessage(), ctx.htmlclose().getStart().getLine());
+            s.add(htmlopenandclosesamesymboletable.toString());
+        }
+
+        return new ElementNode(name, attributes, children);
+    }
+
+
+
+
+    @Override
+    public Object visitClickdata(myParser.ClickdataContext ctx) {
+        ClickAttribute clickAttribute = null;
+        if(ctx.click() !=null){
+            Object res = visitClick(ctx.click());
+            clickAttribute =(ClickAttribute) res;
+        }
+        return new ClickAttribute(clickAttribute.getMethodName(),clickAttribute.getArguments());
+    }
+    @Override
+    public Object visitClick(myParser.ClickContext ctx) {
+
+        String methodName = ctx.ID(0).getText();
+
+
+        List<String> arguments = new ArrayList<>();
+
+
+        for (int i = 1; i < ctx.ID().size(); i++) {
+            arguments.add(ctx.ID(i).getText());
+        }
+
+        return new ClickAttribute(methodName, arguments);
+    }
+    @Override
+    public Object visitNgfordata(myParser.NgfordataContext ctx) {
+        NgForAttribute ngForAttribute = null;
+        if(ctx.ngfor() !=null){
+            Object res = visitNgfor(ctx.ngfor());
+            ngForAttribute = (NgForAttribute) res;
+        }
+        return new NgForAttribute(ngForAttribute.getVariable(),ngForAttribute.getCollection());
+    }
+    @Override
+    public Object visitNgfor(myParser.NgforContext ctx) {
+        String variable = "", collection="";
+
+        if (ctx.LET() != null) {
+            variable = ctx.ID(0).getText();
+            collection = ctx.ID(1).getText();
+        }
+
+        return new NgForAttribute(variable, collection);
+    }
+    @Override
+    public Object visitNgif(myParser.NgifContext ctx) {
+        String condition = ctx.ID().getText();
+        return new NgIfAttribute(condition);
+    }
+    @Override
+    public Object visitNgifdata(myParser.NgifdataContext ctx) {
+        NgIfAttribute ngIfAttribute = null;
+        if(ctx.ngif()!=null){
+            Object res =  visitNgif(ctx.ngif());
+            ngIfAttribute=(NgIfAttribute) res;
+        }
+        return ngIfAttribute;
+    }
+    @Override
+    public Object visitStylback(myParser.StylbackContext ctx) {
+        String bgValue = ctx.ID().getText();
+        return new StyleBackAttribute(bgValue);
+    }
+    @Override
+    public Object visitStyleback(myParser.StylebackContext ctx) {
+        Object res =(StyleBackAttribute) visitStylback(ctx.stylback());
+        return res;
+    }
+    @Override
+    public Object visitStyle(myParser.StyleContext ctx) {
+        Map<String, String> styles = new HashMap<>();
+
+
+        int pairCount = ctx.ATTRBUTE().size();
+
+        for (int i = 0; i < pairCount; i++) {
+            String attr = ctx.ATTRBUTE(i).getText();
+            String val = ctx.value(i).getText();
+
+
+
+            styles.put(attr, val);
+        }
+
+        return new StyleAttribute(styles);
+    }
+    @Override
+    public Object visitStyledata(myParser.StyledataContext ctx) {
+        Object RES = (StyleAttribute)visitStyle(ctx.style());
+        return RES;
+    }
+    @Override
+    public Object visitSelfart(myParser.SelfartContext ctx) {
+        return  visitArttiselftag(ctx.arttiselftag());
+    }
+    @Override
+    public Object visitNgsubmit(myParser.NgsubmitContext ctx) {
+        String functionName = ctx.ID(0).getText();
+        List<String> args = new ArrayList<>();
+        for (int i = 1; i < ctx.ID().size(); i++) {
+            args.add(ctx.ID(i).getText());
+        }
+        return new NgSubmitAttribute(functionName, args);
+    }
+    @Override
+    public Object visitVoidtag(myParser.VoidtagContext ctx) {
+        String tagName = ctx.selftagname().getText();
+        List<ArtSelfTagAttribute> attributes = new ArrayList<>();
+
+        for (myParser.ArttiselftagContext attrCtx : ctx.arttiselftag()) {
+            ArtSelfTagAttribute attr = (ArtSelfTagAttribute) visit(attrCtx);
+            if (attr != null) attributes.add(attr);
+        }
+
+        return new VoidTagNode(tagName, attributes);
+    }
+    @Override
+    public Object visitArttiselftag(myParser.ArttiselftagContext ctx) {
+        String attrName = ctx.SELF_ATTRIBUTE().getText();
+        List<String> ids = new ArrayList<>();
+
+        if (ctx.ID() != null && !ctx.ID().isEmpty()) {
+
+            for (int i = 0; i < ctx.ID().size(); i++) {
+                ids.add(ctx.ID(i).getText());
+            }
+        }
+
+
+        if (ctx.LPAREN() != null && ctx.RPAREN() != null) {
+
+            for (int i = 0; i < ctx.ID().size(); i++) {
+                ids.add(ctx.ID(i).getText());
+            }
+
+            if (ctx.SLASH() != null) {
+
+
+            }
+        }
+
+        return new ArtSelfTagAttribute(attrName, ids);
+    }
+
+        @Override
+    public Object visitImg(myParser.ImgContext ctx) {
+        List<HtmlAttribute> attributes = new ArrayList<>();
+
+
+        if (ctx.imgarti() != null) {
+            for (myParser.ImgartiContext imgarti : ctx.imgarti()) {
+                Object res = visit(imgarti);
+                if (res instanceof HtmlAttribute) {
+                    attributes.add((HtmlAttribute) res);
+                }
+            }
+        }
+
+       if (ctx.csselement() != null) {
+           for (myParser.CsselementContext csselement : ctx.csselement()) {
+                Object res = visit(csselement);
+                if (res instanceof HtmlAttribute) {
+                    attributes.add((HtmlAttribute) res);
+               }
+           }
+        }
+
+        return new ImageNode(attributes);
+    }
+    @Override
+    public Object visitAtbuterimg(myParser.AtbuterimgContext ctx) {
+    String name = ctx.IMG_ATTRIBUTE().getText();
+    List<String> ids = new ArrayList<>();
+    ids.add(ctx.ID(0).getText());
+    for (int i = 1; i < ctx.ID().size(); i++) {
+        ids.add(ctx.ID(i).getText());
+    }
+    return new ImageAttribute(name, ids);
+}
+    @Override
+    public Object visitArrti(myParser.ArrtiContext ctx) {
+        String name = ctx.ATTRBUTE().getText();
+        String value = ctx.ID().getText();
+        return new SimpleAttributeNode(name, value);
+    }
+    @Override
+    public Object visitHtmlopen(myParser.HtmlopenContext ctx) {
+        Map<String, Object> result = new HashMap<>();
+        int line = ctx.getStart().getLine();
+
+        String tagName = (ctx.name() != null) ? ctx.name().getText() : ctx.artt().A().toString();
+
+        List<HtmlAttribute> attributes = new ArrayList<>();
+
+
+        for (int i = 0; i < ctx.csselement().size(); i++) {
+            if (ctx.csselement(i) != null) {
+                HtmlAttribute attr = (HtmlAttribute) visit(ctx.csselement(i));
+                if (attr != null) attributes.add(attr);
+            }
+        }
+
+        if (ctx.artt() != null) {
+            HtmlAttribute art = (HtmlAttribute) visit(ctx.artt());
+            if (art != null) attributes.add(art);
+        }
+
+
+        try {
+            if (ngifngforsymboletable.checkngifandngfor(attributes)) {
+                throw new sementicsexcep("Cannot use both *ngIf and *ngFor on the same element ");
+            }
+            for (HtmlAttribute attr : attributes) {
+                ngifngforsymboletable.add(attr.getvalue(), attr.getname(), line);
+            }
+        } catch (sementicsexcep e) {
+            error.addError(e.getMessage(), line);
+            s.add(ngifngforsymboletable.toString());
+        }
+
+        result.put("name", tagName);
+        result.put("attributes", attributes);
+        return result;
+    }
+
+    @Override
+    public Object visitArtt(myParser.ArttContext ctx) {
+        List<String> ids = new ArrayList<>();
+        for (int i = 0; i < ctx.ID().size(); i++) {
+            ids.add(ctx.ID(i).getText());
+        }
+        return new ArtAttribute(ids);
+    }
+    @Override
+    public Object visitHtmlpagecontent(myParser.HtmlpagecontentContext ctx) {
+        return visit(ctx.htmlpage());
+    }
+    @Override
+    public Object visitStringdata(myParser.StringdataContext ctx) {
+        return new StringContent(ctx.getText());
+    }
+    @Override
+    public Object visitVardata(myParser.VardataContext ctx) {
+        return new StringContent(ctx.getText());
+    }
+    @Override
+    public String visitHtmlclose(myParser.HtmlcloseContext ctx) {
+        if (ctx.name() != null) {
+            return ctx.name().getText();
+        } else if (ctx.A() != null) {
+            return ctx.A().getText();
+        } else {
+            return "";
+        }
+    }
     @Override
     public Object visitClass(myParser.ClassContext ctx) {
         ClassNode classNode = (ClassNode) visitClassDefinition(ctx.classDefinition());
         return classNode;
     }
-
     @Override
     public Object visitClassDefinition(myParser.ClassDefinitionContext ctx) {
 
@@ -571,36 +607,30 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
 
         return new ClassNode(className, implementsList, bodyEntries);
     }
-
     @Override
     public Object visitPropertydata(myParser.PropertydataContext ctx) {
         return visit(ctx.propertyDefinition());
     }
-
     @Override
     public Object visitCconstruct(myParser.CconstructContext ctx) {
         return visitConstructor(ctx.constructor());
     }
-
     @Override
     public Object visitArraydata(myParser.ArraydataContext ctx) {
         return visitArrayDefinition(ctx.arrayDefinition());
 
     }
-
     @Override
     public Object visitMethoddata(myParser.MethoddataContext ctx) {
         return visitMethodDefinition(ctx.methodDefinition());
     }
+    @Override
+    public Object visitVar(myParser.VarContext ctx) {
 
-    //    @Override
-//    public Object visitVar(myParser.VarContext ctx) {
-//
-//       Object res = visit(ctx.value());
-//
-//       return res;
-//    }
-//
+       Object res = visit(ctx.value());
+
+       return res;
+    }
     @Override
     public Object visitIdcolon(myParser.IdcolonContext ctx) {
 
@@ -622,7 +652,6 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
 
         return new IdValue(parts);
     }
-
     @Override
     public Object visitBoolean(myParser.BooleanContext ctx) {
         return ctx.BOOLEAN();
@@ -661,7 +690,6 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
     public Object visitHashid(myParser.HashidContext ctx) {
         return ctx.getText();
     }
-
     @Override
     public Object visitEqualsExpr(myParser.EqualsExprContext ctx) {
 
@@ -681,8 +709,6 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
             return node;
 
     }
-
-
     @Override
     public Object visitLparen(myParser.LparenContext ctx) {
         String name = ctx.ID(0).getText();
@@ -723,7 +749,6 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
 
         return new LParenQuoteNode(functionName, pathIds, extraIds);
     }
-
     @Override
     public Object visitCallfun(myParser.CallfunContext ctx) {
         String functionName = ctx.ID(0).getText();
@@ -739,9 +764,6 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
 
         return new CallFunNode(functionName, arguments);
     }
-
-
-
     @Override
     public Object visitStringvalue(myParser.StringvalueContext ctx) {
         List<String> ids = new ArrayList<>();
@@ -797,44 +819,11 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
         }
         return items;
     }
-//    @Override
-//    public Object visitIncludearray(myParser.IncludearrayContext ctx) {
-//        Map<String, Object> objectMap = new HashMap<>();
-//
-//
-//        String firstKey = ctx.ID(0).getText();
-//        Object firstValue = visit(ctx.value(0));
-//        objectMap.put(firstKey, firstValue);
-//
-//        for (int i = 1; i < ctx.ID().size(); i++) {
-//            String key = ctx.ID(i).getText();
-//            Object value = visit(ctx.value(i));
-//            objectMap.put(key, value);
-//        }
-//
-//        return objectMap;
-//    }
-//
-//    @Override
-//    public Object visitValdata(myParser.ValdataContext ctx) {
-//        List<Object> values = new ArrayList<>();
-//
-//        for (myParser.ValueContext valueCtx : ctx.value()) {
-//            Object value = visit(valueCtx);
-//            if (value != null) {
-//                values.add(value);
-//            }
-//        }
-//
-//        return values;
-//    }
-//
-
-
     @Override
     public Object visitArrayDefinitiondata(myParser.ArrayDefinitiondataContext ctx) {
         return visitArrayDefinition(ctx.arrayDefinition());
     }
+
 //
 //    @Override
 //    public Object visitMethodDefinition(myParser.MethodDefinitionContext ctx) {
@@ -881,34 +870,29 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
 
         return new ParameterNode(name, type);
     }
-
     @Override
     public Object visitType21(myParser.Type21Context ctx) {
         Object val = visit(ctx.value());
         return new ParameterNode((Value) val);
     }
+    @Override
+    public Object visitCalcolor(myParser.CalcolorContext ctx) {
+        return visitCalcualtecolor(ctx.calcualtecolor());
+    }
+    @Override
+    public Object visitCalcualtecolor(myParser.CalcualtecolorContext ctx) {
+ColorValue colorValue = null;
+         if(ctx.contenetcolorcal() !=null){
+             Object res = visitContenetcolorcal(ctx.contenetcolorcal());
+            colorValue = (ColorValue) res;
+         }
+        return colorValue;
+    }
+    @Override
+    public Object visitContenetcolorcal(myParser.ContenetcolorcalContext ctx) {
+        return new ColorValue(ctx.getText());
+    }
 
-
-//    @Override
-//    public Object visitCalcolor(myParser.CalcolorContext ctx) {
-//        return visitCalcualtecolor(ctx.calcualtecolor());
-//    }
-//
-//    @Override
-//    public Object visitCalcualtecolor(myParser.CalcualtecolorContext ctx) {
-//ColorValue colorValue = null;
-//         if(ctx.contenetcolorcal() !=null){
-//             Object res = visitContenetcolorcal(ctx.contenetcolorcal());
-//            colorValue = (ColorValue) res;
-//         }
-//        return colorValue;
-//    }
-//
-//    @Override
-//    public Object visitContenetcolorcal(myParser.ContenetcolorcalContext ctx) {
-//        return new ColorValue(ctx.getText());
-//    }
-//
 //    @Override
 //    public Object visitValuedata(myParser.ValuedataContext ctx) {
 //        Value value = null;
@@ -981,7 +965,6 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
 
         return new ConstNode(name, typeOrValue, params);
     }
-
     @Override
     public Object visitMapdefinition(myParser.MapdefinitionContext ctx) {
         String name = ctx.ID(0).getText();

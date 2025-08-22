@@ -1,0 +1,5 @@
+===== SEMANTICS ERRORS =====
+Total Errors: 0
+
+
+===== END OF REPORT =====

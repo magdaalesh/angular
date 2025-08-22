@@ -4,15 +4,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-// إن كان عندك ClassBodyEntry يورّث Node:
 public class MethodDefinitionNode extends ClassBodyEntry
-// لو ما عندك ClassBodyEntry، استعمل السطر التالي بدل الأعلى:
-// public class MethodDefinitionNode extends Node
 {
     private final String methodName;
     private final List<ParameterNode> parameters;
-    private final TypeAnnotationNode returnType; // ممكن يكون null
-    private final List<Object> bodyItems;        // عناصر جسم الدالة
+    private final TypeAnnotationNode returnType; //
+    private final List<Object> bodyItems;        //
 
     public MethodDefinitionNode(String methodName,
                                 List<ParameterNode> parameters,
@@ -46,7 +43,6 @@ public class MethodDefinitionNode extends ClassBodyEntry
         StringBuilder sb = new StringBuilder();
         sb.append("MethodDefinition{ name=").append(methodName);
 
-        // 👇 لا نطبع النوع إلا إذا حاضر فعلاً حسب القاعدة
         if (returnType != null) {
             sb.append(", type=").append(returnType.toString());
         }

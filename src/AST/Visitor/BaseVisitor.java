@@ -18,14 +18,16 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
     ngifandngforatsametime ngifngforsymboletable = new ngifandngforatsametime();
 
     //
-    onlyonecomponentsymboltyble componentSymbolTable = new onlyonecomponentsymboltyble();
+    Componentuniqselector componentSymbolTable = new Componentuniqselector();
     variableSymbolTable variableTable = new variableSymbolTable();
     List<String> s;
     private final handleerror error = handleerror.getInstance();
-
-    public BaseVisitor(List<String> symbole) {
+String filename ;
+    public BaseVisitor(List<String> symbole , String filename ,Componentuniqselector selectortable) {
         s = new ArrayList<>();
         s = symbole;
+        this.filename=filename;
+        this.componentSymbolTable  =selectortable;
     }
 
     @Override
@@ -102,18 +104,7 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
         int line = ctx.COMPONENT().getSymbol().getLine();
 
         ComponentNode componentNode = new ComponentNode();
-        try {
-            if (!componentSymbolTable.checkSingleComponent())
 
-                throw new sementicsexcep("Multiple component definitions are not allowed ");
-            componentSymbolTable.add(ctx.COMPONENT().toString(), ctx.COMPONENT().toString(), "component", line);
-        } catch (sementicsexcep e) {
-
-            error.addError(e.getMessage(), line);
-//            s.add(componentSymbolTable.getSymbole());
-//            System.err.println(e.getMessage());
-//            System.out.println(componentSymbolTable.toString());
-        }
         if (ctx.componentMetadata() != null) {
             Object result = visitComponentMetadata(ctx.componentMetadata());
             componentNode = new ComponentNode((ComponentMetadata) result);
@@ -124,17 +115,32 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
     public Object visitComponentMetadata(myParser.ComponentMetadataContext ctx) {
         List<MetadataEntry> metadataEntries = new ArrayList<>();
 
+        // الحصول على selector من الـ metadata مباشرة
+        String componentSelector = null;
         for (int i = 0; i < ctx.metadataEntry().size(); i++) {
             MetadataEntry m = (MetadataEntry) visit(ctx.metadataEntry(i));
             if (m != null) {
-                String Value = m.getValue();
                 String key = m.getKey();
+                String value = m.getValue();
                 int line = ctx.metadataEntry(i).getStart().getLine();
 
+
+                if (key.contains("selector")) {
+                    componentSelector = value;
+                }
+
                 try {
-                    selectorTable.addto(key, Value);
-                    if (selectorTable.checkifduplicate(key)) {
-                        throw new sementicsexcep("duplicate entry: " + key);
+
+                    if (componentSelector != null) {
+                        selectorTable.addTo(filename, componentSelector, key, value);
+
+
+                        if (selectorTable.checkIfDuplicate(filename, componentSelector, key)) {
+                            throw new sementicsexcep(
+                                    "Duplicate entry: '" + key + "' in component with selector: "
+                                            + componentSelector + " in file: " + filename
+                            );
+                        }
                     }
                 } catch (sementicsexcep e) {
                     error.addError(e.getMessage(), line);
@@ -144,16 +150,30 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
             }
         }
 
-
         s.add(selectorTable.toString());
 
         return new ComponentMetadata(metadataEntries);
     }
+
+
     @Override
     public Object visitSelectoredata(myParser.SelectoredataContext ctx) {
+        int line = ctx.ID().getSymbol().getLine();
+        String value = ctx.ID().getText();
 
-        return new SelectorEntry(ctx.ID().getText());
+        try {
+            // إذا موجود مسبقاً → throw exception
+            if (!componentSymbolTable.checkifselectorisuniqandadd(value, line, filename)) {
+                throw new sementicsexcep("Selector must be unique in file: " + filename);
+            }
+        } catch (sementicsexcep e) {
+            error.addError(e.getMessage(), line);
+            s.add(componentSymbolTable.toString());
+        }
+
+        return new SelectorEntry(value);
     }
+
     @Override
     public Object visitStandalonedata(myParser.StandalonedataContext ctx) {
         String booleanText = ctx.BOOLEAN().getText();

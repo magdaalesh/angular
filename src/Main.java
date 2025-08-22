@@ -5,6 +5,7 @@ import gen.myParser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import sementicserror.Componentuniqselector;
 import sementicserror.handleerror;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.List;
 import static org.antlr.v4.runtime.CharStreams.fromFileName;
 public class Main {
     public static void main(String[] args) throws IOException {
+        Componentuniqselector componentuniqselector = new  Componentuniqselector();
         String source = "test01.txt";
         String source2 ="test02.txt";
         String source3 ="test03.txt";
@@ -37,7 +39,7 @@ public class Main {
         CommonTokenStream token = new CommonTokenStream(lexer);
         myParser parser = new myParser(token);
         ParseTree tree = parser.program();
-        ProgramNode doc = (ProgramNode) new BaseVisitor(handle.getSymboles()).visit(tree);
+        ProgramNode doc = (ProgramNode) new BaseVisitor(handle.getSymboles() , programm.get(i) , componentuniqselector ).visit(tree);
         System.out.println("Start AST tree");
         System.out.println(doc);
         System.out.println("END");}

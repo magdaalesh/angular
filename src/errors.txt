@@ -1,5 +1,6 @@
 ===== SEMANTICS ERRORS =====
-Total Errors: 0
+Total Errors: 1
 
+1) [Cannot have both 'template' and 'templateUrl' in component: app-product-list in file: test02.txt] Line : 10
 
 ===== END OF REPORT =====

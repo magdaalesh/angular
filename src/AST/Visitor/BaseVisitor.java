@@ -537,7 +537,7 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
         result.put("attributes", attributes);
         return result;
     }
-
+// visitType21
     @Override
     public Object visitArtt(myParser.ArttContext ctx) {
         List<String> ids = new ArrayList<>();
@@ -621,7 +621,7 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
 
     }
     @Override
-    public Object visitMethoddata(myParser.MethoddataContext ctx) {
+    public Object visitMethoddata(gen.myParser.MethoddataContext ctx) {
         return visitMethodDefinition(ctx.methodDefinition());
     }
     @Override
@@ -824,56 +824,71 @@ public class BaseVisitor extends myParserBaseVisitor<Object> {
         return visitArrayDefinition(ctx.arrayDefinition());
     }
 
-//
-//    @Override
-//    public Object visitMethodDefinition(myParser.MethodDefinitionContext ctx) {
-//        String name = ctx.ID().getText();
-//        List<StatementNode> body = new ArrayList<>();
-//        List<ParameterNode> psrmiter = new ArrayList<>();
-//        List<ClassBodyEntry> classBodyEntries = new ArrayList<>();
-//        List<ColorValue> colorValues = new ArrayList<>();
-//        for (int i = 0; i < ctx.parameterList().size(); i++) {
-//            Object res = visit(ctx.parameterList(i));
-//            psrmiter.add((ParameterNode) res);
-//        }
-//
-//
-//        for (int i = 0; i < ctx.methodBody().size(); i++) {
-//            Object res = visit(ctx.methodBody(i));
-//            if (res instanceof StatementNode) {
-//                body.add((StatementNode) res);
-//            }
-//             if(res instanceof ClassBodyEntry) {
-//                classBodyEntries.add((ClassBodyEntry) res);
-//
-//            } else if (res instanceof ColorValue) {
-//                colorValues.add((ColorValue) res);
-//
-//             }
-//        }
-//
-//        return new MethodDefinitionNode(name, psrmiter, body ,classBodyEntries,colorValues);
-//    }
-//
+//visitMethodDefinition
+@Override
+public Object visitMethodDefinition(gen.myParser.MethodDefinitionContext ctx) {
+    String name = ctx.ID().getText();
 
-    @Override
-    public Object visitType11(myParser.Type11Context ctx) {
-        String name = ctx.ID(0).getText();
-        String type = null;
-        if (ctx.TYPE() != null) {
-            type = ctx.TYPE().getText();
-        } else if (ctx.TAG_OPEN() != null) {
-            type = ctx.ID(1).getText(); // النوع بين القوسين
-        } else if (ctx.ID().size() > 1) {
-            type = ctx.ID(1).getText();
+    java.util.List<AST.Nodes.ParameterNode> params = new java.util.ArrayList<>();
+    for (gen.myParser.ParameterListContext pctx : ctx.parameterList()) {
+        Object p = visit(pctx);
+        if (p instanceof AST.Nodes.ParameterNode) {
+            params.add((AST.Nodes.ParameterNode) p);
+        } else if (p != null) {
+            params.add(new AST.Nodes.ParameterNode(p.toString(), null));
         }
+    }
 
-        return new ParameterNode(name, type);
+    AST.Nodes.TypeAnnotationNode ret = null;
+    if (ctx.typeAnnotation() != null) {
+        Object t = visit(ctx.typeAnnotation());
+        if (t instanceof AST.Nodes.TypeAnnotationNode) {
+            ret = (AST.Nodes.TypeAnnotationNode) t;
+        } else if (t != null) {
+            ret = new AST.Nodes.TypeAnnotationNode(t.toString(), false, java.util.Collections.emptyList());
+        }
+    }
+
+    java.util.List<Object> items = new java.util.ArrayList<>();
+    for (gen.myParser.MethodBodyContext bctx : ctx.methodBody()) {
+        Object node = visit(bctx);
+        if (node != null) items.add(node);
+    }
+
+    return new AST.Nodes.MethodDefinitionNode(name, params, ret, items);
+}
+
+
+
+
+    //TypeAnnotation
+    @Override
+    public Object visitTypeAnnotation(gen.myParser.TypeAnnotationContext ctx) {
+        String main = ctx.ID(0).getText();
+        boolean isArray = ctx.LBRACK() != null && ctx.RBRACK() != null;
+        java.util.List<String> unions = new java.util.ArrayList<>();
+        if (ctx.PIPE() != null && ctx.ID().size() >= 2) {
+            unions.add(ctx.ID(1).getText());
+        }
+        return new AST.Nodes.TypeAnnotationNode(main, isArray, unions);
+    }
+
+
+
+
+//visitType11
+    @Override
+    public Object visitType11(gen.myParser.Type11Context ctx) {
+        String paramName = ctx.ID(0).getText();
+        String type = null;
+        if (ctx.ID().size() > 1) type = ctx.ID(1).getText();
+        else if (ctx.TYPE() != null) type = ctx.TYPE().getText();
+        else type = ctx.getText();
+        return new AST.Nodes.ParameterNode(paramName, type);
     }
     @Override
-    public Object visitType21(myParser.Type21Context ctx) {
-        Object val = visit(ctx.value());
-        return new ParameterNode((Value) val);
+    public Object visitType21(gen.myParser.Type21Context ctx) {
+        return new AST.Nodes.ParameterNode(ctx.getText(), null);
     }
     @Override
     public Object visitCalcolor(myParser.CalcolorContext ctx) {

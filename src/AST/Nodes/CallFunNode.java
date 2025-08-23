@@ -1,5 +1,7 @@
 package AST.Nodes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class CallFunNode extends Node {
@@ -25,5 +27,17 @@ public class CallFunNode extends Node {
                 "functionName='" + functionName + '\'' +
                 ", arguments=" + arguments +
                 '}';
+    }
+
+    @Override
+    public Expr asExpr() {
+        List<Expr> args = new ArrayList<>();
+
+        for (Map.Entry<String, String> entry : arguments.entrySet()) {
+            args.add(new ValueExpr(null, new IdValue(List.of(entry.getKey()))));
+            args.add(new ValueExpr(null, new IdValue(List.of(entry.getValue()))));
+        }
+
+        return new CallExprNode(functionName, args);
     }
 }

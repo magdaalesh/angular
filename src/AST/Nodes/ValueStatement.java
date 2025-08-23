@@ -1,20 +1,20 @@
+// ValueStatement.java
 package AST.Nodes;
 
-public class ValueStatement extends StatementNode {
-    private Object value;
+import java.util.Objects;
 
-    public ValueStatement(Object value) {
-        this.value = value;
+public final class ValueStatement extends MethodBody {
+    private final Expr expr;
+
+    public ValueStatement(Expr expr) {
+        this.expr = Objects.requireNonNull(expr);
     }
 
-    public Object getValue() {
-        return value;
+    public ValueStatement(Value value) {
+        this(new ValueExpr(null, Objects.requireNonNull(value)));
     }
 
-    @Override
-    public String toString() {
-        return "ValueStatement{" +
-                "value=" + value +
-                '}';
-    }
+    public Expr getExpr() { return expr; }
+
+    @Override public String toString() { return "ValueStmt(" + expr + ")"; }
 }

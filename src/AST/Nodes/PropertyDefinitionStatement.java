@@ -1,10 +1,12 @@
 package AST.Nodes;
 
-public class PropertyDefinitionStatement extends StatementNode {
-    private PropertyDefinitionNode property;
+import java.util.Objects;
+
+public final class PropertyDefinitionStatement extends MethodBody {
+    private final PropertyDefinitionNode property;
 
     public PropertyDefinitionStatement(PropertyDefinitionNode property) {
-        this.property = property;
+        this.property = Objects.requireNonNull(property);
     }
 
     public PropertyDefinitionNode getProperty() {

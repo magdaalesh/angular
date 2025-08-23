@@ -5,6 +5,18 @@ import gen.myParser;
 import gen.myParserBaseVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import sementicserror.*;
+import AST.Nodes.ConditionNode;
+import org.antlr.v4.runtime.tree.ParseTree;
+import AST.Nodes.Expr;
+import AST.Nodes.Value;
+import AST.Nodes.ValueExpr;
+import AST.Nodes.ValueStatement;
+import AST.Nodes.CallExprNode;
+import AST.Nodes.Expr;
+import AST.Nodes.Node;
+
+
+
 
 import java.util.*;
 
@@ -646,11 +658,17 @@ String filename ;
     }
     @Override
     public Object visitVar(myParser.VarContext ctx) {
-
-       Object res = visit(ctx.value());
-
-       return res;
+        String name  = ctx.ID().getText();
+        Value value  = (Value) visit(ctx.value());
+        return new VarAssignStatement(name, value);
     }
+
+
+
+
+
+
+
     @Override
     public Object visitIdcolon(myParser.IdcolonContext ctx) {
 
@@ -844,39 +862,43 @@ String filename ;
         return visitArrayDefinition(ctx.arrayDefinition());
     }
 
-//visitMethodDefinition
-@Override
-public Object visitMethodDefinition(gen.myParser.MethodDefinitionContext ctx) {
-    String name = ctx.ID().getText();
+    // visitMethodDefinition
+    @Override
+    public Object visitMethodDefinition(gen.myParser.MethodDefinitionContext ctx) {
+        String name = ctx.ID().getText();
 
-    java.util.List<AST.Nodes.ParameterNode> params = new java.util.ArrayList<>();
-    for (gen.myParser.ParameterListContext pctx : ctx.parameterList()) {
-        Object p = visit(pctx);
-        if (p instanceof AST.Nodes.ParameterNode) {
-            params.add((AST.Nodes.ParameterNode) p);
-        } else if (p != null) {
-            params.add(new AST.Nodes.ParameterNode(p.toString(), null));
+        java.util.List<AST.Nodes.ParameterNode> params = new java.util.ArrayList<>();
+        for (gen.myParser.ParameterListContext pctx : ctx.parameterList()) {
+            Object p = visit(pctx);
+            if (p instanceof AST.Nodes.ParameterNode) {
+                params.add((AST.Nodes.ParameterNode) p);
+            } else if (p != null) {
+                params.add(new AST.Nodes.ParameterNode(p.toString(), null));
+            }
         }
-    }
 
-    AST.Nodes.TypeAnnotationNode ret = null;
-    if (ctx.typeAnnotation() != null) {
-        Object t = visit(ctx.typeAnnotation());
-        if (t instanceof AST.Nodes.TypeAnnotationNode) {
-            ret = (AST.Nodes.TypeAnnotationNode) t;
-        } else if (t != null) {
-            ret = new AST.Nodes.TypeAnnotationNode(t.toString(), false, java.util.Collections.emptyList());
+        AST.Nodes.TypeAnnotationNode ret = null;
+        if (ctx.typeAnnotation() != null) {
+            Object t = visit(ctx.typeAnnotation());
+            if (t instanceof AST.Nodes.TypeAnnotationNode) {
+                ret = (AST.Nodes.TypeAnnotationNode) t;
+            } else if (t != null) {
+                ret = new AST.Nodes.TypeAnnotationNode(t.toString(), false, java.util.Collections.emptyList());
+            }
         }
+
+        java.util.List<Object> items = new java.util.ArrayList<>();
+        for (gen.myParser.MethodBodyContext bctx : ctx.methodBody()) {
+            Object node = visit(bctx);
+            if (node instanceof AST.Nodes.Value) {
+                node = new AST.Nodes.ValueStatement((AST.Nodes.Value) node);
+            }
+            items.add(node);
+        }
+
+        return new AST.Nodes.MethodDefinitionNode(name, params, ret, items);
     }
 
-    java.util.List<Object> items = new java.util.ArrayList<>();
-    for (gen.myParser.MethodBodyContext bctx : ctx.methodBody()) {
-        Object node = visit(bctx);
-        if (node != null) items.add(node);
-    }
-
-    return new AST.Nodes.MethodDefinitionNode(name, params, ret, items);
-}
 
 
 
@@ -938,11 +960,209 @@ ColorValue colorValue = null;
 //        return value ;
 //    }
 //
+// value  -> #valuedata
+@Override
+public AST.Nodes.MethodBody visitValuedata(gen.myParser.ValuedataContext ctx) {
+    Object r = visit(ctx.value());
+    AST.Nodes.Expr e = asExpr(r);
+    return new AST.Nodes.ValueStatement(e);
+}
+// Expr asExpr
+private Expr asExpr(Object o) {
+    if (o == null) return null;
+    if (o instanceof Expr) return (Expr) o;
+    if (o instanceof Node) return ((Node) o).asExpr();
+    throw new IllegalStateException("Cannot convert to Expr: " + o.getClass());
+}
+
+
+
+
+    // calcualtecolor -> #calcolor
+   // @Override
+   // public Object visitCalcolor(myParser.CalcolorContext ctx) {
+       // return new CalculateColorNode(
+                //(ColorValue) visit(ctx.contenetcolorcal())
+      //  );
+   // }//
+    //objectdefintion
+    // #object
+    @Override
+    public Object visitObject(myParser.ObjectContext ctx) {
+        // لا ترجع null
+        return visit(ctx.objectdefinetion());
+    }
+
+    // objectdefinetion
+    @Override
+    public Object visitObjectdefinetion(myParser.ObjectdefinetionContext ctx) {
+        List<TerminalNode> ids = ctx.ID();
+        String name = ids.get(0).getText();    //
+        String explicitType = null;
+        boolean arrayTyped  = false;
+        String arrayType    = null;
+
+        if (ctx.COLON() != null) {
+            explicitType = ids.size() > 1 ? ids.get(1).getText() : null;
+        } else if (ctx.LBRACK() != null) {
+            arrayTyped = true;
+            arrayType  = ids.size() > 1 ? ids.get(1).getText() : null;
+        }
+
+        List<String> entries = new ArrayList<>();
+        for (myParser.ContenttContext cctx : ctx.contentt()) {
+            entries.add(cctx.getText());
+        }
+
+        return new AST.Nodes.ObjectDefinitionStmt(name, explicitType, arrayTyped, arrayType, entries);
+    }
+
+
+//varstatment
+//@Override
+//public Object visitVarsta(myParser.VarContext ctx) {
+   // String name  = ctx.ID().getText();
+   // Value value  = (Value) visit(ctx.value());
+   // return new VarAssignStatement(name, value); // ترجع كـ Object
+//}
+
+
+
+//returnstat
+@Override
+public Object visitReturnExpr(gen.myParser.ReturnExprContext ctx) {
+    boolean hasReturn = ctx.RETURN() != null;
+
+    java.util.List<AST.Nodes.Expr> exprs = new java.util.ArrayList<>();
+    for (gen.myParser.ExpressionContext ectx : ctx.expression()) {
+        AST.Nodes.Expr e = (AST.Nodes.Expr) visit(ectx);
+        if (e != null) exprs.add(e);
+    }
+
+    return new AST.Nodes.ReturnStatement(hasReturn, exprs);
+}
+
+//ifstatment
+@Override
+public Object visitIfstatement(myParser.IfstatementContext ctx) {
+    ConditionNode cond = (ConditionNode) visit(ctx.condition());
+
+    List<MethodBody> body = new ArrayList<>();
+    for (ParseTree ch : ctx.children) {
+        if (ch instanceof myParser.MethodBodyContext) {
+            body.add((MethodBody) visit(ch));
+        } else if (ch instanceof myParser.ValueContext) {
+            Value v = (Value) visit(ch);
+            body.add(new ValueStatement(v));
+        }
+    }
+
+    return new IfStatementNode(cond, body);
+}
+//idcond
+@Override
+public Object visitIdcond(gen.myParser.IdcondContext ctx) {
+    String left  = ctx.ID(0).getText();
+    String op    = ctx.operation().getText();
+    String sign  = ctx.PLUS()!=null ? "+" : (ctx.MINUS()!=null ? "-" : "");
+    String right = ctx.ID(1).getText();
+    return new AST.Nodes.IdCondNode(left, op, sign, right);
+}
+
+    @Override
+    public Object visitOperationcond(gen.myParser.OperationcondContext ctx) {
+        String first = ctx.ID(0).getText();
+        java.util.List<String> ops = new java.util.ArrayList<>();
+        java.util.List<String> ids = new java.util.ArrayList<>();
+        for (int i = 1; i < ctx.ID().size(); i++) {
+            ops.add(ctx.operation(i-1).getText());
+            ids.add(ctx.ID(i).getText());
+        }
+        return new AST.Nodes.OperationCondNode(first, ops, ids);
+    }
+
+
+//valueex
+@Override
+public Object visitValueex(gen.myParser.ValueexContext ctx) {
+    String constName = null;
+
+    if (ctx.CONST() != null && ctx.ID() != null) {
+        constName = ctx.ID().getText();
+    }
+
+    Value v = (Value) visit(ctx.value());
+
+    return new ValueExpr(constName, v);
+
+    // return new ValueExpr(v);
+}
+//ThisProp
+//visitSpreadExpressionList
+@Override
+public Object visitSpreadExpressionList(gen.myParser.SpreadExpressionListContext ctx) {
+    java.util.List<AST.Nodes.SpreadItem> items = new java.util.ArrayList<>();
+    boolean nextIsSpread = false;
+
+    if (ctx.children != null) {
+        for (org.antlr.v4.runtime.tree.ParseTree ch : ctx.children) {
+            if (ch instanceof org.antlr.v4.runtime.tree.TerminalNode) {
+                String t = ch.getText();
+                if ("...".equals(t)) {
+                    nextIsSpread = true;
+                }
+            } else if (ch instanceof gen.myParser.ExpressionContext) {
+                AST.Nodes.Expr expr = (AST.Nodes.Expr) visit(ch);
+                items.add(new AST.Nodes.SpreadItem(nextIsSpread, expr));
+                nextIsSpread = false;
+            }
+        }
+    }
+    return items;
+}
+//visitSparedExpr
+@Override
+public Object visitSparedExpr(gen.myParser.SparedExprContext ctx) {
+    java.util.List<AST.Nodes.SpreadItem> items = new java.util.ArrayList<>();
+    if (ctx.spreadExpressionList() != null) {
+        @SuppressWarnings("unchecked")
+        java.util.List<AST.Nodes.SpreadItem> got =
+                (java.util.List<AST.Nodes.SpreadItem>) visit(ctx.spreadExpressionList());
+        items.addAll(got);
+    }
+    return new AST.Nodes.ArrayLiteralExpr(items); // لازم تكون عندك
+}
+
+//visitSpreadExpressionList
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //SimpleArrow
+    @Override
+    public Object visitSimpleArrow(gen.myParser.SimpleArrowContext ctx) {
+        String param = ctx.ID().getText();
+        Expr body = (Expr) visit(ctx.expression());
+        return new ArrowExpr(param, body);
+    }
+
+
 
     @Override
     public Object visitPropertyDefinitiondata(myParser.PropertyDefinitiondataContext ctx) {
-       return visit(ctx.propertyDefinition());
+        PropertyDefinitionNode prop = (PropertyDefinitionNode) visit(ctx.propertyDefinition());
+        return new PropertyDefinitionStatement(prop);
     }
+
     @Override
     public Object visitValue1(myParser.Value1Context ctx) {
         String name = ctx.ID(0).toString();
@@ -1059,6 +1279,27 @@ ColorValue colorValue = null;
     public Object visitInjectable(myParser.InjectableContext ctx) {
         return visitInjectableDefinition(ctx.injectableDefinition());
     }
+    // VALUE
+    private Value asValue(Object o) {
+        if (o == null) return null;
+
+        if (o instanceof Value) return (Value) o;
+
+        if (o instanceof TerminalNode) {
+            String txt = ((TerminalNode) o).getText();
+            return new IdValue(java.util.Collections.singletonList(txt));
+        }
+
+        if (o instanceof Node) {
+            Expr e = ((Node) o).asExpr();
+            if (e instanceof ValueExpr) {
+                return ((ValueExpr) e).getValue();
+            }
+        }
+
+        throw new IllegalStateException("Cannot convert to Value: " + o.getClass());
+    }
+
 }
 
 

@@ -16,5 +16,5 @@ public class ArrayDefinitionStatement extends nodebodyclass {
         return "ArrayDefinitionStatement{" +
                 "arrayDefinition=" + arrayDefinition +
                 '}';
-    }
+    } 
 }

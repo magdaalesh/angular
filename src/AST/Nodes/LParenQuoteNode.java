@@ -1,5 +1,6 @@
 package AST.Nodes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LParenQuoteNode extends Node {
@@ -33,4 +34,21 @@ public class LParenQuoteNode extends Node {
                 ", extraIds=" + extraIds +
                 '}';
     }
+
+    @Override
+    public Expr asExpr() {
+        List<Expr> args = new ArrayList<>();
+
+        for (String id : pathIds) {
+            args.add(new ValueExpr(null, new IdValue(List.of(id))));
+        }
+
+        for (String id : extraIds) {
+            args.add(new ValueExpr(null, new IdValue(List.of(id))));
+        }
+
+        return new CallExprNode(functionName, args);
+    }
 }
+
+

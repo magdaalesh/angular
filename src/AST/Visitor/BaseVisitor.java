@@ -659,8 +659,11 @@ String filename ;
     @Override
     public Object visitVar(myParser.VarContext ctx) {
         String name  = ctx.ID().getText();
-        Value value  = (Value) visit(ctx.value());
-        return new VarAssignStatement(name, value);
+        Object raw = visit(ctx.value());
+        Value value = asValue(raw);
+
+        VarAssignStatement varAssignStatement = new VarAssignStatement(name, value);
+        return varAssignStatement;
     }
 
 

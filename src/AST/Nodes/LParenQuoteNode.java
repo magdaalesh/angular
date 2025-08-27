@@ -3,7 +3,7 @@ package AST.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LParenQuoteNode extends Node {
+public class LParenQuoteNode extends Value {
     private String functionName;
     private List<String> pathIds;
     private List<String> extraIds;

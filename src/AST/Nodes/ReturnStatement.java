@@ -18,4 +18,31 @@ public final class ReturnStatement extends MethodBody {
     @Override public String toString() {
         return (hasReturn ? "return " : "") + expressions;
     }
+
+    @Override
+    public String codegeneratee() {
+        if (!hasReturn || expressions.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < expressions.size(); i++) {
+            Expr expr = expressions.get(i);
+
+
+                sb.append(" ").append(expr.codegenerate());
+
+
+            if (i < expressions.size() - 1) {
+                sb.append(", ");
+            }
+        }
+
+        return sb.toString();
+    }
+
+
+
+
 }

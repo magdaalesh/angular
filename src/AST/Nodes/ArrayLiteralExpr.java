@@ -18,10 +18,22 @@ public final class ArrayLiteralExpr extends Expr {
                 .collect(Collectors.joining(", ")) + "]";
     }
 
-    /**
-     * @return
-     */
-    public String codegenerate() {
-        return "";
+    @Override
+    public String codegenerae() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" ");
+
+        for (int i = 0; i < items.size(); i++) {
+            SpreadItem item = items.get(i);
+            sb.append(item.codegenerate());
+
+            if (i < items.size() - 1) {
+                sb.append(", ");
+            }
+        }
+
+        sb.append(" ");
+        return sb.toString();
     }
+
 }

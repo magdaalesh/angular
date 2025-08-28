@@ -24,4 +24,12 @@ public class AssignmentStatement extends StatementNode {
                 ", value=" + value +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

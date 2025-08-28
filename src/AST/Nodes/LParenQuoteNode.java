@@ -50,13 +50,26 @@ public class LParenQuoteNode extends Value {
         return new CallExprNode(functionName, args);
     }
 
-    /**
-     * @return
-     */
     @Override
-    public String codegenerate() {
-        return "";
+    public String codegeneratre() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(functionName).append("(");
+
+        List<String> allIds = new ArrayList<>();
+        if (pathIds != null) allIds.addAll(pathIds);
+        if (extraIds != null) allIds.addAll(extraIds);
+
+        for (int i = 0; i < allIds.size(); i++) {
+            String id = allIds.get(i);
+
+            sb.append("\"").append(id).append("\"");
+            if (i < allIds.size() - 1) sb.append(", ");
+        }
+
+        sb.append(")");
+        return sb.toString();
     }
+
 }
 
 

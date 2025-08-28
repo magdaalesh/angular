@@ -20,4 +20,12 @@ public class ConstructorNode extends ClassBodyEntry  {
                 ", body=" + body +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

@@ -1,14 +1,13 @@
 package AST.Nodes;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CallFunNode extends Node {
     private String functionName;
-    private Map<String, String> arguments;
+    private List<String> arguments;
 
-    public CallFunNode(String functionName, Map<String, String> arguments) {
+    public CallFunNode(String functionName, List<String> arguments) {
         this.functionName = functionName;
         this.arguments = arguments;
     }
@@ -17,7 +16,7 @@ public class CallFunNode extends Node {
         return functionName;
     }
 
-    public Map<String, String> getArguments() {
+    public List<String> getArguments() {
         return arguments;
     }
 
@@ -33,19 +32,25 @@ public class CallFunNode extends Node {
     public Expr asExpr() {
         List<Expr> args = new ArrayList<>();
 
-        for (Map.Entry<String, String> entry : arguments.entrySet()) {
-            args.add(new ValueExpr(null, new IdValue(List.of(entry.getKey()))));
-            args.add(new ValueExpr(null, new IdValue(List.of(entry.getValue()))));
+        for (String arg : arguments) {
+
+            args.add(new ValueExpr(null, new IdValue(List.of(arg))));
         }
 
         return new CallExprNode(functionName, args);
     }
 
-    /**
-     * @return
-     */
+
     @Override
     public String codegenerate() {
-        return "";
+        StringBuilder sb = new StringBuilder();
+        sb.append(functionName).append("(");
+
+        if (arguments != null && !arguments.isEmpty()) {
+            sb.append(String.join(", ", arguments));
+        }
+
+        sb.append(")");
+        return sb.toString();
     }
 }

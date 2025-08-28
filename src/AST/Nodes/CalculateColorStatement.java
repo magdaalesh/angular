@@ -59,4 +59,12 @@ public class CalculateColorStatement extends StatementNode {
                 ", arrayAccessKey='" + arrayAccessKey + '\'' +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

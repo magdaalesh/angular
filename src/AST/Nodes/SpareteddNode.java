@@ -17,4 +17,10 @@ public class SpareteddNode extends ContenttNode {
                 "expression='" + expression + '\'' +
                 '}';
     }
+
+    @Override
+    public String codegenerate() {
+        return "..." + expression;
+    }
+
 }

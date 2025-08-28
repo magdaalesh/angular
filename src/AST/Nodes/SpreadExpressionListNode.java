@@ -3,7 +3,7 @@ package AST.Nodes;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public final class SpreadExpressionListNode {
+public final class SpreadExpressionListNode extends Expr {
     private final List<SpreadItem> items;
 
     public SpreadExpressionListNode(List<SpreadItem> items) {
@@ -16,4 +16,13 @@ public final class SpreadExpressionListNode {
     public String toString() {
         return items.stream().map(Object::toString).collect(Collectors.joining(", "));
     }
+
+    @Override
+    public String codegenerae() {
+
+        return items.stream()
+                .map(SpreadItem::codegenerate)
+                .collect(Collectors.joining(", "));
+    }
+
 }

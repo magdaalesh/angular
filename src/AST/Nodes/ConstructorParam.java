@@ -23,4 +23,12 @@ public class ConstructorParam extends Node {
                 ", type='" + type + '\'' +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

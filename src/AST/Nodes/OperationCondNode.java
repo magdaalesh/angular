@@ -25,11 +25,18 @@ public final class OperationCondNode extends ConditionNode {
         return sb.toString();
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+        StringBuilder sb = new StringBuilder(firstId);
+
+        for (int i = 0; i < ops.size() && i < ids.size(); i++) {
+            sb.append(' ')
+                    .append(ops.get(i))
+                    .append(' ')
+                    .append(ids.get(i));
+        }
+
+        return sb.toString();
     }
+
 }

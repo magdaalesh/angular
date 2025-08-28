@@ -26,11 +26,24 @@ public class CallExprNode extends Expr {
                 ", arguments=" + arguments +
                 '}';
     }
+    @Override
+    public String codegenerae() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(functionName).append("(");
 
-    /**
-     * @return
-     */
-    public String codegenerate() {
-        return "";
+        if (arguments != null && !arguments.isEmpty()) {
+            for (int i = 0; i < arguments.size(); i++) {
+                Expr arg = arguments.get(i);
+                // استدعاء تابع codegenerate لكل argument
+                sb.append(arg.codegenerate());
+                if (i < arguments.size() - 1) {
+                    sb.append(", ");
+                }
+            }
+        }
+
+        sb.append(")");
+        return sb.toString();
     }
+
 }

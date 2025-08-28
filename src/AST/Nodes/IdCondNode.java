@@ -22,11 +22,10 @@ public final class IdCondNode extends ConditionNode {
         return left + " " + op + " " + (sign == null ? "" : sign) + right;
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+
+        return left + " " + op + " " + (sign == null ? "" : sign) + right;
     }
+
 }

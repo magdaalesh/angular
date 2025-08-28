@@ -2,18 +2,18 @@ package AST.Nodes;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-public class MethodDefinitionNode extends ClassBodyEntry
-{
+public class MethodDefinitionNode extends ClassBodyEntry {
     private final String methodName;
     private final List<ParameterNode> parameters;
     private final TypeAnnotationNode returnType; //
-    private final List<Object> bodyItems;        //
+    private final List<MethodBody> bodyItems;        //
 
     public MethodDefinitionNode(String methodName,
                                 List<ParameterNode> parameters,
                                 TypeAnnotationNode returnType,
-                                List<Object> bodyItems) {
+                                List<MethodBody> bodyItems) {
         this.methodName = methodName;
         this.parameters = parameters;
         this.returnType = returnType;
@@ -23,43 +23,47 @@ public class MethodDefinitionNode extends ClassBodyEntry
     public String getMethodName() { return methodName; }
     public List<ParameterNode> getParameters() { return parameters; }
     public TypeAnnotationNode getReturnType() { return returnType; }
-    public List<Object> getBodyItems() { return bodyItems; }
+    public List<MethodBody> getBodyItems() { return bodyItems; }
+
+    @Override
+    public String codegenerate() {
+
+        String paramsStr = (parameters == null || parameters.isEmpty())
+                ? ""
+                : parameters.stream()
+                .map(ParameterNode::codegenerate)
+                .collect(Collectors.joining(", "));
+
+        StringBuilder sb = new StringBuilder();
+
+        for (MethodBody item : bodyItems) {
+            System.out.println("dvfdg"+item.codegeneratee());
+
+            boolean b = item instanceof ReturnStatement;
+            if (!b) {
+                sb.append("    ").append(item.codegenerate()).append(";\n");
+
+            } else{
+                sb.append("    return ").append( item.codegenerate()).append(";\n");
+
+            }
+        }
+
+
+        return methodName + "(" + paramsStr + ") {\n" +
+                "  " + sb + "\n" +
+                "}";
+    }
 
     @Override
     public String toString() {
-        String paramsStr = (parameters == null || parameters.isEmpty())
-                ? "[]"
-                : "[" + parameters.stream()
-                .map(p -> p == null ? "?" : p.toString())
-                .collect(java.util.stream.Collectors.joining(", ")) + "]";
-
-        String bodyStr = (bodyItems == null || bodyItems.isEmpty())
-                ? "[]"
-                : "[" + bodyItems.stream()
-                .map(x -> x == null ? "null" : x.toString())
-                .collect(java.util.stream.Collectors.joining("; ")) + "]";
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("MethodDefinition{ name=").append(methodName);
-
-        if (returnType != null) {
-            sb.append(", type=").append(returnType.toString());
-        }
-
-        sb.append(", body=").append(bodyStr);
-        sb.append(", params=").append(paramsStr);
-        sb.append(" }");
-        return sb.toString();
+        return "MethodDefinitionNode{" +
+                "methodName='" + methodName + '\'' +
+                ", parameters=" + parameters +
+                ", returnType=" + returnType +
+                ", bodyItems=" + bodyItems +
+                '}';
     }
-
-    /**
-     * @return
-     */
-    @Override
-    public String codegenerate() {
-        return "";
-    }
-
 
     @Override public boolean equals(Object o) {
         if (this == o) return true;

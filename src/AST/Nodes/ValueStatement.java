@@ -17,4 +17,12 @@ public final class ValueStatement extends MethodBody {
     public Expr getExpr() { return expr; }
 
     @Override public String toString() { return "ValueStmt(" + expr + ")"; }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegeneratee() {
+        return expr.codegenerate();
+    }
 }

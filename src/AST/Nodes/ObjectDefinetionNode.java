@@ -28,4 +28,10 @@ public class ObjectDefinetionNode extends Node {
                 ", contentList=" + contentList +
                 '}';
     }
+
+    @Override
+    public String codegenerate() {
+        return "";
+    }
+
 }

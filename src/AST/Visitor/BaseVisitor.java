@@ -783,19 +783,21 @@ String filename ;
     }
     @Override
     public Object visitCallfun(myParser.CallfunContext ctx) {
+        // اسم الدالة
         String functionName = ctx.ID(0).getText();
 
-        Map<String, String> arguments = new LinkedHashMap<>();
+        // نحفظ كل المعاملات في قائمة
+        List<String> arguments = new ArrayList<>();
 
-
-        for (int i = 1; i < ctx.ID().size(); i += 2) {
-            String key = ctx.ID(i).getText();
-            String value = ctx.ID(i + 1).getText();
-            arguments.put(key, value);
+        // نفترض أن باقي الـ IDs هي المعاملات
+        for (int i = 1; i < ctx.ID().size(); i++) {
+            arguments.add(ctx.ID(i).getText());
         }
+
 
         return new CallFunNode(functionName, arguments);
     }
+
     @Override
     public Object visitStringvalue(myParser.StringvalueContext ctx) {
         List<String> ids = new ArrayList<>();
@@ -881,13 +883,13 @@ String filename ;
             }
         }
 
-        java.util.List<Object> items = new java.util.ArrayList<>();
+        java.util.List<MethodBody> items = new java.util.ArrayList<>();
         for (gen.myParser.MethodBodyContext bctx : ctx.methodBody()) {
             Object node = visit(bctx);
             if (node instanceof AST.Nodes.Value) {
                 node = new AST.Nodes.ValueStatement((AST.Nodes.Value) node);
             }
-            items.add(node);
+            items.add((MethodBody) node);
         }
 
         return new AST.Nodes.MethodDefinitionNode(name, params, ret, items);

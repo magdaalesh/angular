@@ -16,4 +16,12 @@ public final class VarAssignStatement extends MethodBody {
 
     @Override
     public String toString() { return "VarAssign(" + name + " = " + value + ")"; }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegeneratee() {
+        return "";
+    }
 }

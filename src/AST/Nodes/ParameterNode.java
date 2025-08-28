@@ -29,11 +29,13 @@ public class ParameterNode extends Node {
         return "ParameterNode{name='" + name + "', type='" + type + "'}";
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
+        if (value != null) {
+            return value.codegenerate();
+        } else if (name != null) {
+            return name;}
         return "";
     }
+
 }

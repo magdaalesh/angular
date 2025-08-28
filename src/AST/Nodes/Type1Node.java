@@ -24,4 +24,10 @@ public class Type1Node extends ContenttNode {
                 ", right='" + right + '\'' +
                 '}';
     }
+
+    @Override
+    public String codegenerate() {
+        return left + ": " + right;
+    }
+
 }

@@ -3,7 +3,7 @@ package AST.Nodes;
 import java.util.Objects;
 
 public final class ValueExpr extends Expr {
-    private final String constName; // ممكن يكون null
+    private final String constName;
     private final Value  value;
 
     public ValueExpr(String constName, Value value) {
@@ -19,7 +19,14 @@ public final class ValueExpr extends Expr {
     }
 
 
-    public String codegenerate() {
-        return "";
+    @Override
+    public String codegenerae() {
+
+        if (constName != null && !constName.isEmpty()) {
+            return "const " + constName + " = " + value.codegenerate();
+        }
+
+        return value.codegenerate();
     }
+
 }

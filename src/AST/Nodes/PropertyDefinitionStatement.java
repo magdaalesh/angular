@@ -19,7 +19,7 @@ public final class PropertyDefinitionStatement extends MethodBody {
                 "property=" + property +
                 '}';
     }
-   public String codegenerate(){
+   public String codegeneratee(){
         return  property.codegenerate();
     }
 }

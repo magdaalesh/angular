@@ -19,11 +19,11 @@ public final class ArrowExpr extends Expr {
         return param + " => " + body;
     }
 
-    /**
-     * @return
-     */
 
-    public String codegenerate() {
-        return "";
+    @Override
+    public String codegenerae() {
+
+        return param + " => " + body.codegenerae();
     }
+
 }

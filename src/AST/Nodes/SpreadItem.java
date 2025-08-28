@@ -17,4 +17,13 @@ public final class SpreadItem {
     @Override public String toString() {
         return (spread ? "..." : "") + expr;
     }
+
+    public String codegenerate() {
+
+        if (expr == null) return "";
+
+
+        return " ["+(spread ? "..." : "") + expr.codegenerate() +"]" ;
+    }
+
 }

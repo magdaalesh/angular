@@ -33,4 +33,27 @@ public final class ObjectDefinitionStmt extends MethodBody {
                 : (arrayTyped ? ("[" + arrayType + "]") : "");
         return "ObjectDef " + name + t + " { " + String.join(", ", entries) + " }";
     }
+
+    @Override
+    public String codegeneratee() {
+        StringBuilder sb = new StringBuilder();
+
+        if (arrayTyped) {
+            sb.append(name).append(" = [");
+            sb.append(String.join(" ", entries));
+            sb.append("]");
+        } else {
+           sb.append(name).append(" = {");
+            for (int i = 0; i < entries.size(); i++) {
+                String entry = entries.get(i);
+                sb.append(entry);
+                if (i < entries.size() - 1) sb.append(" ");
+            }
+            sb.append("}");
+        }
+
+        return sb.toString();
+    }
+
+
 }

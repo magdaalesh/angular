@@ -16,5 +16,11 @@ public class ArrayDefinitionStatement extends nodebodyclass {
         return "ArrayDefinitionStatement{" +
                 "arrayDefinition=" + arrayDefinition +
                 '}';
-    } 
+    }
+
+
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

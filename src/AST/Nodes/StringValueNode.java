@@ -21,7 +21,7 @@ public class StringValueNode extends Value {
     }
 
     @Override
-    public String codegenerate() {
+    public String codegeneratre() {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < parts.size(); i++) {

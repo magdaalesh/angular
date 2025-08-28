@@ -55,11 +55,15 @@ public class EqualsExprNode extends Value {
                 '}';
     }
 
-    /**
-     * @return
-     */
     @Override
-    public String codegenerate() {
+    public String codegeneratre() {
+
+        if (functionName != null && lambdaVar != null && leftVar != null && rightVar != null) {
+
+            return functionName + "(" + lambdaVar + " => " + leftVar + " " + operation + " " + rightVar + ")";
+        }
+
         return "";
     }
+
 }

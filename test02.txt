@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-product-list',
   standalone: true,
   templateUrl: './product-list.html',
-template: ``,
+
   styleUrls: ['./product-list.css'],
   imports: [CommonModule]
 })

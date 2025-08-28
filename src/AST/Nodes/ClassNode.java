@@ -38,17 +38,40 @@ public class ClassNode extends Node {
                 ", body=" + body +
                 '}';
     }
-
     @Override
     public String codegenerate() {
         StringBuilder sb = new StringBuilder();
 
-        if (body != null) {
+
+        sb.append("class ").append(className);
+
+        if (implementsList != null && !implementsList.isEmpty()) {
+            sb.append(" /* implements ");
+            for (int i = 0; i < implementsList.size(); i++) {
+                sb.append(implementsList.get(i));
+                if (i < implementsList.size() - 1) sb.append(", ");
+            }
+            sb.append(" */");
+        }
+
+        sb.append(" {\n");
+
+                if (body != null) {
             for (ClassBodyEntry entry : body) {
-                sb.append(entry.codegenerate()).append("\n");
+                String entryCode = entry.codegenerate();
+                if (entryCode != null ) {
+
+                    String[] lines = entryCode.split("\n");
+                    for (String line : lines) {
+                        sb.append("  ").append(line).append("\n");
+                    }
+                }
             }
         }
 
+        sb.append("}");
+
         return sb.toString();
     }
+
 }

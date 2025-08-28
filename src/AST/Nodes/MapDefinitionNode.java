@@ -32,11 +32,42 @@ public class MapDefinitionNode extends PropertyDefinitionNode {
                 '}';
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("const ").append(name).append(" = {");
+
+        if (mapEntries != null && !mapEntries.isEmpty()) {
+            sb.append("\n");
+            int i = 0;
+            for (Map.Entry<String, Value> entry : mapEntries.entrySet()) {
+                String key = entry.getKey();
+                Value value = entry.getValue();
+
+                sb.append("  ").append(key).append(": ");
+
+                if (value != null) {
+                    Object valObj = value.codegenerate();
+                    if (valObj instanceof String) {
+                        sb.append("\"").append(valObj).append("\"");
+                    } else {
+                        sb.append(valObj);
+                    }
+                } else {
+                    sb.append("null");
+                }
+
+                if (i < mapEntries.size() - 1) {
+                    sb.append(",");
+                }
+                sb.append("\n");
+                i++;
+            }
+        }
+
+        sb.append("};");
+        return sb.toString();
     }
+
 }

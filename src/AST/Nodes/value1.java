@@ -63,11 +63,32 @@ public class value1 extends PropertyDefinitionNode{
                 '}';
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+        StringBuilder sb = new StringBuilder();
+   sb.append(name);
+        if (isOptional) {
+            sb.append("?");
+        }
+
+        if (type != null && !type.isEmpty()) {
+            sb.append(" /* type: ").append(type).append(" */");
+        }
+
+
+        if (defaultValue != null) {
+            Object valObj = defaultValue.codegenerate();
+            sb.append(" = ");
+            if (valObj instanceof String) {
+                sb.append("\"").append(valObj).append("\"");
+            } else {
+                sb.append(valObj);
+            }
+        }
+
+        sb.append(";");
+
+        return sb.toString();
     }
+
 }

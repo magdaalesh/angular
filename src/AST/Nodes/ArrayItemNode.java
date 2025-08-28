@@ -1,48 +1,31 @@
 package AST.Nodes;
 
+import java.util.*;
+
 public class ArrayItemNode {
-    private String key;
-    private Value value;
+    private Map<String, Value> properties;
 
-    public ArrayItemNode(String key, Value value) {
-        this.key = key;
-        this.value = value;
+    public ArrayItemNode(Map<String, Value> properties) {
+        this.properties = properties;
     }
 
-    public ArrayItemNode(Value value) {
-        this.value = value;
-    }
-
-    public String getKey() { return key; }
-    public Value getValue() { return value; }
-
-    @Override
-    public String toString() {
-        if (key != null) {
-            return key + ":" + value;
-        } else {
-            return value.toString();
-        }
-    }
     public String codegenerate() {
+        if (properties == null || properties.isEmpty()) return "{}";
+
         StringBuilder sb = new StringBuilder();
+        sb.append("{ ");
+        int i = 0;
+        for (Map.Entry<String, Value> entry : properties.entrySet()) {
+            sb.append(entry.getKey()).append(": ");
 
-        if (key != null && !key.isEmpty()) {
-            sb.append("\"").append(key).append("\": ");
+            Object valObj = entry.getValue().codegenerate();
+            if (valObj instanceof String) sb.append("\"").append(valObj).append("\"");
+            else sb.append(valObj);
+
+            if (i < properties.size() - 1) sb.append(", ");
+            i++;
         }
-
-        if (value != null) {
-            Object valObj = value.codegenerate();
-            if (valObj instanceof String) {
-                sb.append("\"").append(valObj).append("\"");
-            } else {
-                sb.append(valObj);
-            }
-        } else {
-            sb.append("null");
-        }
-
+        sb.append(" }");
         return sb.toString();
     }
-
 }

@@ -839,20 +839,51 @@ String filename ;
     public Object visitIncludearray(myParser.IncludearrayContext ctx) {
         List<ArrayItemNode> items = new ArrayList<>();
 
-        items.add(new ArrayItemNode(ctx.ID(0).getText(), (Value) visit(ctx.value(0))));
-        for (int i = 1; i < ctx.ID().size(); i++) {
-            items.add(new ArrayItemNode(ctx.ID(i).getText(), (Value) visit(ctx.value(i))));
+        // نفترض أن كل مجموعة ID-value تشكّل عنصر كامل في المصفوفة
+        int numElements = ctx.ID().size(); // عدد الخصائص
+        Map<String, Value> elementProps = new LinkedHashMap<>();
+
+        for (int i = 0; i < numElements; i++) {
+            String key = ctx.ID(i).getText();
+            Value val = (Value) visit(ctx.value(i));
+            elementProps.put(key, val);
+
+            // هنا ممكن نحدد متى ننشئ عنصر جديد حسب السياق (مثلاً بعد كل 4 خصائص)
+            if ((i + 1) % 4 == 0) { // افتراض: كل 4 خصائص تشكّل عنصر واحد
+                items.add(new ArrayItemNode(new LinkedHashMap<>(elementProps)));
+                elementProps.clear();
+            }
         }
+
         return items;
     }
+
     @Override
     public Object visitValdata(myParser.ValdataContext ctx) {
         List<ArrayItemNode> items = new ArrayList<>();
+        Map<String, Value> elementProps = new LinkedHashMap<>();
+
         for (int i = 0; i < ctx.value().size(); i++) {
-            items.add(new ArrayItemNode((Value) visit(ctx.value(i))));
+            // افترض أن ctx.ID() متوفرة هنا أو طريقة للحصول على مفتاح القيمة
+            String key = "key" + i; // مؤقت، ضع الطريقة الصحيحة للحصول على اسم المفتاح
+            Value val = (Value) visit(ctx.value(i));
+            elementProps.put(key, val);
+
+            // هنا يمكن تحديد متى ننشئ عنصر جديد، مثلاً بعد عدد معين من الخصائص
+            if ((i + 1) % 4 == 0) { // افتراض: كل 4 خصائص تشكّل عنصر واحد
+                items.add(new ArrayItemNode(new LinkedHashMap<>(elementProps)));
+                elementProps.clear();
+            }
         }
+
+        // إذا تبقى خصائص لم تُضاف بعد، نضيفها كعنصر آخر
+        if (!elementProps.isEmpty()) {
+            items.add(new ArrayItemNode(elementProps));
+        }
+
         return items;
     }
+
     @Override
     public Object visitArrayDefinitiondata(myParser.ArrayDefinitiondataContext ctx) {
         return visitArrayDefinition(ctx.arrayDefinition());

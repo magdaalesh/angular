@@ -38,11 +38,17 @@ public class BooleanValueNode extends PropertyDefinitionNode {
                 '}';
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+        StringBuilder sb = new StringBuilder();
+
+        if (name != null && !name.isEmpty()) {
+            sb.append(name).append(": ");
+        }
+
+        sb.append(value);
+
+        return sb.toString();
     }
+
 }

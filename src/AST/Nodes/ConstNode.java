@@ -51,12 +51,28 @@ public class ConstNode extends PropertyDefinitionNode {
                 ", parameters=" + parameters +
                 '}';
     }
-
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+        StringBuilder sb = new StringBuilder();
+        sb.append("const ").append(name);
+        if (parameters != null && !parameters.isEmpty()) {
+            sb.append(" = (");
+            for (int i = 0; i < parameters.size(); i++) {
+                sb.append(parameters.get(i).codegenerate());
+                if (i < parameters.size() - 1) {
+                    sb.append(", ");
+                }
+            }
+            sb.append(") => ");
+            sb.append(typeOrValue);
+        } else {
+            if (typeOrValue != null) {
+                sb.append(" = ").append(typeOrValue);
+            }
+        }
+
+        sb.append(";");
+        return sb.toString();
     }
+
 }

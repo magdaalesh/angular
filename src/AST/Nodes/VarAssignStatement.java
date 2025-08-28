@@ -17,11 +17,15 @@ public final class VarAssignStatement extends MethodBody {
     @Override
     public String toString() { return "VarAssign(" + name + " = " + value + ")"; }
 
-    /**
-     * @return
-     */
     @Override
     public String codegeneratee() {
-        return "";
+        StringBuilder sb = new StringBuilder();
+        sb
+                .append(name)
+                .append(" = ")
+                .append(value.codegenerate())
+                .append(" ");
+        return sb.toString();
     }
+
 }

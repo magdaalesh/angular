@@ -23,9 +23,7 @@ public class value2 extends PropertyDefinitionNode{
     public String codegenerate() {
         StringBuilder sb = new StringBuilder();
 
-        if ("private".equalsIgnoreCase(modifier)) {
-            sb.append("#");
-        }
+
 
         sb.append(name).append(" = ");
 

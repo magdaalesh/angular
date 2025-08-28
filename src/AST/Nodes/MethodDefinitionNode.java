@@ -37,14 +37,14 @@ public class MethodDefinitionNode extends ClassBodyEntry {
         StringBuilder sb = new StringBuilder();
 
         for (MethodBody item : bodyItems) {
-            System.out.println("dvfdg"+item.codegeneratee());
+
 
             boolean b = item instanceof ReturnStatement;
             if (!b) {
                 sb.append("    ").append(item.codegenerate()).append(";\n");
 
             } else{
-                sb.append("    return ").append( item.codegenerate()).append(";\n");
+                sb.append(" ").append( item.codegenerate()).append(";\n");
 
             }
         }

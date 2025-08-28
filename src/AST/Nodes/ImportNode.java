@@ -44,4 +44,12 @@ public class ImportNode extends Node {
                 ", importPath='" + importPath + '\'' +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

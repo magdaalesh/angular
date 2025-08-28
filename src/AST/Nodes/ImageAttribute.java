@@ -30,6 +30,12 @@ public class ImageAttribute extends HtmlAttribute {
     }
 
     @Override
+    public String code() {
+        String value = String.join("/", getvalue());
+        return name + "=\"" + value + "\"";
+    }
+
+    @Override
     public String toString() {
         return "ImgAttributeNode{" +
                 "name='" + name + '\'' +

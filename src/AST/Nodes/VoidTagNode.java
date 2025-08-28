@@ -28,4 +28,26 @@ public class VoidTagNode extends HtmlNode {
                 '}';
     }
 
+    @Override
+    public String code() {
+        StringBuilder sb = new StringBuilder();
+
+
+        sb.append("<").append(name);
+
+
+        for (ArtSelfTagAttribute attr : attributes) {
+            String attrCode = attr.code();
+            if (!attrCode.isEmpty()) {
+                sb.append(" ").append(attrCode);
+            }
+        }
+
+
+        sb.append(" />\n");
+
+        return sb.toString();
+    }
+
+
 }

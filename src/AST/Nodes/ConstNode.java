@@ -51,4 +51,12 @@ public class ConstNode extends PropertyDefinitionNode {
                 ", parameters=" + parameters +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

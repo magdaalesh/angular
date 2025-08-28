@@ -36,5 +36,13 @@ public class injectableDefination  extends Node{
                     '}';
         }
 
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
+
 
 }

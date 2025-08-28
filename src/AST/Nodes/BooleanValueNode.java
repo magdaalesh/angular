@@ -37,4 +37,12 @@ public class BooleanValueNode extends PropertyDefinitionNode {
                 ", value=" + value +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

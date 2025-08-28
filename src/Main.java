@@ -1,5 +1,6 @@
 import AST.Nodes.ProgramNode;
 import AST.Visitor.BaseVisitor;
+import codegenerate.codegenerate;
 import gen.lexicalanalysis;
 import gen.myParser;
 import org.antlr.v4.runtime.CharStream;
@@ -16,6 +17,7 @@ import static org.antlr.v4.runtime.CharStreams.fromFileName;
 public class Main {
     public static void main(String[] args) throws IOException {
         Componentuniqselector componentuniqselector = new  Componentuniqselector();
+        codegenerate generator = new codegenerate();
         String source = "test01.txt";
         String source2 ="test02.txt";
         String source3 ="test03.txt";
@@ -42,7 +44,9 @@ public class Main {
         ProgramNode doc = (ProgramNode) new BaseVisitor(handle.getSymboles() , programm.get(i) , componentuniqselector ).visit(tree);
         System.out.println("Start AST tree");
         System.out.println(doc);
-        System.out.println("END");}
+        System.out.println("END");
+            generator.writercodegenerate(programm.get(i), doc);
+        }
         handle.generateErrorFile();
         handle.printSymboletable();
 //        onlyonecomponentsymboltyble componentSymbolTable= new onlyonecomponentsymboltyble();

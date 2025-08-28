@@ -40,4 +40,12 @@ public class CallFunNode extends Node {
 
         return new CallExprNode(functionName, args);
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

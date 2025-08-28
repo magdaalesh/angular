@@ -28,4 +28,12 @@ public class ParameterNode extends Node {
         }
         return "ParameterNode{name='" + name + "', type='" + type + "'}";
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

@@ -54,4 +54,12 @@ public class EqualsExprNode extends Value {
                 ", rightVar='" + rightVar + '\'' +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

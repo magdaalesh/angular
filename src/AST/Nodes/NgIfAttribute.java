@@ -12,6 +12,14 @@ public class NgIfAttribute extends CssAttribute  {
         return condition;
     }
 
+    /**
+     * @return
+     */
+    @Override
+    public String code() {
+        return "";
+    }
+
     @Override
     public String toString() {
         return "NgIfAttribute{condition='" + condition + "'}";

@@ -19,4 +19,10 @@ public class IdValue extends Value {
                 "identifiers=" + identifiers +
                 '}';
     }
+
+
+    @Override
+    public String codegenerate() {
+        return String.join(".", identifiers);
+    }
 }

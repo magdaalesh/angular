@@ -31,4 +31,12 @@ public class NgForAttribute extends CssAttribute  {
     public String getvalue() {
         return"let " + getVariable()+ " of "+getCollection()  ;
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String code() {
+        return "";
+    }
 }

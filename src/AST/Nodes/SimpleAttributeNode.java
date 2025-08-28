@@ -28,6 +28,11 @@ public class SimpleAttributeNode extends HtmlAttribute {
     }
 
     @Override
+    public String code() {
+        return name + "=\"" + value + "\"";
+    }
+
+    @Override
     public String toString() {
         return "SimpleAttributeNode{" +
                 "name='" + name + '\'' +

@@ -17,4 +17,12 @@ public class BooleanValue extends Value {
                 "value=" + value +
                 '}';
     }
+
+
+
+
+    @Override
+    public String codegenerate() {
+        return Boolean.toString(value);
+    }
 }

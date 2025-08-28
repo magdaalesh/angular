@@ -18,4 +18,26 @@ public class value2 extends PropertyDefinitionNode{
     public String toString() {
         return "PropertyWithModifierNode{name='" + name + "', modifier='" + modifier + "', value=" + value + "}";
     }
+
+    @Override
+    public String codegenerate() {
+        StringBuilder sb = new StringBuilder();
+
+        if ("private".equalsIgnoreCase(modifier)) {
+            sb.append("#");
+        }
+
+        sb.append(name).append(" = ");
+
+        if (value != null) {
+            sb.append(value.codegenerate());
+        } else {
+            sb.append("null");
+        }
+
+        sb.append(";");
+
+        return sb.toString();
+    }
+
 }

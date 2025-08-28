@@ -35,4 +35,15 @@ public class ArtSelfTagAttribute extends CssAttribute {
     public String getvalue() {
         return String.join(" ", ids);
     }
+
+    @Override
+    public String code() {
+        if (ids.isEmpty()) return "";
+        if (name.equals("[(ngModel)]")) {
+            return " id=\"" + String.join(" ", ids) + "\"";
+        } else {
+            return"  " +name + "=\"" + String.join(" ", ids) + "\"";
+        }
+    }
+
 }

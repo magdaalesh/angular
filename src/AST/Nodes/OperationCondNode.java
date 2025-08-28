@@ -24,4 +24,12 @@ public final class OperationCondNode extends ConditionNode {
         }
         return sb.toString();
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

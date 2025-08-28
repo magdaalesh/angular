@@ -38,4 +38,17 @@ public class ClassNode extends Node {
                 ", body=" + body +
                 '}';
     }
+
+    @Override
+    public String codegenerate() {
+        StringBuilder sb = new StringBuilder();
+
+        if (body != null) {
+            for (ClassBodyEntry entry : body) {
+                sb.append(entry.codegenerate()).append("\n");
+            }
+        }
+
+        return sb.toString();
+    }
 }

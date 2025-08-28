@@ -62,4 +62,12 @@ public class value1 extends PropertyDefinitionNode{
                 ", defaultValue=" + defaultValue +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

@@ -38,4 +38,12 @@ public class DefinitionNode extends PropertyDefinitionNode {
                 ", value=" + value +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

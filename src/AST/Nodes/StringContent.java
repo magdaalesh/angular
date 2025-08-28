@@ -15,4 +15,10 @@ public class StringContent extends HtmlNode {
     public String toString() {
         return text;
     }
+
+
+    @Override
+    public String code() {
+        return text;
+    }
 }

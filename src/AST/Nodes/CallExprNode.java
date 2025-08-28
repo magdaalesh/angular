@@ -26,4 +26,11 @@ public class CallExprNode extends Expr {
                 ", arguments=" + arguments +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    public String codegenerate() {
+        return "";
+    }
 }

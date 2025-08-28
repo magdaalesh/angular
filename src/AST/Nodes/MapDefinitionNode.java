@@ -31,4 +31,12 @@ public class MapDefinitionNode extends PropertyDefinitionNode {
                 ", mapEntries=" + mapEntries +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

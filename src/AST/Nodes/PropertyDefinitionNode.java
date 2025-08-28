@@ -4,6 +4,8 @@ public  abstract class PropertyDefinitionNode extends ClassBodyEntry {
 
     public abstract String toString() ;
 
+
+    public abstract String codegenerate() ;
     //    private String name;
 //    private String type;
 //    private Object value;

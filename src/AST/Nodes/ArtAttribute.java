@@ -30,5 +30,12 @@ public class ArtAttribute extends HtmlAttribute {
         return values.toString();
     }
 
+    @Override
+    public String code() {
+
+        String hrefValue = "/" + String.join("/", values).replaceAll("//", "/");
+        return " href=\"" + hrefValue + "\"";
+    }
+
 
 }

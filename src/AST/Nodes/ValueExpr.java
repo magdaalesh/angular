@@ -17,4 +17,9 @@ public final class ValueExpr extends Expr {
     @Override public String toString() {
         return constName != null ? ("const " + constName + " = " + value) : value.toString();
     }
+
+
+    public String codegenerate() {
+        return "";
+    }
 }

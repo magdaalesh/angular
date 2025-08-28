@@ -10,4 +10,11 @@ public final class ThisPropExpr extends Expr {
     public String getName() { return name; }
 
     @Override public String toString() { return name; }
+
+    /**
+     * @return
+     */
+    public String codegenerate() {
+        return "";
+    }
 }

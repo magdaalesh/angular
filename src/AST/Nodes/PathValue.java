@@ -17,4 +17,12 @@ public class PathValue extends Value {
                 "path='" + path + '\'' +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

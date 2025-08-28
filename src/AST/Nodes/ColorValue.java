@@ -17,4 +17,12 @@ public class ColorValue extends Value {
                 "colorCode='" + colorCode + '\'' +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

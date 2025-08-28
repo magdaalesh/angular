@@ -1,5 +1,4 @@
 <h2>Add New Product</h2>
-
 <form (ngSubmit)="addProduct()">
   <input type="text" placeholder="Name" [(ngModel)]="name" name="name" required />
   <br>

@@ -3,24 +3,9 @@ package AST.Visitor;
 import AST.Nodes.*;
 import gen.myParser;
 import gen.myParserBaseVisitor;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import sementicserror.*;
-import AST.Nodes.ConditionNode;
-import org.antlr.v4.runtime.tree.ParseTree;
-import AST.Nodes.Expr;
-import AST.Nodes.Value;
-import AST.Nodes.ValueExpr;
-import AST.Nodes.ValueStatement;
-import AST.Nodes.CallExprNode;
-import AST.Nodes.Expr;
-import AST.Nodes.Node;
-import AST.Nodes.ConstructorNode;
-import AST.Nodes.ConstructorParam;
-import AST.Nodes.Node;
-
-
-
-
 
 import java.util.*;
 
@@ -421,20 +406,22 @@ String filename ;
     public Object visitStyle(myParser.StyleContext ctx) {
         Map<String, String> styles = new HashMap<>();
 
-
         int pairCount = ctx.ATTRBUTE().size();
 
         for (int i = 0; i < pairCount; i++) {
             String attr = ctx.ATTRBUTE(i).getText();
             String val = ctx.value(i).getText();
 
-
+            if (attr.equalsIgnoreCase("border")) {
+                val = val.replaceAll("(\\d+px)(solid|dashed|dotted)(\\w+)", "$1 $2 $3");
+            }
 
             styles.put(attr, val);
         }
 
         return new StyleAttribute(styles);
     }
+
     @Override
     public Object visitStyledata(myParser.StyledataContext ctx) {
         Object RES = (StyleAttribute)visitStyle(ctx.style());
@@ -926,33 +913,15 @@ String filename ;
 
 
 //visitType11
-// visitType11
-@Override
-public Object visitType11(gen.myParser.Type11Context ctx) {
-    String paramName = ctx.ID(0).getText();
-
-    String full = ctx.getText();
-
-    int eqIdx = full.indexOf('=');
-    int endIdx = (eqIdx >= 0) ? eqIdx : full.length();
-
-    int afterName = paramName.length();
-    boolean optional = (full.length() > afterName && full.charAt(afterName) == '?');
-    int colonIdx = full.indexOf(':', afterName + (optional ? 1 : 0));
-
-    if (colonIdx < 0) {
-        colonIdx = full.indexOf(':');
-        if (colonIdx < 0) {
-            return new AST.Nodes.ParameterNode(paramName, "");
-        }
+    @Override
+    public Object visitType11(gen.myParser.Type11Context ctx) {
+        String paramName = ctx.ID(0).getText();
+        String type = null;
+        if (ctx.ID().size() > 1) type = ctx.ID(1).getText();
+        else if (ctx.TYPE() != null) type = ctx.TYPE().getText();
+        else type = ctx.getText();
+        return new AST.Nodes.ParameterNode(paramName, type);
     }
-
-    String typeText = full.substring(colonIdx + 1, endIdx);
-
-    return new AST.Nodes.ParameterNode(paramName, typeText);
-}
-
-
     @Override
     public Object visitType21(gen.myParser.Type21Context ctx) {
         return new AST.Nodes.ParameterNode(ctx.getText(), null);
@@ -1019,7 +988,7 @@ private Expr asExpr(Object o) {
     }
 
     // objectdefinetion
-//@Override
+    @Override
     public Object visitObjectdefinetion(myParser.ObjectdefinetionContext ctx) {
         List<TerminalNode> ids = ctx.ID();
         String name = ids.get(0).getText();    //
@@ -1264,42 +1233,6 @@ public Object visitSparedExpr(gen.myParser.SparedExprContext ctx) {
 
         return mapNode;
     }
-    //visitMapdefinition
-    /*@Override
-    public Object visitMapdefinition(myParser.MapdefinitionContext ctx) {
-        String name = ctx.ID(0).getText();
-        MapDefinitionNode mapNode = new MapDefinitionNode(name);
-
-        java.util.List<ParseTree> ch = ctx.children;
-        if (ch != null) {
-            for (int i = 0; i + 2 < ch.size(); i++) {
-                ParseTree c0 = ch.get(i);
-                ParseTree c1 = ch.get(i + 1);
-                ParseTree c2 = ch.get(i + 2);
-
-                if (c0 instanceof TerminalNode) {
-                    TerminalNode t0 = (TerminalNode) c0;
-                    if (t0.getSymbol().getType() == myParser.ID) {
-                        if (c1 instanceof TerminalNode && ":".equals(c1.getText())) {
-                            String key = t0.getText();
-
-                            Object valObj = visit(c2);
-                            Value val = asValue(valObj);
-
-                            mapNode.addEntry(key, val);
-
-                            i += 2;
-                        }
-                    }
-                }
-            }
-        }
-
-        return mapNode;
-    }*/
-
-
-
     @Override
     public Object visitBooleanvalue(myParser.BooleanvalueContext ctx) {
         String name = ctx.ID().getText();
@@ -1360,66 +1293,6 @@ public Object visitSparedExpr(gen.myParser.SparedExprContext ctx) {
 
         throw new IllegalStateException("Cannot convert to Value: " + o.getClass());
     }
-    // visitParameterListconstructer
-    @Override
-    public Object visitParameterListconstructer(myParser.ParameterListconstructerContext ctx) {
-        String modifier = (ctx.MODIFIER() != null) ? ctx.MODIFIER().getText() : null;
-
-        String name = (ctx.ID() != null && !ctx.ID().isEmpty()) ? ctx.ID(0).getText() : null;
-
-        String type = null;
-        if (ctx.ID() != null && ctx.ID().size() >= 2) {
-            type = ctx.ID(1).getText();
-        } else if (ctx.IMPORTLIST() != null) {
-            type = ctx.IMPORTLIST().getText();
-        }
-
-        return new ConstructorParam(modifier, name, type);
-    }
-    //visitConstructor
-    @Override
-    public Object visitConstructor(myParser.ConstructorContext ctx) {
-        ConstructorNode ctor = new ConstructorNode();
-
-        if (ctx.parameterListconstructer() != null) {
-            for (myParser.ParameterListconstructerContext pc : ctx.parameterListconstructer()) {
-                Object pObj = visit(pc);
-                if (pObj instanceof ConstructorParam) {
-                    ctor.addParam((ConstructorParam) pObj);
-                }
-            }
-        }
-
-        if (ctx.methodBody() != null) {
-            for (myParser.MethodBodyContext mb : ctx.methodBody()) {
-                Object b = visit(mb);
-                if (b instanceof Node) {
-                    ctor.addBodyNode((Node) b);
-                }
-            }
-        }
-
-        return ctor;
-    }
-    //visitObjectdefinetion
-
-    //visitType1
-    @Override
-    public Object visitType1(myParser.Type1Context ctx) {
-        String left = ctx.ID(0).getText();
-        String right = ctx.ID(1).getText();
-        return new Type1Node(left, right);
-    }
-    // visitSparetedd
-    @Override
-    public Object visitSparetedd(myParser.SpareteddContext ctx) {
-        String spreadExpr = ctx.spreadExpressionList().getText();
-        return new SpareteddNode(spreadExpr);
-    }
-
-
-
-
 
 }
 

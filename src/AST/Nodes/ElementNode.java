@@ -37,4 +37,33 @@ public class ElementNode extends HtmlNode {
                 ", children=" + children +
                 '}';
     }
+
+    @Override
+    public String code() {
+        StringBuilder sb = new StringBuilder();
+
+
+        sb.append("<").append(tagName);
+
+        if (attributes != null) {
+            for (HtmlAttribute attr : attributes) {
+                sb.append(attr.code());
+            }
+        }
+
+        sb.append(">").append("\n");
+
+
+        if (children != null) {
+            for (HtmlNode child : children) {
+                sb.append(child.codegenerate());
+            }
+        }
+
+
+        sb.append("</").append(tagName).append(">");
+
+        return sb.toString();
+    }
+
 }

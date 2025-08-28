@@ -2,12 +2,6 @@ package AST.Nodes;
 
 import java.util.ArrayList;
 import java.util.List;
-import AST.Nodes.Expr;
-import AST.Nodes.CallExprNode;
-import AST.Nodes.ValueExpr;
-import AST.Nodes.IdValue;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class LParenNode extends Value {
@@ -46,9 +40,13 @@ public class LParenNode extends Value {
         return new CallExprNode(getName(), args);
     }
 
-
-
-
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 
 
 }

@@ -1,7 +1,4 @@
 package AST.Nodes;
-import AST.Nodes.Expr;
-
-
 
 public  abstract class Node {
 
@@ -11,6 +8,7 @@ public  abstract class Node {
                 "This node is not an expression: " + getClass().getName()
         );
     }
+    public abstract String codegenerate();
 
 }
 

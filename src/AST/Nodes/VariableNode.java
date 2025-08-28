@@ -17,4 +17,12 @@ public class VariableNode extends HtmlNode {
     public String toString() {
         return "VariableNode{variablePath=" + variablePath + '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String code() {
+        return "";
+    }
 }

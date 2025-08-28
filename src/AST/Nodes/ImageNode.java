@@ -17,4 +17,19 @@ public class ImageNode extends HtmlNode {
     public String toString() {
         return "ImageNode{attributes=" + attributes + '}';
     }
+
+    @Override
+    public String code() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<img");
+
+        if (attributes != null) {
+            for (HtmlAttribute attr : attributes) {
+                sb.append(" ").append(attr.code());
+            }
+        }
+
+        sb.append(">");
+        return sb.toString();
+    }
 }

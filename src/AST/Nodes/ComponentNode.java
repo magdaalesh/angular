@@ -24,5 +24,13 @@ public class ComponentNode extends Node {
                 "metadata=" + metadata +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }
 

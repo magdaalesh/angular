@@ -49,6 +49,14 @@ public class LParenQuoteNode extends Value {
 
         return new CallExprNode(functionName, args);
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }
 
 

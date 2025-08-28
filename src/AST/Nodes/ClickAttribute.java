@@ -33,4 +33,14 @@ public class ClickAttribute extends CssAttribute  {
     public String getvalue() {
         return methodName;
     }
+
+
+    @Override
+    public String code() {
+
+        String argsString = String.join(", ", arguments);
+
+        return " onclick=\"" + methodName + "(" + argsString + ")\"";
+    }
+
 }

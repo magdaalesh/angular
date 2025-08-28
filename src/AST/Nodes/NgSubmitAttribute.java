@@ -33,4 +33,10 @@ public class NgSubmitAttribute extends CssAttribute {
     public String getvalue() {
         return functionName + "(" + String.join(", ", arguments) + ")";
     }
+
+    @Override
+    public String code() {
+        return " onsubmit=\"" + getvalue() + "; return false\"";
+    }
+
 }

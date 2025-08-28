@@ -17,4 +17,11 @@ public final class ArrayLiteralExpr extends Expr {
         return "[" + items.stream().map(Object::toString)
                 .collect(Collectors.joining(", ")) + "]";
     }
+
+    /**
+     * @return
+     */
+    public String codegenerate() {
+        return "";
+    }
 }

@@ -24,4 +24,25 @@ public class ArrayItemNode {
             return value.toString();
         }
     }
+    public String codegenerate() {
+        StringBuilder sb = new StringBuilder();
+
+        if (key != null && !key.isEmpty()) {
+            sb.append("\"").append(key).append("\": ");
+        }
+
+        if (value != null) {
+            Object valObj = value.codegenerate();
+            if (valObj instanceof String) {
+                sb.append("\"").append(valObj).append("\"");
+            } else {
+                sb.append(valObj);
+            }
+        } else {
+            sb.append("null");
+        }
+
+        return sb.toString();
+    }
+
 }

@@ -41,4 +41,12 @@ public class InterfaceNode extends  Node{
                 ", properties=" + properties +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

@@ -28,4 +28,29 @@ public class ArrayDefinitionNode extends ClassBodyEntry   {
                 ", items=" + items +
                 '}';
     }
+
+    @Override
+    public String codegenerate() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("const ").append(name).append(" = [");
+
+        if (items != null && !items.isEmpty()) {
+            for (int i = 0; i < items.size(); i++) {
+                ArrayItemNode item = items.get(i);
+
+                String valueStr = item.codegenerate();
+
+                sb.append(valueStr );
+
+                if (i < items.size() - 1) {
+                    sb.append(", ").append("\n");
+                }
+            }
+        }
+
+        sb.append("];");
+        return sb.toString();
+    }
+
 }

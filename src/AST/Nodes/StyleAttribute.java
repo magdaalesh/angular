@@ -8,9 +8,30 @@ public class StyleAttribute extends CssAttribute {
     public StyleAttribute(Map<String, String> styles) {
         this.styles = styles;
     }
-@Override
+    @Override
     public String getvalue() {
-        return styles.toString();
+        StringBuilder result = new StringBuilder();
+        for (Map.Entry<String, String> entry : styles.entrySet()) {
+            result.append(entry.getKey())
+                    .append(": ")
+                    .append(entry.getValue()).append(" ")
+                    .append("; ");
+        }
+        return result.toString().trim();
+    }
+
+    @Override
+    public String code() {
+
+        StringBuilder styleString = new StringBuilder();
+        for (Map.Entry<String, String> entry : styles.entrySet()) {
+            styleString.append(entry.getKey())
+                    .append(": ")
+                    .append(entry.getValue()).append(" ")
+                    .append("; ");
+        }
+
+        return " style=\"" + styleString.toString() + "\"";
     }
 
     @Override

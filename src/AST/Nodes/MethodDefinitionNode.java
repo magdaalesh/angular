@@ -2,7 +2,6 @@ package AST.Nodes;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class MethodDefinitionNode extends ClassBodyEntry
 {
@@ -51,6 +50,14 @@ public class MethodDefinitionNode extends ClassBodyEntry
         sb.append(", params=").append(paramsStr);
         sb.append(" }");
         return sb.toString();
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
     }
 
 

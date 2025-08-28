@@ -18,4 +18,12 @@ public final class ArrowExpr extends Expr {
     public String toString() {
         return param + " => " + body;
     }
+
+    /**
+     * @return
+     */
+
+    public String codegenerate() {
+        return "";
+    }
 }

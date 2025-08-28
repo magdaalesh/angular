@@ -365,7 +365,7 @@ String filename ;
             Object res = visitNgfor(ctx.ngfor());
             ngForAttribute = (NgForAttribute) res;
         }
-        return new NgForAttribute(ngForAttribute.getVariable(),ngForAttribute.getCollection());
+        return new NgForAttribute(ngForAttribute.getVariable(),ngForAttribute.getCollection() );
     }
     @Override
     public Object visitNgfor(myParser.NgforContext ctx) {
@@ -376,7 +376,7 @@ String filename ;
             collection = ctx.ID(1).getText();
         }
 
-        return new NgForAttribute(variable, collection);
+        return new NgForAttribute(variable, collection );
     }
     @Override
     public Object visitNgif(myParser.NgifContext ctx) {
@@ -1325,6 +1325,46 @@ public Object visitSparedExpr(gen.myParser.SparedExprContext ctx) {
         }
 
         throw new IllegalStateException("Cannot convert to Value: " + o.getClass());
+    }
+
+    @Override
+    public Object visitConstructor(myParser.ConstructorContext ctx) {
+        ConstructorNode constructorNode = new ConstructorNode();
+
+        // زيارة قائمة المعاملات
+        for (myParser.ParameterListconstructerContext paramCtx : ctx.parameterListconstructer()) {
+            ConstructorParam param = (ConstructorParam) visit(paramCtx); // تابع يُرجع ConstructorParam
+            constructorNode.addParam(param);
+        }
+
+        // زيارة الجسم
+        for (myParser.MethodBodyContext bodyCtx : ctx.methodBody()) {
+            Node bodyNode = (Node) visit(bodyCtx); // تابع يُرجع Node
+            constructorNode.addBodyNode(bodyNode);
+        }
+
+        return constructorNode;
+    }
+
+    @Override
+    public Object visitParameterListconstructer(myParser.ParameterListconstructerContext ctx) {
+        // MODIFIER
+        String modifier = ctx.MODIFIER().getText();
+
+        // اسم المعامل
+        String name = ctx.ID(0).getText();
+
+        // النوع: إما ID أو IMPORTLIST
+        String type;
+        if (ctx.ID().size() > 1) {
+            type = ctx.ID(1).getText();
+        } else if (ctx.IMPORTLIST() != null) {
+            type = ctx.IMPORTLIST().getText();
+        } else {
+            type = "any"; // fallback
+        }
+
+        return new ConstructorParam(modifier, name, type);
     }
 
 }

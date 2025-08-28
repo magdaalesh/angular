@@ -51,10 +51,16 @@ public class ConstNode extends PropertyDefinitionNode {
                 ", parameters=" + parameters +
                 '}';
     }
+
+
     @Override
     public String codegenerate() {
+        if (name == null || name.isEmpty()) return "";
+
         StringBuilder sb = new StringBuilder();
         sb.append("const ").append(name);
+
+        // إذا كان هناك parameters يتم توليد دالة Arrow
         if (parameters != null && !parameters.isEmpty()) {
             sb.append(" = (");
             for (int i = 0; i < parameters.size(); i++) {
@@ -64,15 +70,22 @@ public class ConstNode extends PropertyDefinitionNode {
                 }
             }
             sb.append(") => ");
-            sb.append(typeOrValue);
+            sb.append(typeOrValue != null ? typeOrValue : "null");
         } else {
-            if (typeOrValue != null) {
+            // إذا لا يوجد parameters نعتبرها مجرد تعيين قيمة
+            if (typeOrValue != null && !typeOrValue.isEmpty()) {
                 sb.append(" = ").append(typeOrValue);
             }
         }
 
-        sb.append(";");
+        sb.append(" ");
         return sb.toString();
     }
 
+
+
+    @Override
+    public String codegenerae() {
+        return "";
+    }
 }

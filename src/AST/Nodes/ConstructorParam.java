@@ -29,6 +29,6 @@ public class ConstructorParam extends Node {
      */
     @Override
     public String codegenerate() {
-        return "";
+        return getName();
     }
 }

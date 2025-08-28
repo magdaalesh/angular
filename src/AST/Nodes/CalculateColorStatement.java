@@ -60,11 +60,35 @@ public class CalculateColorStatement extends StatementNode {
                 '}';
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+        StringBuilder js = new StringBuilder();
+
+        String target = targetVariable;
+        if (arrayAccessKey != null && !arrayAccessKey.isEmpty()) {
+            target += "[" + arrayAccessKey + "]";
+        }
+
+        String value = "";
+        if (innerFunction != null && !innerFunction.isEmpty()) {
+            value = innerFunction + "(" + operand + ")";
+        } else {
+            value = operand;
+        }
+
+        // توليد جملة JS
+        js.append(target)
+                .append(" = ")
+                .append(functionName)
+                .append("(")
+                .append(target)
+                .append(" ")
+                .append(calculationOperator)
+                .append(" ")
+                .append(value)
+                .append(");");
+
+        return js.toString();
     }
+
 }

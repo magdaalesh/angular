@@ -36,7 +36,7 @@ public class MapDefinitionNode extends PropertyDefinitionNode {
     public String codegenerate() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("const ").append(name).append(" = {");
+        sb.append(name).append(" = {");
 
         if (mapEntries != null && !mapEntries.isEmpty()) {
             sb.append("\n");
@@ -68,6 +68,14 @@ public class MapDefinitionNode extends PropertyDefinitionNode {
 
         sb.append("};");
         return sb.toString();
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerae() {
+        return "";
     }
 
 }

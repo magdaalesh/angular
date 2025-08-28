@@ -55,6 +55,14 @@ public class MethodDefinitionNode extends ClassBodyEntry {
                 "}";
     }
 
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerae() {
+        return "";
+    }
+
     @Override
     public String toString() {
         return "MethodDefinitionNode{" +

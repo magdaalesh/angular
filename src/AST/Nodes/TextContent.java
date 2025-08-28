@@ -1,6 +1,14 @@
 package AST.Nodes;
 
 public class TextContent extends Content {
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return text;
+    }
+
     private String text;
 
     public TextContent(String text) {

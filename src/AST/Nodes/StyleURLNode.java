@@ -37,4 +37,12 @@ public class StyleURLNode extends MetadataEntry {
     public String getValue() {
         return stylePath;
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }

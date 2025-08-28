@@ -38,8 +38,16 @@ public class BooleanValueNode extends PropertyDefinitionNode {
                 '}';
     }
 
+    /**
+     * @return
+     */
     @Override
     public String codegenerate() {
+        return "";
+    }
+
+    @Override
+    public String codegenerae() {
         StringBuilder sb = new StringBuilder();
 
         if (name != null && !name.isEmpty()) {

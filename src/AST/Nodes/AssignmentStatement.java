@@ -25,11 +25,23 @@ public class AssignmentStatement extends StatementNode {
                 '}';
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+        StringBuilder js = new StringBuilder();
+
+        if (value instanceof String) {
+            js.append(variableName).append(" = ").append("\"").append(value).append("\"");
+        } else if (value instanceof Number || value instanceof Boolean) {
+            js.append(variableName).append(" = ").append(value);
+        } else if (value instanceof Node) {
+            js.append(variableName).append(" = ").append(((Node) value).codegenerate());
+        } else {
+
+            js.append(variableName).append(" = ").append(value);
+        }
+
+        js.append(";");
+        return js.toString();
     }
+
 }

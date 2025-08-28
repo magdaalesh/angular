@@ -4,10 +4,13 @@ import AST.Nodes.HtmlNode;
 import AST.Nodes.Node;
 import AST.Nodes.ProgramNode;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class codegenerate {
+   public codegenerate(){}
 
     public void writercodegenerate(String name, ProgramNode tree) {
         StringBuilder htmlSb = new StringBuilder();
@@ -21,18 +24,15 @@ public class codegenerate {
                 HtmlNode htmlNode = (HtmlNode) child;
                 htmlSb.append(htmlNode.codegenerate()).append("\n");
             } else {
-                // أي عقدة أخرى تعتبر JS
                 hasJs = true;
                 jsSb.append(child.codegenerate()).append("\n");
             }
         }
 
-        // كتابة ملف HTML إذا كان هناك HTMLNode
         if (hasHtml) {
             writehtmlpage(htmlSb.toString(), name);
         }
 
-        // كتابة ملف JS إذا كان هناك عقدة غير HTMLNode
         if (hasJs) {
             writejspage(jsSb.toString(), name);
         }
@@ -41,27 +41,37 @@ public class codegenerate {
             System.out.println("❌ No nodes found, no file generated.");
         }
     }
-
     public void writehtmlpage(String bodyContent, String filename) {
         if (!filename.toLowerCase().endsWith(".html")) {
             filename += ".html";
         }
 
-        String htmlContent = "<!DOCTYPE html>\n<html lang=\"en\">\n" +
-                "<head>\n" +
-                "  <meta charset=\"UTF-8\">\n" +
-                "  <title>" + filename + "</title>\n" +
-                "</head>\n<body>\n" +
-                bodyContent +
-                "\n</body>\n</html>";
+        File file = new File("codegenerate\\" + filename);
+        String htmlContent;
 
-        try (FileWriter writer = new FileWriter("codegenerate\\" + filename, false)) { // false → overwrite
+        if (file.exists()) {
+
+            try {
+                String existing = new String(Files.readAllBytes(file.toPath()));
+                htmlContent = existing.replace("</body>", bodyContent + "\n</body>");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            // الملف غير موجود → نكتب HTML جديد
+            htmlContent = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n" +
+                    "  <meta charset=\"UTF-8\">\n" +
+                    "  <title>" + filename + "</title>\n</head>\n<body>\n" +
+                    bodyContent + "\n</body>\n</html>";
+        }
+
+        try (FileWriter writer = new FileWriter(file, false)) { // false → overwrite بعد التعديل
             writer.write(htmlContent);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        System.out.println("✅ HTML generated in: " + filename);
+        System.out.println("✅ HTML generated/updated: " + filename);
     }
 
     public void writejspage(String jsContent, String filename) {

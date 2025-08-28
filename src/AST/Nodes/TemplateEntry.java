@@ -25,6 +25,14 @@ public class TemplateEntry extends MetadataEntry {
         return template.toString();
     }
 
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
+
     @Override
     public String getKey() {
         return "template:";

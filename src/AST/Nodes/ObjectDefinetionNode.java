@@ -31,7 +31,32 @@ public class ObjectDefinetionNode extends Node {
 
     @Override
     public String codegenerate() {
-        return "";
+        StringBuilder js = new StringBuilder();
+
+        if (isArray) {
+
+            js.append("const ").append(name).append(" = [\n");
+            for (int i = 0; i < contentList.size(); i++) {
+                ContenttNode content = contentList.get(i);
+                js.append("  ").append(content.codegenerate());
+                if (i < contentList.size() - 1) js.append(",");
+                js.append("\n");
+            }
+            js.append("];\n");
+        } else {
+
+            js.append("const ").append(name).append(" = {\n");
+            for (int i = 0; i < contentList.size(); i++) {
+                ContenttNode content = contentList.get(i);
+                js.append("  ").append(content.codegenerate());
+                if (i < contentList.size() - 1) js.append(",");
+                js.append("\n");
+            }
+            js.append("};\n");
+        }
+
+        return js.toString();
     }
+
 
 }

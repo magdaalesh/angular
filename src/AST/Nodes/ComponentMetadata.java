@@ -26,5 +26,21 @@ public class ComponentMetadata {
         sb.append("}");
         return sb.toString();
     }
+    public String codegenerate() {
+        if (entries == null || entries.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (MetadataEntry entry : entries) {
+            if (entry != null) {
+                sb.append(entry.codegenerate()).append("\n");
+            }
+        }
+
+        return sb.toString();
+    }
+
 }
 

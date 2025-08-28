@@ -70,4 +70,12 @@ public class DefinitionNode extends PropertyDefinitionNode {
         return sb.toString();
     }
 
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerae() {
+        return "";
+    }
+
 }

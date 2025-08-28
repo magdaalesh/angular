@@ -30,7 +30,7 @@ public class ComponentNode extends Node {
      */
     @Override
     public String codegenerate() {
-        return "";
+        return metadata.codegenerate() ;
     }
 }
 

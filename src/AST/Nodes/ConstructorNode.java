@@ -21,11 +21,28 @@ public class ConstructorNode extends ClassBodyEntry  {
                 '}';
     }
 
-    /**
-     * @return
-     */
     @Override
-    public String codegenerate() {
-        return "";
+    public String codegenerae() {
+        StringBuilder js = new StringBuilder();
+
+        // توليد قائمة المعاملات
+        List<String> paramNames = new ArrayList<>();
+        for (ConstructorParam p : parameters) {
+            paramNames.add(p.getName());
+        }
+        String params = String.join(", ", paramNames);
+
+        // بدء الـ constructor
+        js.append("constructor(").append(params).append(") {\n");
+
+
+        for (Node n : body) {
+            js.append("  ").append(n.codegenerate()).append("\n");
+        }
+
+        js.append("}");
+
+        return js.toString();
     }
+
 }

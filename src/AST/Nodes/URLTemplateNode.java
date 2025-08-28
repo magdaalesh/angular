@@ -36,5 +36,14 @@ public class URLTemplateNode extends MetadataEntry {
     @Override
     public String getValue() {
         return template;
+
     }
+
+
+    @Override
+    public String codegenerate() {
+        return "";
+    }
+
 }
+

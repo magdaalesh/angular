@@ -29,7 +29,7 @@ public class ArrayDefinitionNode extends ClassBodyEntry   {
                 '}';
     }
     @Override
-    public String codegenerate() {
+    public String codegenerae() {
         StringBuilder sb = new StringBuilder();
 
         sb.append(name).append(" = ");

@@ -17,5 +17,13 @@ public class ImageContent extends Content {
                 "image=" + image +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return image.codegenerate();
+    }
 }
 

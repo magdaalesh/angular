@@ -25,6 +25,14 @@ public class SelectorEntry extends MetadataEntry {
         return selector;
     }
 
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
+
     @Override
     public String getKey() {
         return "selector:";

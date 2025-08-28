@@ -23,6 +23,6 @@ public class ColorValue extends Value {
      */
     @Override
     public String codegeneratre() {
-        return "";
+        return colorCode;
     }
 }

@@ -18,4 +18,12 @@ public class VariableContent extends Content {
                 "path=" + path +
                 '}';
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return " $"+path;
+    }
 }

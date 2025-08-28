@@ -30,5 +30,13 @@ public class ImportsEntry extends MetadataEntry {
     public String getValue() {
         return imports.toString();
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerate() {
+        return "";
+    }
 }
 

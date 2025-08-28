@@ -67,9 +67,7 @@ public class value1 extends PropertyDefinitionNode{
     public String codegenerate() {
         StringBuilder sb = new StringBuilder();
    sb.append(name);
-        if (isOptional) {
-            sb.append("?");
-        }
+
 
         if (type != null && !type.isEmpty()) {
             sb.append(" /* type: ").append(type).append(" */");
@@ -89,6 +87,14 @@ public class value1 extends PropertyDefinitionNode{
         sb.append(";");
 
         return sb.toString();
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerae() {
+        return "";
     }
 
 }

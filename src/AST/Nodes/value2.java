@@ -38,4 +38,12 @@ public class value2 extends PropertyDefinitionNode{
         return sb.toString();
     }
 
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerae() {
+        return "";
+    }
+
 }

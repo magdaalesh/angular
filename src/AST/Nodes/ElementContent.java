@@ -17,4 +17,10 @@ public class ElementContent extends Content {
                 "element=" + element +
                 '}';
     }
+
+
+    @Override
+    public String codegenerate() {
+        return element.codegenerate();
+    }
 }

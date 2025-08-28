@@ -13,6 +13,11 @@ public class ClassNode extends Node {
         this.body = body;
     }
 
+    // ✅ أضف هذا التابع
+    public void addBodyEntry(ClassBodyEntry entry) {
+        body.add(entry);
+    }
+
     public String getClassName() {
         return className;
     }

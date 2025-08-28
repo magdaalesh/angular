@@ -14,8 +14,10 @@ import AST.Nodes.ValueStatement;
 import AST.Nodes.CallExprNode;
 import AST.Nodes.Expr;
 import AST.Nodes.Node;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
+import AST.Nodes.ConstructorNode;
+import AST.Nodes.ConstructorParam;
+import AST.Nodes.Node;
+
 
 
 
@@ -1017,7 +1019,7 @@ private Expr asExpr(Object o) {
     }
 
     // objectdefinetion
-    @Override
+//@Override
     public Object visitObjectdefinetion(myParser.ObjectdefinetionContext ctx) {
         List<TerminalNode> ids = ctx.ID();
         String name = ids.get(0).getText();    //
@@ -1358,6 +1360,66 @@ public Object visitSparedExpr(gen.myParser.SparedExprContext ctx) {
 
         throw new IllegalStateException("Cannot convert to Value: " + o.getClass());
     }
+    // visitParameterListconstructer
+    @Override
+    public Object visitParameterListconstructer(myParser.ParameterListconstructerContext ctx) {
+        String modifier = (ctx.MODIFIER() != null) ? ctx.MODIFIER().getText() : null;
+
+        String name = (ctx.ID() != null && !ctx.ID().isEmpty()) ? ctx.ID(0).getText() : null;
+
+        String type = null;
+        if (ctx.ID() != null && ctx.ID().size() >= 2) {
+            type = ctx.ID(1).getText();
+        } else if (ctx.IMPORTLIST() != null) {
+            type = ctx.IMPORTLIST().getText();
+        }
+
+        return new ConstructorParam(modifier, name, type);
+    }
+    //visitConstructor
+    @Override
+    public Object visitConstructor(myParser.ConstructorContext ctx) {
+        ConstructorNode ctor = new ConstructorNode();
+
+        if (ctx.parameterListconstructer() != null) {
+            for (myParser.ParameterListconstructerContext pc : ctx.parameterListconstructer()) {
+                Object pObj = visit(pc);
+                if (pObj instanceof ConstructorParam) {
+                    ctor.addParam((ConstructorParam) pObj);
+                }
+            }
+        }
+
+        if (ctx.methodBody() != null) {
+            for (myParser.MethodBodyContext mb : ctx.methodBody()) {
+                Object b = visit(mb);
+                if (b instanceof Node) {
+                    ctor.addBodyNode((Node) b);
+                }
+            }
+        }
+
+        return ctor;
+    }
+    //visitObjectdefinetion
+
+    //visitType1
+    @Override
+    public Object visitType1(myParser.Type1Context ctx) {
+        String left = ctx.ID(0).getText();
+        String right = ctx.ID(1).getText();
+        return new Type1Node(left, right);
+    }
+    // visitSparetedd
+    @Override
+    public Object visitSparetedd(myParser.SpareteddContext ctx) {
+        String spreadExpr = ctx.spreadExpressionList().getText();
+        return new SpareteddNode(spreadExpr);
+    }
+
+
+
+
 
 }
 

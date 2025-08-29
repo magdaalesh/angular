@@ -2,7 +2,7 @@ package AST.Nodes;
 
 import java.util.List;
 
-public class IdValue extends Value  {
+public class IdValue extends  Value  {
     private List<String> identifiers;
 
     public IdValue(List<String> identifiers) {
@@ -19,10 +19,16 @@ public class IdValue extends Value  {
                 "identifiers=" + identifiers +
                 '}';
     }
-
+    @Override
+    public String codegenerate() {
+        return String.join(".", identifiers);
+    }
 
     @Override
     public String codegeneratre() {
-        return String.join(".", identifiers);
+        return "";
     }
+
 }
+
+

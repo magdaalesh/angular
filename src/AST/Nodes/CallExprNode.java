@@ -1,5 +1,4 @@
 package AST.Nodes;
-
 import java.util.List;
 
 public class CallExprNode extends Expr {
@@ -34,7 +33,6 @@ public class CallExprNode extends Expr {
         if (arguments != null && !arguments.isEmpty()) {
             for (int i = 0; i < arguments.size(); i++) {
                 Expr arg = arguments.get(i);
-                // استدعاء تابع codegenerate لكل argument
                 sb.append(arg.codegenerate());
                 if (i < arguments.size() - 1) {
                     sb.append(", ");
@@ -45,5 +43,8 @@ public class CallExprNode extends Expr {
         sb.append(")");
         return sb.toString();
     }
+
+
+
 
 }

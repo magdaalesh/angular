@@ -19,7 +19,7 @@ public final class ValueExpr extends Expr {
     }
 
 
-    @Override
+   /* @Override
     public String codegenerae() {
 
         if (constName != null && !constName.isEmpty()) {
@@ -27,6 +27,11 @@ public final class ValueExpr extends Expr {
         }
 
         return value.codegenerate();
-    }
+    }*/
+   @Override
+   public String codegenerae() {
+       return value.codegenerate();  // بدون شروط
+   }
+
 
 }

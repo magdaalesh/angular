@@ -781,7 +781,7 @@ String filename ;
 
         return new LParenQuoteNode(functionName, pathIds, extraIds);
     }
-    @Override
+   /* @Override
     public Object visitCallfun(myParser.CallfunContext ctx) {
         // اسم الدالة
         String functionName = ctx.ID(0).getText();
@@ -796,7 +796,7 @@ String filename ;
 
 
         return new CallFunNode(functionName, arguments);
-    }
+    }*/
 
     @Override
     public Object visitStringvalue(myParser.StringvalueContext ctx) {
@@ -1366,6 +1366,25 @@ public Object visitSparedExpr(gen.myParser.SparedExprContext ctx) {
 
         return new ConstructorParam(modifier, name, type);
     }
+    @Override
+    public Object visitCallfun(myParser.CallfunContext ctx) {
+        String functionName = ctx.ID(0).getText();  // اسم الدالة الحقيقي
+
+        List<Expr> arguments = new ArrayList<>();
+
+        // المعاملات من ID(1) وما بعده
+        for (int i = 1; i < ctx.ID().size(); i++) {
+            String argName = ctx.ID(i).getText();
+            arguments.add(new ValueExpr("id", new IdValue(List.of(argName))));
+        }
+
+        return new CallExprNode(functionName, arguments);
+    }
+
+
+
+
+
 
 }
 

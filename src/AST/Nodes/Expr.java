@@ -1,11 +1,14 @@
 package AST.Nodes;
 
 public abstract class Expr extends MethodBody {
+
     @Override
-    public String codegeneratee() {
-        System.out.println("exp : "+ codegenerae());
-        return codegenerae();
+    public String codegenerate() {
+
+        System.out.println("exp : " + this.codegenerateInternal());
+        return this.codegenerateInternal();
     }
 
-    public abstract String codegenerae() ;
+
+    protected abstract String codegenerateInternal();
 }

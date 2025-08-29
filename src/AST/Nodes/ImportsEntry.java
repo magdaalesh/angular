@@ -1,4 +1,5 @@
 package AST.Nodes;
+
 import java.util.List;
 
 public class ImportsEntry extends MetadataEntry {
@@ -31,12 +32,9 @@ public class ImportsEntry extends MetadataEntry {
         return imports.toString();
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+        if (imports == null || imports.isEmpty()) return "";
+        return "imports: [" + String.join(", ", imports) + "]";
     }
 }
-

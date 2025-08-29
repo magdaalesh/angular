@@ -9,13 +9,8 @@ public class Type1Node extends ContenttNode {
         this.right = right;
     }
 
-    public String getLeft() {
-        return left;
-    }
-
-    public String getRight() {
-        return right;
-    }
+    public String getLeft() { return left; }
+    public String getRight() { return right; }
 
     @Override
     public String toString() {
@@ -26,8 +21,8 @@ public class Type1Node extends ContenttNode {
     }
 
     @Override
-    public String codegenerate() {
+    public String codegenerae() {
+        // توليد كود كخاصية object
         return left + ": " + right;
     }
-
 }

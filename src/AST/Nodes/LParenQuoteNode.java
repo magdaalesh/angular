@@ -10,21 +10,13 @@ public class LParenQuoteNode extends Value {
 
     public LParenQuoteNode(String functionName, List<String> pathIds, List<String> extraIds) {
         this.functionName = functionName;
-        this.pathIds = pathIds;
-        this.extraIds = extraIds;
+        this.pathIds = pathIds != null ? pathIds : new ArrayList<>();
+        this.extraIds = extraIds != null ? extraIds : new ArrayList<>();
     }
 
-    public String getFunctionName() {
-        return functionName;
-    }
-
-    public List<String> getPathIds() {
-        return pathIds;
-    }
-
-    public List<String> getExtraIds() {
-        return extraIds;
-    }
+    public String getFunctionName() { return functionName; }
+    public List<String> getPathIds() { return pathIds; }
+    public List<String> getExtraIds() { return extraIds; }
 
     @Override
     public String toString() {
@@ -38,38 +30,23 @@ public class LParenQuoteNode extends Value {
     @Override
     public Expr asExpr() {
         List<Expr> args = new ArrayList<>();
-
-        for (String id : pathIds) {
-            args.add(new ValueExpr(null, new IdValue(List.of(id))));
-        }
-
-        for (String id : extraIds) {
-            args.add(new ValueExpr(null, new IdValue(List.of(id))));
-        }
-
+        for (String id : pathIds) args.add(new ValueExpr(null, new IdValue(List.of(id))));
+        for (String id : extraIds) args.add(new ValueExpr(null, new IdValue(List.of(id))));
         return new CallExprNode(functionName, args);
     }
 
     @Override
-    public String codegeneratre() {
+    protected String codegenerateInternal() {
         StringBuilder sb = new StringBuilder();
         sb.append(functionName).append("(");
-
         List<String> allIds = new ArrayList<>();
-        if (pathIds != null) allIds.addAll(pathIds);
-        if (extraIds != null) allIds.addAll(extraIds);
-
+        allIds.addAll(pathIds);
+        allIds.addAll(extraIds);
         for (int i = 0; i < allIds.size(); i++) {
-            String id = allIds.get(i);
-
-            sb.append("\"").append(id).append("\"");
+            sb.append("\"").append(allIds.get(i)).append("\"");
             if (i < allIds.size() - 1) sb.append(", ");
         }
-
         sb.append(")");
         return sb.toString();
     }
-
 }
-
-

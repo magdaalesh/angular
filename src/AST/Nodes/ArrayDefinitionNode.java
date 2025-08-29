@@ -2,11 +2,12 @@ package AST.Nodes;
 
 import java.util.List;
 
-public class ArrayDefinitionNode extends ClassBodyEntry   {
+public class ArrayDefinitionNode extends ClassBodyEntry {
     private String modifier;
     private String name;
     private String type;
     private List<ArrayItemNode> items;
+
     public ArrayDefinitionNode(String modifier, String name, String type, List<ArrayItemNode> items) {
         this.modifier = modifier;
         this.name = name;
@@ -28,11 +29,17 @@ public class ArrayDefinitionNode extends ClassBodyEntry   {
                 ", items=" + items +
                 '}';
     }
+
     @Override
-    public String codegenerae() {
+    public String codegenerate() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(name).append(" = ");
+
+        sb.append(name);
+        if (type != null && !type.isEmpty()) {
+            sb.append(" /* type: ").append(type).append(" */");
+        }
+        sb.append(" = ");
 
         if (items != null && !items.isEmpty()) {
             sb.append("[\n");
@@ -41,7 +48,7 @@ public class ArrayDefinitionNode extends ClassBodyEntry   {
                 ArrayItemNode item = items.get(i);
                 String valueStr = item.codegenerate();
 
-                sb.append("  ").append(valueStr); // مسافة بادئة
+                sb.append("  ").append(valueStr);
 
                 if (i < items.size() - 1) {
                     sb.append(",\n");
@@ -55,6 +62,4 @@ public class ArrayDefinitionNode extends ClassBodyEntry   {
 
         return sb.toString();
     }
-
-
 }

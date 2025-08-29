@@ -18,11 +18,9 @@ public class VariableNode extends HtmlNode {
         return "VariableNode{variablePath=" + variablePath + '}';
     }
 
-    /**
-     * @return
-     */
     @Override
     public String code() {
-        return "";
+
+        return String.join(".", variablePath);
     }
 }

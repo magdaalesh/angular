@@ -2,7 +2,7 @@ package AST.Nodes;
 
 import java.util.List;
 
-public class ClickAttribute extends CssAttribute  {
+public class ClickAttribute extends CssAttribute {
     private String methodName;
     private List<String> arguments;
 
@@ -11,13 +11,8 @@ public class ClickAttribute extends CssAttribute  {
         this.arguments = arguments;
     }
 
-    public String getMethodName() {
-        return methodName;
-    }
-
-    public List<String> getArguments() {
-        return arguments;
-    }
+    public String getMethodName() { return methodName; }
+    public List<String> getArguments() { return arguments; }
 
     @Override
     public String toString() {
@@ -25,22 +20,16 @@ public class ClickAttribute extends CssAttribute  {
     }
 
     @Override
-    public String getname() {
-        return "click";
-    }
+    public String getname() { return "click"; }
 
     @Override
-    public String getvalue() {
-        return methodName;
-    }
-
+    public String getvalue() { return methodName; }
 
     @Override
     public String code() {
-
-        String argsString = String.join(", ", arguments);
-
+        String argsString = arguments != null && !arguments.isEmpty()
+                ? String.join(", ", arguments)
+                : "";
         return " onclick=\"" + methodName + "(" + argsString + ")\"";
     }
-
 }

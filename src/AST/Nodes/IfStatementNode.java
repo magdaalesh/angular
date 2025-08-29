@@ -21,18 +21,18 @@ public final class IfStatementNode extends MethodBody {
     public String toString() {
         return "If(" + condition + ") " + thenBody;
     }
-    @Override
-    public String codegeneratee() {
-        StringBuilder sb = new StringBuilder();
 
+
+    @Override
+    protected String codegenerateInternal() {
+        StringBuilder sb = new StringBuilder();
         sb.append("if (").append(condition.codegenerate()).append(") {\n");
 
         for (MethodBody stmt : thenBody) {
-            sb.append("  ").append(stmt.codegeneratee()).append(";\n");
+            sb.append("  ").append(stmt.codegenerateInternal()).append("\n");
         }
 
         sb.append("}");
         return sb.toString();
     }
-
 }

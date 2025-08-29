@@ -1,4 +1,5 @@
 package AST.Nodes;
+
 import java.util.List;
 
 public class CallExprNode extends Expr {
@@ -10,23 +11,16 @@ public class CallExprNode extends Expr {
         this.arguments = arguments;
     }
 
-    public String getFunctionName() {
-        return functionName;
-    }
-
-    public List<Expr> getArguments() {
-        return arguments;
-    }
+    public String getFunctionName() { return functionName; }
+    public List<Expr> getArguments() { return arguments; }
 
     @Override
     public String toString() {
-        return "CallExprNode{" +
-                "functionName='" + functionName + '\'' +
-                ", arguments=" + arguments +
-                '}';
+        return "CallExprNode{" + "functionName='" + functionName + '\'' + ", arguments=" + arguments + '}';
     }
+
     @Override
-    public String codegenerae() {
+    protected String codegenerateInternal() {
         StringBuilder sb = new StringBuilder();
         sb.append(functionName).append("(");
 
@@ -34,17 +28,11 @@ public class CallExprNode extends Expr {
             for (int i = 0; i < arguments.size(); i++) {
                 Expr arg = arguments.get(i);
                 sb.append(arg.codegenerate());
-                if (i < arguments.size() - 1) {
-                    sb.append(", ");
-                }
+                if (i < arguments.size() - 1) sb.append(", ");
             }
         }
 
         sb.append(")");
         return sb.toString();
     }
-
-
-
-
 }

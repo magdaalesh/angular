@@ -21,28 +21,21 @@ public class StyleURLNode extends MetadataEntry {
 
     @Override
     public String toString() {
-        return "StyleURLNode{" +
-                "styleUrls='" + stylePath + '\'' +
-                '}';
+        return "StyleURLNode{stylePath='" + stylePath + "'}";
     }
-
 
     @Override
     public String getKey() {
         return "styleUrls";
     }
 
-
     @Override
     public String getValue() {
         return stylePath;
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+        return stylePath != null ? "<link rel=\"stylesheet\" href=\"" + stylePath + "\">" : "";
     }
 }

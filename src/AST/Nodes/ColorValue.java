@@ -13,16 +13,12 @@ public class ColorValue extends Value {
 
     @Override
     public String toString() {
-        return "ColorValue{" +
-                "colorCode='" + colorCode + '\'' +
-                '}';
+        return colorCode;
     }
 
-    /**
-     * @return
-     */
+    // تنفيذ الطريقة الجديدة المطلوبة من Value
     @Override
-    public String codegeneratre() {
-        return colorCode;
+    public String codegenerateInternal() {
+        return "\"" + colorCode + "\""; // نضع اللون بين علامتي اقتباس
     }
 }

@@ -18,9 +18,12 @@ public class ArrayDefinitionStatement extends nodebodyclass {
                 '}';
     }
 
-
     @Override
     public String codegenerate() {
+
+        if (arrayDefinition != null) {
+            return arrayDefinition.codegenerate();
+        }
         return "";
     }
 }

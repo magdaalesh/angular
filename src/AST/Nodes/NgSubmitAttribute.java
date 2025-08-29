@@ -11,22 +11,12 @@ public class NgSubmitAttribute extends CssAttribute {
         this.arguments = arguments;
     }
 
-    public String getFunctionName() {
-        return functionName;
-    }
-
-    public List<String> getArguments() {
-        return arguments;
-    }
-
-    @Override
-    public String toString() {
-        return "NgSubmitAttribute{" + functionName + "(" + String.join(", ", arguments) + ")}";
-    }
+    public String getFunctionName() { return functionName; }
+    public List<String> getArguments() { return arguments; }
 
     @Override
     public String getname() {
-        return "ngsubmit";
+        return "ngSubmit";
     }
 
     @Override
@@ -36,7 +26,12 @@ public class NgSubmitAttribute extends CssAttribute {
 
     @Override
     public String code() {
-        return " onsubmit=\"" + getvalue() + "; return false\"";
+        // توليد كود HTML attribute لـ Angular submit
+        return "onsubmit=\"" + getvalue() + "; return false\"";
     }
 
+    @Override
+    public String toString() {
+        return "NgSubmitAttribute{" + getvalue() + "}";
+    }
 }

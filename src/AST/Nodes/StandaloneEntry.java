@@ -25,12 +25,9 @@ public class StandaloneEntry extends MetadataEntry {
         return String.valueOf(standalone);
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+        return "";  // لا يوجد كود توليد هنا
     }
 
     @Override
@@ -38,5 +35,3 @@ public class StandaloneEntry extends MetadataEntry {
         return "standalone:";
     }
 }
-
-

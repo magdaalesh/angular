@@ -14,14 +14,15 @@ public final class ArrayLiteralExpr extends Expr {
 
     @Override
     public String toString() {
-        return "[" + items.stream().map(Object::toString)
+        return "[" + items.stream()
+                .map(Object::toString)
                 .collect(Collectors.joining(", ")) + "]";
     }
 
     @Override
-    public String codegenerae() {
+    protected String codegenerateInternal() {
         StringBuilder sb = new StringBuilder();
-        sb.append(" ");
+        sb.append("[");  // افتتح المصفوفة
 
         for (int i = 0; i < items.size(); i++) {
             SpreadItem item = items.get(i);
@@ -32,8 +33,7 @@ public final class ArrayLiteralExpr extends Expr {
             }
         }
 
-        sb.append(" ");
+        sb.append("]");  // اغلق المصفوفة
         return sb.toString();
     }
-
 }

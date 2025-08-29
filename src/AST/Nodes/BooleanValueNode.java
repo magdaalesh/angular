@@ -14,49 +14,29 @@ public class BooleanValueNode extends PropertyDefinitionNode {
         this.value = false;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean getValue() {
-        return value;
-    }
-
-    public void setValue(boolean value) {
-        this.value = value;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public boolean getValue() { return value; }
+    public void setValue(boolean value) { this.value = value; }
 
     @Override
     public String toString() {
-        return "BooleanValueNode{" +
-                "name='" + name + '\'' +
-                ", value=" + value +
-                '}';
+        return "BooleanValueNode{" + "name='" + name + '\'' + ", value=" + value + '}';
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+        return codegenerae();
     }
 
     @Override
     public String codegenerae() {
         StringBuilder sb = new StringBuilder();
-
         if (name != null && !name.isEmpty()) {
             sb.append(name).append(": ");
         }
-
         sb.append(value);
-
+        sb.append(";");
         return sb.toString();
     }
-
 }

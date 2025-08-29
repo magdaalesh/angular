@@ -6,26 +6,24 @@ public class StyleBackAttribute extends CssAttribute {
     public StyleBackAttribute(String value) {
         this.value = value;
     }
-@Override
+
+    @Override
     public String getvalue() {
         return value;
     }
 
-    /**
-     * @return
-     */
     @Override
     public String code() {
-        return "";
+        return " style=\"background: " + value + "\"";
     }
 
     @Override
     public String toString() {
-        return "StyleBackgroundAttribute{value='" + value + "'}";
+        return "StyleBackAttribute{value='" + value + "'}";
     }
 
     @Override
     public String getname() {
-        return " styleback";
+        return "styleback";
     }
 }

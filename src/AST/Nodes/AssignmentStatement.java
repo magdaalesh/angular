@@ -9,13 +9,8 @@ public class AssignmentStatement extends StatementNode {
         this.value = value;
     }
 
-    public String getVariableName() {
-        return variableName;
-    }
-
-    public Object getValue() {
-        return value;
-    }
+    public String getVariableName() { return variableName; }
+    public Object getValue() { return value; }
 
     @Override
     public String toString() {
@@ -36,12 +31,15 @@ public class AssignmentStatement extends StatementNode {
         } else if (value instanceof Node) {
             js.append(variableName).append(" = ").append(((Node) value).codegenerate());
         } else {
-
             js.append(variableName).append(" = ").append(value);
         }
 
         js.append(";");
         return js.toString();
+    }
+    @Override
+    protected String codegenerateInternal() {
+        return codegenerate();
     }
 
 }

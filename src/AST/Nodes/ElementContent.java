@@ -18,9 +18,11 @@ public class ElementContent extends Content {
                 '}';
     }
 
-
     @Override
     public String codegenerate() {
-        return element.codegenerate();
+        if (element != null) {
+            return element.codegenerate();
+        }
+        return "";
     }
 }

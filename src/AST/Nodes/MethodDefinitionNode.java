@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 public class MethodDefinitionNode extends ClassBodyEntry {
     private final String methodName;
     private final List<ParameterNode> parameters;
-    private final TypeAnnotationNode returnType; //
-    private final List<MethodBody> bodyItems;        //
+    private final TypeAnnotationNode returnType;
+    private final List<MethodBody> bodyItems;
 
     public MethodDefinitionNode(String methodName,
                                 List<ParameterNode> parameters,
@@ -27,41 +27,19 @@ public class MethodDefinitionNode extends ClassBodyEntry {
 
     @Override
     public String codegenerate() {
-
         String paramsStr = (parameters == null || parameters.isEmpty())
                 ? ""
-                : parameters.stream()
-                .map(ParameterNode::codegenerate)
-                .collect(Collectors.joining(", "));
+                : parameters.stream().map(ParameterNode::codegenerate).collect(Collectors.joining(", "));
 
         StringBuilder sb = new StringBuilder();
-
         for (MethodBody item : bodyItems) {
-
-
-            boolean b = item instanceof ReturnStatement;
-            if (!b) {
-                sb.append("    ").append(item.codegenerate()).append(";\n");
-
-            } else{
-                sb.append(" ").append( item.codegenerate()).append(";\n");
-
-            }
+            sb.append("  ").append(item.codegenerate()).append(";\n");
         }
 
-
-        return methodName + "(" + paramsStr + ") {\n" +
-                "  " + sb + "\n" +
-                "}";
+        return "function " + methodName + "(" + paramsStr + ") {\n" + sb + "}";
     }
 
-    /**
-     * @return
-     */
-    @Override
-    public String codegenerae() {
-        return "";
-    }
+
 
     @Override
     public String toString() {
@@ -73,7 +51,8 @@ public class MethodDefinitionNode extends ClassBodyEntry {
                 '}';
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof MethodDefinitionNode)) return false;
         MethodDefinitionNode that = (MethodDefinitionNode) o;
@@ -83,7 +62,8 @@ public class MethodDefinitionNode extends ClassBodyEntry {
                 Objects.equals(bodyItems, that.bodyItems);
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         return Objects.hash(methodName, parameters, returnType, bodyItems);
     }
 }

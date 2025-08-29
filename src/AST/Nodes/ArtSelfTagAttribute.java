@@ -12,13 +12,8 @@ public class ArtSelfTagAttribute extends CssAttribute {
         this.ids = ids != null ? ids : new ArrayList<>();
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public List<String> getIds() {
-        return ids;
-    }
+    public String getName() { return name; }
+    public List<String> getIds() { return ids; }
 
     @Override
     public String toString() {
@@ -39,11 +34,11 @@ public class ArtSelfTagAttribute extends CssAttribute {
     @Override
     public String code() {
         if (ids.isEmpty()) return "";
+
         if (name.equals("[(ngModel)]")) {
             return " id=\"" + String.join(" ", ids) + "\"";
         } else {
-            return"  " +name + "=\"" + String.join(" ", ids) + "\"";
+            return " " + name + "=\"" + String.join(" ", ids) + "\"";
         }
     }
-
 }

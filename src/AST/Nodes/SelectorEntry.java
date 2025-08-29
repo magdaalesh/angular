@@ -7,13 +7,8 @@ public class SelectorEntry extends MetadataEntry {
         this.selector = selector;
     }
 
-    public String getSelector() {
-        return selector;
-    }
-
-    public void setSelector(String selector) {
-        this.selector = selector;
-    }
+    public String getSelector() { return selector; }
+    public void setSelector(String selector) { this.selector = selector; }
 
     @Override
     public String toString() {
@@ -21,21 +16,13 @@ public class SelectorEntry extends MetadataEntry {
     }
 
     @Override
-    public String getValue() {
-        return selector;
-    }
+    public String getValue() { return selector; }
 
-    /**
-     * @return
-     */
+    @Override
+    public String getKey() { return "selector:"; }
+
     @Override
     public String codegenerate() {
-        return "";
-    }
-
-    @Override
-    public String getKey() {
-        return "selector:";
+        return selector != null ? selector : "";
     }
 }
-

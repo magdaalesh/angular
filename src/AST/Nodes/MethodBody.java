@@ -1,8 +1,14 @@
 package AST.Nodes;
+
 public abstract class MethodBody extends StatementNode {
 
-    public  String codegenerate(){
-        System.out.println("body:"+codegeneratee());
-        return codegeneratee();};
-    public  abstract String codegeneratee();
+    @Override
+    public String codegenerate() {
+
+        System.out.println("body: " + this.codegenerateInternal());
+        return this.codegenerateInternal();
+    }
+
+
+    protected abstract String codegenerateInternal();
 }

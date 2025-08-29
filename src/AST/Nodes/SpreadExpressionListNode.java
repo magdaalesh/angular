@@ -18,11 +18,9 @@ public final class SpreadExpressionListNode extends Expr {
     }
 
     @Override
-    public String codegenerae() {
-
+    protected String codegenerateInternal() {  // <-- تنفيذ الدالة abstract الصحيحة
         return items.stream()
                 .map(SpreadItem::codegenerate)
                 .collect(Collectors.joining(", "));
     }
-
 }

@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class TypeAnnotationNode {
-    private final String mainType;       // ID الأساسي
-    private final boolean array;         // [] بعده؟
-    private final List<String> unions;   // بعد PIPE (اختياري)
+    private final String mainType;       // نوع أساسي
+    private final boolean array;         // هل هو array؟
+    private final List<String> unions;   // union types بعد |
 
     public TypeAnnotationNode(String mainType, boolean array, List<String> unions) {
         this.mainType = mainType;
@@ -19,13 +19,15 @@ public class TypeAnnotationNode {
     public boolean isArray() { return array; }
     public List<String> getUnions() { return new ArrayList<>(unions); }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         String s = mainType + (array ? "[]" : "");
         if (!unions.isEmpty()) s += "|" + String.join("|", unions);
         return s;
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof TypeAnnotationNode)) return false;
         TypeAnnotationNode that = (TypeAnnotationNode) o;
@@ -34,7 +36,16 @@ public class TypeAnnotationNode {
                 Objects.equals(unions, that.unions);
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         return Objects.hash(mainType, array, unions);
+    }
+
+    // توليد الكود النوعي
+    public String codegenerate() {
+        String s = mainType;
+        if (array) s += "[]";
+        if (!unions.isEmpty()) s += "|" + String.join("|", unions);
+        return s;
     }
 }

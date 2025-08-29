@@ -31,25 +31,30 @@ public class DefinitionNode extends PropertyDefinitionNode {
 
     @Override
     public String toString() {
-        return "PropertyDefinitionNode{" +
+        return "DefinitionNode{" +
                 "name='" + name + '\'' +
                 ", optional=" + optional +
                 ", type='" + type + '\'' +
                 ", value=" + value +
                 '}';
     }
-
     @Override
     public String codegenerate() {
+        return codegenerae();
+    }
+    @Override
+    public String codegenerae() {
         StringBuilder sb = new StringBuilder();
 
-
+        // اسم الخاصية
         sb.append(name);
+
+        // إذا كانت اختيارية
         if (optional) {
             sb.append("?");
         }
 
-
+        // النوع (معلّق كـ تعليق لأنه JS ما عندو types)
         if (type != null && !type.isEmpty()) {
             sb.append(" /* type: ").append(type).append(" */");
         }
@@ -69,13 +74,4 @@ public class DefinitionNode extends PropertyDefinitionNode {
 
         return sb.toString();
     }
-
-    /**
-     * @return
-     */
-    @Override
-    public String codegenerae() {
-        return "";
-    }
-
 }

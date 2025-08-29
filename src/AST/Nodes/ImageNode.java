@@ -32,4 +32,10 @@ public class ImageNode extends HtmlNode {
         sb.append(">");
         return sb.toString();
     }
+
+    @Override
+    public String codegenerate() {
+        // HtmlNode يعتمد على codegenerate() الموجود في HtmlNode
+        return super.codegenerate();
+    }
 }

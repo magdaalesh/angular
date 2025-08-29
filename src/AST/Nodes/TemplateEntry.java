@@ -22,15 +22,12 @@ public class TemplateEntry extends MetadataEntry {
 
     @Override
     public String getValue() {
-        return template.toString();
+        return template != null ? template.toString() : "";
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+        return template != null ? template.code() : "";
     }
 
     @Override
@@ -38,5 +35,3 @@ public class TemplateEntry extends MetadataEntry {
         return "template:";
     }
 }
-
-

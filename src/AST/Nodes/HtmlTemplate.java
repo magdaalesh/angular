@@ -3,12 +3,11 @@ package AST.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HtmlTemplate {
-
+public class HtmlTemplate extends HtmlNode {
     private List<HtmlNode> children;
 
     public HtmlTemplate(List<HtmlNode> children) {
-        this.children = children;
+        this.children = children != null ? children : new ArrayList<>();
     }
 
     public HtmlTemplate() {
@@ -20,13 +19,13 @@ public class HtmlTemplate {
     }
 
     public void setChildren(List<HtmlNode> children) {
-        this.children = children;
+        this.children = children != null ? children : new ArrayList<>();
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("HtmlTemplate{");
-        if (children != null && !children.isEmpty()) {
+        if (!children.isEmpty()) {
             sb.append("\n");
             for (HtmlNode child : children) {
                 sb.append("  ").append(child.toString()).append("\n");
@@ -36,5 +35,12 @@ public class HtmlTemplate {
         return sb.toString();
     }
 
-
+    @Override
+    public String code() {
+        StringBuilder sb = new StringBuilder();
+        for (HtmlNode child : children) {
+            sb.append(child.code());
+        }
+        return sb.toString();
+    }
 }

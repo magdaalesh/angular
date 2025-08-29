@@ -17,7 +17,8 @@ public final class OperationCondNode extends ConditionNode {
     public List<String> getOps() { return ops; }
     public List<String> getIds() { return ids; }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         StringBuilder sb = new StringBuilder(firstId);
         for (int i = 0; i < ops.size() && i < ids.size(); i++) {
             sb.append(' ').append(ops.get(i)).append(' ').append(ids.get(i));
@@ -27,16 +28,11 @@ public final class OperationCondNode extends ConditionNode {
 
     @Override
     public String codegenerate() {
+        // توليد كود JS للعمليات
         StringBuilder sb = new StringBuilder(firstId);
-
         for (int i = 0; i < ops.size() && i < ids.size(); i++) {
-            sb.append(' ')
-                    .append(ops.get(i))
-                    .append(' ')
-                    .append(ids.get(i));
+            sb.append(' ').append(ops.get(i)).append(' ').append(ids.get(i));
         }
-
         return sb.toString();
     }
-
 }

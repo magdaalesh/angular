@@ -10,14 +10,17 @@ public class ImportNode extends Node {
         this.importList = importList;
         this.importPath = importPath;
     }
-    public ImportNode(){
+
+    public ImportNode() {
         this.importList = null;
         this.importPath = null;
     }
-    public ImportNode(List<String> importList){
+
+    public ImportNode(List<String> importList) {
         this.importList = importList;
     }
-    public ImportNode(String importPath){
+
+    public ImportNode(String importPath) {
         this.importPath = importPath;
     }
 
@@ -45,11 +48,18 @@ public class ImportNode extends Node {
                 '}';
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+        StringBuilder sb = new StringBuilder();
+        if (importList != null && !importList.isEmpty()) {
+            sb.append("import { ").append(String.join(", ", importList)).append(" }");
+        } else {
+            sb.append("import ");
+        }
+        if (importPath != null && !importPath.isEmpty()) {
+            sb.append(" from '").append(importPath).append("'");
+        }
+        sb.append(";");
+        return sb.toString();
     }
 }

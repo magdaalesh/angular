@@ -3,15 +3,20 @@ package AST.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConstructorNode extends ClassBodyEntry  {
+public class ConstructorNode extends ClassBodyEntry {
     private final List<ConstructorParam> parameters = new ArrayList<>();
     private final List<Node> body = new ArrayList<>();
 
-    public void addParam(ConstructorParam p) { if (p != null) parameters.add(p); }
-    public void addBodyNode(Node n)         { if (n != null) body.add(n); }
+    public void addParam(ConstructorParam p) {
+        if (p != null) parameters.add(p);
+    }
+
+    public void addBodyNode(Node n) {
+        if (n != null) body.add(n);
+    }
 
     public List<ConstructorParam> getParameters() { return parameters; }
-    public List<Node> getBody()                   { return body; }
+    public List<Node> getBody() { return body; }
 
     @Override
     public String toString() {
@@ -21,8 +26,10 @@ public class ConstructorNode extends ClassBodyEntry  {
                 '}';
     }
 
+
+
     @Override
-    public String codegenerae() {
+    public String codegenerate() {
         StringBuilder js = new StringBuilder();
 
         // توليد قائمة المعاملات
@@ -35,14 +42,11 @@ public class ConstructorNode extends ClassBodyEntry  {
         // بدء الـ constructor
         js.append("constructor(").append(params).append(") {\n");
 
-
         for (Node n : body) {
             js.append("  ").append(n.codegenerate()).append("\n");
         }
 
         js.append("}");
-
         return js.toString();
     }
-
 }

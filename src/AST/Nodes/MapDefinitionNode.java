@@ -12,13 +12,8 @@ public class MapDefinitionNode extends PropertyDefinitionNode {
         this.mapEntries = new LinkedHashMap<>();
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public Map<String, Value> getMapEntries() {
-        return mapEntries;
-    }
+    public String getName() { return name; }
+    public Map<String, Value> getMapEntries() { return mapEntries; }
 
     public void addEntry(String key, Value value) {
         mapEntries.put(key, value);
@@ -35,7 +30,6 @@ public class MapDefinitionNode extends PropertyDefinitionNode {
     @Override
     public String codegenerate() {
         StringBuilder sb = new StringBuilder();
-
         sb.append(name).append(" = {");
 
         if (mapEntries != null && !mapEntries.isEmpty()) {
@@ -46,21 +40,13 @@ public class MapDefinitionNode extends PropertyDefinitionNode {
                 Value value = entry.getValue();
 
                 sb.append("  ").append(key).append(": ");
-
                 if (value != null) {
-                    Object valObj = value.codegenerate();
-                    if (valObj instanceof String) {
-                        sb.append("\"").append(valObj).append("\"");
-                    } else {
-                        sb.append(valObj);
-                    }
+                    sb.append(value.codegenerate());
                 } else {
                     sb.append("null");
                 }
 
-                if (i < mapEntries.size() - 1) {
-                    sb.append(",");
-                }
+                if (i < mapEntries.size() - 1) sb.append(",");
                 sb.append("\n");
                 i++;
             }
@@ -70,12 +56,8 @@ public class MapDefinitionNode extends PropertyDefinitionNode {
         return sb.toString();
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerae() {
         return "";
     }
-
 }

@@ -9,23 +9,14 @@ public class SimpleAttributeNode extends HtmlAttribute {
         this.value = value;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getValue() {
-        return value;
-    }
+    public String getName() { return name; }
+    public String getValue() { return value; }
 
     @Override
-    public String getname() {
-        return name;
-    }
+    public String getname() { return name; }
 
     @Override
-    public String getvalue() {
-        return value;
-    }
+    public String getvalue() { return value; }
 
     @Override
     public String code() {
@@ -34,9 +25,6 @@ public class SimpleAttributeNode extends HtmlAttribute {
 
     @Override
     public String toString() {
-        return "SimpleAttributeNode{" +
-                "name='" + name + '\'' +
-                ", value='" + value + '\'' +
-                '}';
+        return "SimpleAttributeNode{name='" + name + "', value='" + value + "'}";
     }
 }

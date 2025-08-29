@@ -15,38 +15,26 @@ public final class ReturnStatement extends MethodBody {
     public boolean hasReturn() { return hasReturn; }
     public List<Expr> getExpressions() { return Collections.unmodifiableList(expressions); }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return (hasReturn ? "return " : "") + expressions;
     }
 
     @Override
-    public String codegeneratee() {
+    protected String codegenerateInternal() {
         StringBuilder sb = new StringBuilder();
 
         if (hasReturn) {
             sb.append("return");
-            if (!expressions.isEmpty()) {
-                sb.append(" ");
-            }
+            if (!expressions.isEmpty()) sb.append(" ");
         }
 
         for (int i = 0; i < expressions.size(); i++) {
             Expr expr = expressions.get(i);
             sb.append(expr.codegenerate());
-
-            if (i < expressions.size() - 1) {
-                sb.append(", ");
-            }
+            if (i < expressions.size() - 1) sb.append(", ");
         }
-
-
-
 
         return sb.toString();
     }
-
-
-
-
-
 }

@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public final class ValueExpr extends Expr {
     private final String constName;
-    private final Value  value;
+    private final Value value;
 
     public ValueExpr(String constName, Value value) {
         this.constName = constName;
@@ -12,26 +12,18 @@ public final class ValueExpr extends Expr {
     }
 
     public String getConstName() { return constName; }
-    public Value  getValue()     { return value; }
+    public Value getValue() { return value; }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return constName != null ? ("const " + constName + " = " + value) : value.toString();
     }
 
-
-   /* @Override
-    public String codegenerae() {
-
+    @Override
+    protected String codegenerateInternal() {
         if (constName != null && !constName.isEmpty()) {
-            return "const " + constName + " = " + value.codegenerate();
+            return "const " + constName + " = " + value.codegenerate() + ";";
         }
-
         return value.codegenerate();
-    }*/
-   @Override
-   public String codegenerae() {
-       return value.codegenerate();  // بدون شروط
-   }
-
-
+    }
 }

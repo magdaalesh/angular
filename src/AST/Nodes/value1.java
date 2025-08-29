@@ -1,6 +1,6 @@
 package AST.Nodes;
 
-public class value1 extends PropertyDefinitionNode{
+public class value1 extends PropertyDefinitionNode {
     private String name;
     private String type;
     private boolean isOptional;
@@ -20,38 +20,14 @@ public class value1 extends PropertyDefinitionNode{
         this.defaultValue = defaultValue;
     }
 
-    // Getter و Setter
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public boolean isOptional() {
-        return isOptional;
-    }
-
-    public void setOptional(boolean optional) {
-        isOptional = optional;
-    }
-
-    public Value getDefaultValue() {
-        return defaultValue;
-    }
-
-    public void setDefaultValue(Value defaultValue) {
-        this.defaultValue = defaultValue;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+    public boolean isOptional() { return isOptional; }
+    public void setOptional(boolean optional) { isOptional = optional; }
+    public Value getDefaultValue() { return defaultValue; }
+    public void setDefaultValue(Value defaultValue) { this.defaultValue = defaultValue; }
 
     @Override
     public String toString() {
@@ -62,39 +38,29 @@ public class value1 extends PropertyDefinitionNode{
                 ", defaultValue=" + defaultValue +
                 '}';
     }
-
     @Override
     public String codegenerate() {
+        return codegenerae();
+    }
+    @Override
+    public String codegenerae() {
         StringBuilder sb = new StringBuilder();
-   sb.append(name);
+        sb.append(name);
 
+        if (isOptional) {
+            sb.append("?");
+        }
 
         if (type != null && !type.isEmpty()) {
             sb.append(" /* type: ").append(type).append(" */");
         }
 
-
         if (defaultValue != null) {
-            Object valObj = defaultValue.codegenerate();
-            sb.append(" = ");
-            if (valObj instanceof String) {
-                sb.append("\"").append(valObj).append("\"");
-            } else {
-                sb.append(valObj);
-            }
+            sb.append(" = ").append(defaultValue.codegenerate());
         }
 
         sb.append(";");
-
         return sb.toString();
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public String codegenerae() {
-        return "";
     }
 
 }

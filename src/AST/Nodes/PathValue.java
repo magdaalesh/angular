@@ -13,16 +13,11 @@ public class PathValue extends Value {
 
     @Override
     public String toString() {
-        return "PathValue{" +
-                "path='" + path + '\'' +
-                '}';
+        return "PathValue{" + "path='" + path + '\'' + '}';
     }
 
-    /**
-     * @return
-     */
     @Override
-    public String codegeneratre() {
-        return "";
+    protected String codegenerateInternal() {
+        return path != null ? path : "";
     }
 }

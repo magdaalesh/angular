@@ -6,6 +6,7 @@ import java.util.List;
 public class ImageAttribute extends HtmlAttribute {
     private String name;
     private List<String> ids;
+
     public ImageAttribute(String name, List<String> ids) {
         this.name = name;
         this.ids = ids != null ? ids : new ArrayList<>();
@@ -31,13 +32,13 @@ public class ImageAttribute extends HtmlAttribute {
 
     @Override
     public String code() {
-        String value = String.join("/", getvalue());
+        String value = String.join("/", ids);
         return name + "=\"" + value + "\"";
     }
 
     @Override
     public String toString() {
-        return "ImgAttributeNode{" +
+        return "ImageAttribute{" +
                 "name='" + name + '\'' +
                 ", ids=" + ids +
                 '}';

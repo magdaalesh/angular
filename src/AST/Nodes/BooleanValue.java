@@ -7,9 +7,7 @@ public class BooleanValue extends Value {
         this.value = value;
     }
 
-    public boolean getValue() {
-        return value;
-    }
+    public boolean getValue() { return value; }
 
     @Override
     public String toString() {
@@ -18,11 +16,13 @@ public class BooleanValue extends Value {
                 '}';
     }
 
-
-
+    @Override
+    public String codegenerate() {
+        return Boolean.toString(value);
+    }
 
     @Override
-    public String codegeneratre() {
-        return Boolean.toString(value);
+    protected String codegenerateInternal() {
+        return codegenerate();
     }
 }

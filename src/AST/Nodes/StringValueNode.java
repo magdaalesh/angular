@@ -21,20 +21,12 @@ public class StringValueNode extends Value {
     }
 
     @Override
-    public String codegeneratre() {
+    protected String codegenerateInternal() {
         StringBuilder sb = new StringBuilder();
-
         for (int i = 0; i < parts.size(); i++) {
-            String part = parts.get(i);
-            sb.append(part);
-
-
-            if (i < parts.size() - 1) {
-                sb.append(" ");
-            }
+            sb.append(parts.get(i));
+            if (i < parts.size() - 1) sb.append(" ");
         }
-
         return sb.toString();
     }
-
 }

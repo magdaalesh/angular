@@ -10,5 +10,7 @@ public abstract class Expr extends MethodBody {
     }
 
 
+    public abstract String codegenerae();
+
     protected abstract String codegenerateInternal();
 }

@@ -50,16 +50,7 @@ public class ImportNode extends Node {
 
     @Override
     public String codegenerate() {
-        StringBuilder sb = new StringBuilder();
-        if (importList != null && !importList.isEmpty()) {
-            sb.append("import { ").append(String.join(", ", importList)).append(" }");
-        } else {
-            sb.append("import ");
-        }
-        if (importPath != null && !importPath.isEmpty()) {
-            sb.append(" from '").append(importPath).append("'");
-        }
-        sb.append(";");
-        return sb.toString();
+
+        return ("");
     }
 }

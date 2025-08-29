@@ -42,11 +42,7 @@ public class InterfaceNode extends Node {
 
     @Override
     public String codegenerate() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("interface ").append(interfaceName);
-        if (properties != null) {
-            sb.append(" ").append(properties.codegenerate());
-        }
-        return sb.toString();
+
+        return ("");
     }
 }

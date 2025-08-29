@@ -18,6 +18,11 @@ public final class ArrowExpr extends Expr {
     }
 
     @Override
+    public String codegenerae() {
+        return "";
+    }
+
+    @Override
     protected String codegenerateInternal() {
         return param + " => " + body.codegenerate();
     }

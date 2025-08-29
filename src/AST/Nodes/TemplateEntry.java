@@ -27,7 +27,7 @@ public class TemplateEntry extends MetadataEntry {
 
     @Override
     public String codegenerate() {
-        return template != null ? template.code() : "";
+        return "// templateUrl: ./product-list.html";
     }
 
     @Override

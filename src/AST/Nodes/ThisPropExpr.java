@@ -14,6 +14,11 @@ public final class ThisPropExpr extends Expr {
     @Override
     public String toString() { return name; }
 
+    @Override
+    public String codegenerae() {
+        return "";
+    }
+
     // هذا الذي يرثه Expr
     @Override
     public String codegenerateInternal() {

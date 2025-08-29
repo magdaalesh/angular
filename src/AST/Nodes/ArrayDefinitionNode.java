@@ -62,4 +62,9 @@ public class ArrayDefinitionNode extends ClassBodyEntry {
 
         return sb.toString();
     }
+
+    @Override
+    public String codegenerae() {
+        return "";
+    }
 }

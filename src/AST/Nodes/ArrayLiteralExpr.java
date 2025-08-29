@@ -20,6 +20,11 @@ public final class ArrayLiteralExpr extends Expr {
     }
 
     @Override
+    public String codegenerae() {
+        return "";
+    }
+
+    @Override
     protected String codegenerateInternal() {
         StringBuilder sb = new StringBuilder();
         sb.append("[");  // افتتح المصفوفة

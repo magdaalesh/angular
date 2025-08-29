@@ -1,14 +1,15 @@
 package AST.Nodes;
 
 import java.util.List;
+import java.util.Objects;
 
-public class CallExprNode extends Expr {
-    private String functionName;
-    private List<Expr> arguments;
+public final class CallExprNode extends Expr {
+    private final String functionName;
+    private final List<Expr> arguments;
 
     public CallExprNode(String functionName, List<Expr> arguments) {
-        this.functionName = functionName;
-        this.arguments = arguments;
+        this.functionName = Objects.requireNonNull(functionName, "functionName");
+        this.arguments    = arguments;
     }
 
     public String getFunctionName() { return functionName; }
@@ -16,23 +17,86 @@ public class CallExprNode extends Expr {
 
     @Override
     public String toString() {
-        return "CallExprNode{" + "functionName='" + functionName + '\'' + ", arguments=" + arguments + '}';
+        return "CallExprNode{functionName='" + functionName + "', arguments=" + arguments + '}';
+    }
+
+    @Override
+    public String codegenerae() {
+        // معالجة خاصة للـ navigate
+        if (functionName.endsWith(".navigate")) {
+            return generateNavigateCall();
+        }
+        // الاستدعاء العادي
+        StringBuilder sb = new StringBuilder();
+        sb.append(functionName).append("(");
+        if (arguments != null && !arguments.isEmpty()) {
+            for (int i = 0; i < arguments.size(); i++) {
+                Expr arg = arguments.get(i);
+                if (arg == null) continue;
+                String rendered = arg.codegenerate();
+                if (rendered == null) rendered = "";
+                sb.append(rendered.trim());
+                if (i < arguments.size() - 1) sb.append(", ");
+            }
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
+    // ---------- helpers ----------
+    private String generateNavigateCall() {
+        if (arguments == null || arguments.isEmpty()) {
+            return functionName + "([])";
+        }
+
+        String first = safe(arguments.get(0));
+
+        // لو أصلاً مصفوفة، استخدم الاستدعاء العادي
+        if (first.startsWith("[") && first.endsWith("]")) {
+            return normalCall();
+        }
+
+        String route = stripQuotes(first);
+        if (!route.startsWith("/")) route = "/" + route;
+
+        String routeArray;
+        if (arguments.size() >= 2) {
+            String second = safe(arguments.get(1));
+            routeArray = "['" + route + "', " + second + "]";
+        } else {
+            routeArray = "['" + route + "']";
+        }
+        return functionName + "(" + routeArray + ")";
+    }
+
+    private String normalCall() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(functionName).append("(");
+        for (int i = 0; i < arguments.size(); i++) {
+            sb.append(safe(arguments.get(i)));
+            if (i < arguments.size() - 1) sb.append(", ");
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
+    private static String safe(Expr e) {
+        if (e == null) return "";
+        String s = e.codegenerate();
+        return s == null ? "" : s.trim();
+    }
+
+    private static String stripQuotes(String s) {
+        if (s == null) return "";
+        String t = s.trim();
+        if ((t.startsWith("\"") && t.endsWith("\"")) || (t.startsWith("'") && t.endsWith("'"))) {
+            return t.substring(1, t.length() - 1);
+        }
+        return t;
     }
 
     @Override
     protected String codegenerateInternal() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(functionName).append("(");
-
-        if (arguments != null && !arguments.isEmpty()) {
-            for (int i = 0; i < arguments.size(); i++) {
-                Expr arg = arguments.get(i);
-                sb.append(arg.codegenerate());
-                if (i < arguments.size() - 1) sb.append(", ");
-            }
-        }
-
-        sb.append(")");
-        return sb.toString();
+        return "";
     }
 }

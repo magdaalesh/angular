@@ -20,6 +20,11 @@ public final class ValueExpr extends Expr {
     }
 
     @Override
+    public String codegenerae() {
+        return "";
+    }
+
+    @Override
     protected String codegenerateInternal() {
         if (constName != null && !constName.isEmpty()) {
             return "const " + constName + " = " + value.codegenerate() + ";";

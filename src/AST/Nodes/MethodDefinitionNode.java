@@ -14,32 +14,51 @@ public class MethodDefinitionNode extends ClassBodyEntry {
                                 List<ParameterNode> parameters,
                                 TypeAnnotationNode returnType,
                                 List<MethodBody> bodyItems) {
-        this.methodName = methodName;
-        this.parameters = parameters;
-        this.returnType = returnType;
-        this.bodyItems = bodyItems;
+        this.methodName  = Objects.requireNonNull(methodName, "methodName");
+        this.parameters  = parameters;
+        this.returnType  = returnType;
+        this.bodyItems   = bodyItems;
     }
 
-    public String getMethodName() { return methodName; }
-    public List<ParameterNode> getParameters() { return parameters; }
+    public String getMethodName()             { return methodName; }
+    public List<ParameterNode> getParameters(){ return parameters; }
     public TypeAnnotationNode getReturnType() { return returnType; }
-    public List<MethodBody> getBodyItems() { return bodyItems; }
+    public List<MethodBody> getBodyItems()    { return bodyItems; }
 
     @Override
     public String codegenerate() {
         String paramsStr = (parameters == null || parameters.isEmpty())
                 ? ""
-                : parameters.stream().map(ParameterNode::codegenerate).collect(Collectors.joining(", "));
+                : parameters.stream()
+                .map(ParameterNode::codegenerate)
+                .collect(Collectors.joining(", "));
 
-        StringBuilder sb = new StringBuilder();
-        for (MethodBody item : bodyItems) {
-            sb.append("  ").append(item.codegenerate()).append(";\n");
+        StringBuilder bodySb = new StringBuilder();
+        if (bodyItems != null) {
+            for (MethodBody item : bodyItems) {
+                if (item == null) continue;
+
+                String line = item.codegenerate();
+                if (line == null) continue;
+
+                line = line.trim();
+                if (line.isEmpty()) continue; // 👈 أهم سطر: لا تضيف شيء إذا فاضي
+
+                boolean needsSemicolon = !(line.endsWith(";") || line.endsWith("{") || line.endsWith("}"));
+                if (needsSemicolon) line += ";";
+
+                bodySb.append("  ").append(line).append("\n");
+            }
         }
 
-        return "function " + methodName + "(" + paramsStr + ") {\n" + sb + "}";
+        return methodName + "(" + paramsStr + ") {\n" + bodySb + "}";
     }
 
 
+    @Override
+    public String codegenerae() {
+        return "";
+    }
 
     @Override
     public String toString() {
@@ -49,21 +68,5 @@ public class MethodDefinitionNode extends ClassBodyEntry {
                 ", returnType=" + returnType +
                 ", bodyItems=" + bodyItems +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MethodDefinitionNode)) return false;
-        MethodDefinitionNode that = (MethodDefinitionNode) o;
-        return Objects.equals(methodName, that.methodName) &&
-                Objects.equals(parameters, that.parameters) &&
-                Objects.equals(returnType, that.returnType) &&
-                Objects.equals(bodyItems, that.bodyItems);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(methodName, parameters, returnType, bodyItems);
     }
 }

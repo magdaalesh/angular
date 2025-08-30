@@ -8,7 +8,7 @@ public class CallExprNode extends Expr {
 
     public CallExprNode(String functionName, List<Expr> arguments) {
         this.functionName = functionName;
-        this.arguments = arguments;
+        this.arguments = arguments != null ? arguments : List.of();
     }
 
     public String getFunctionName() {
@@ -26,24 +26,42 @@ public class CallExprNode extends Expr {
                 ", arguments=" + arguments +
                 '}';
     }
+
     @Override
     public String codegenerae() {
+        // ✅ Special case: convert navigate to window.location.href
+        if (functionName.contains("navigate")) {
+            String page = "";
+            String param = null;
+
+            if (!arguments.isEmpty()) {
+                // أول argument يعتبر اسم الصفحة
+                page = arguments.get(0).codegenerate().replaceAll("[\\[\\]'\" ]", "");
+
+
+                if (arguments.size() > 1) {
+                    param = arguments.get(1).codegenerate();
+                }
+            }
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("window.location.href = \"/").append(page).append(".html\"");
+            if (param != null && !param.isEmpty()) {
+                sb.append(" + \"?id=\" + encodeURIComponent(").append(param).append(")");
+            }
+
+            return sb.toString();
+        }
+
         StringBuilder sb = new StringBuilder();
         sb.append(functionName).append("(");
 
-        if (arguments != null && !arguments.isEmpty()) {
-            for (int i = 0; i < arguments.size(); i++) {
-                Expr arg = arguments.get(i);
-                // استدعاء تابع codegenerate لكل argument
-                sb.append(arg.codegenerate());
-                if (i < arguments.size() - 1) {
-                    sb.append(", ");
-                }
-            }
+        for (int i = 0; i < arguments.size(); i++) {
+            sb.append(arguments.get(i).codegenerate());
+            if (i < arguments.size() - 1) sb.append(", ");
         }
 
         sb.append(")");
         return sb.toString();
     }
-
 }

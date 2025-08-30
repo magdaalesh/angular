@@ -68,7 +68,7 @@ content : htmlpage                                               #htmlpageconten
          |ID+                                                     #stringdata
          |(ID COLON )* LCURLY LCURLY ID(DOT ID )* RCURLY RCURLY  #vardata
          ;
-img: TAG_OPEN IMG imgarti+ csselement* TAG_CLOSE;
+    img: TAG_OPEN IMG imgarti+ csselement* TAG_CLOSE;
 imgarti:LBRACK IMG_ATTRIBUTE RBRACK EQUAL QUOTE  ID (DOT ID)* QUOTE #atbuterimg
         | ATTRBUTE EQUAL QUOTE ID QUOTE #arrti ;
 classDefinition: EXPORT CLASS ID (IMPLEMENT (ID|IMPORTLIST))? LCURLY classBody* RCURLY;
@@ -104,17 +104,13 @@ arrayList: LCURLY ID COLON value (COMMA ID COLON value)* RCURLY COMMA*   #includ
 constructor: CONSTRUCTOR LPAREN parameterListconstructer* RPAREN LCURLY methodBody* RCURLY ;
 parameterListconstructer: MODIFIER ID COLON (ID | IMPORTLIST) COMMA*;
 
-methodDefinition
-    : ID LPAREN parameterList* RPAREN (COLON typeAnnotation)? LCURLY methodBody* RCURLY
-    ;
+methodDefinition: ID LPAREN parameterList* RPAREN (COLON typeAnnotation)? LCURLY methodBody* RCURLY;
 typeAnnotation
     : ID (LBRACK RBRACK)? (PIPE ID)?
     ;
 parameterList: ID COLON ID? (TYPE| TAG_OPEN ID COMMA QUOTE ID QUOTE  TAG_CLOSE) COMMA? #type11
              | value  #type21;
-methodBody
-    :
-      value                   #valuedata
+methodBody :value                   #valuedata
      |calcualtecolor          #calcolor
      | objectdefinetion       #object
     | ID EQUAL value SEMI       #var

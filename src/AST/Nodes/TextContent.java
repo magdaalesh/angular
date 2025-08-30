@@ -1,14 +1,8 @@
 package AST.Nodes;
 
-public class TextContent extends Content {
-    /**
-     * @return
-     */
-    @Override
-    public String codegenerate() {
-        return text;
-    }
+import java.util.Collections;
 
+public class TextContent extends Value {
     private String text;
 
     public TextContent(String text) {
@@ -20,9 +14,18 @@ public class TextContent extends Content {
     }
 
     @Override
+    public Expr asExpr() {
+        // رجّعها كـ String literal في التعبير
+        return new ValueExpr(null,new  IdValue(Collections.singletonList(text)));
+    }
+
+    @Override
+    public String codegeneratre() {
+        return "\"" + text + "\""; // يولّدها كسلسلة نصية في JS
+    }
+
+    @Override
     public String toString() {
-        return "TextContent{" +
-                "text='" + text + '\'' +
-                '}';
+        return "TextContent{" + text + "}";
     }
 }

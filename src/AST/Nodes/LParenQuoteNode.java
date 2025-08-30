@@ -10,8 +10,8 @@ public class LParenQuoteNode extends Value {
 
     public LParenQuoteNode(String functionName, List<String> pathIds, List<String> extraIds) {
         this.functionName = functionName;
-        this.pathIds = pathIds;
-        this.extraIds = extraIds;
+        this.pathIds = pathIds != null ? pathIds : new ArrayList<>();
+        this.extraIds = extraIds != null ? extraIds : new ArrayList<>();
     }
 
     public String getFunctionName() {
@@ -52,24 +52,43 @@ public class LParenQuoteNode extends Value {
 
     @Override
     public String codegeneratre() {
+        // ✅ special case for navigate
+        if (functionName.equals("this.router.navigate")) {
+            String page = "";
+            String param = null;
+
+            if (!pathIds.isEmpty()) {
+
+                page = pathIds.get(0).replaceAll("[\\[\\]'\" ]", "");
+            }
+
+            if (!extraIds.isEmpty()) {
+
+                param = extraIds.get(0);
+            }
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("window.location.href = \"/").append(page).append(".html\"");
+            if (param != null && !param.isEmpty()) {
+                sb.append(" + \"?id=\" + encodeURIComponent(").append(param).append(")");
+            }
+
+            return sb.toString();
+        }
+
+        // ✅ default case لأي دالة عادية
         StringBuilder sb = new StringBuilder();
         sb.append(functionName).append("(");
 
         List<String> allIds = new ArrayList<>();
-        if (pathIds != null) allIds.addAll(pathIds);
-        if (extraIds != null) allIds.addAll(extraIds);
+        allIds.addAll(pathIds);
+        allIds.addAll(extraIds);
 
         for (int i = 0; i < allIds.size(); i++) {
-            String id = allIds.get(i);
-
-            sb.append("\"").append(id).append("\"");
+            sb.append(allIds.get(i));
             if (i < allIds.size() - 1) sb.append(", ");
         }
-
-        sb.append(")");
+        sb.append(");");
         return sb.toString();
     }
-
 }
-
-

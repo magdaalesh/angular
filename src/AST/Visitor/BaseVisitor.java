@@ -743,22 +743,24 @@ String filename ;
     }
     @Override
     public Object visitLparen(myParser.LparenContext ctx) {
-        String name = ctx.ID(0).getText();
-        List<Object> params = new ArrayList<>();
-
-        if (ctx.parameterList() != null) {
-            for (int i = 0; i < ctx.parameterList().size(); i++) {
-                params.add(visit(ctx.parameterList(i)));
-            }
-        }
+        String funcName = ctx.ID(0).getText(); // أول ID هو اسم الدالة
+        List<Node> args = new ArrayList<>();
 
 
         for (int i = 1; i < ctx.ID().size(); i++) {
-            params.add(ctx.ID(i).getText());
+            args.add(new TextContent(ctx.ID(i).getText()));
         }
 
-        return new LParenNode(name, params);
+
+        if (ctx.parameterList() != null) {
+            for (myParser.ParameterListContext paramCtx : ctx.parameterList()) {
+                args.add((Node) visit(paramCtx));
+            }
+        }
+
+        return new LParenNode(funcName, args);
     }
+
     @Override
     public Object visitLpranqoute(myParser.LpranqouteContext ctx) {
         String functionName = ctx.ID(0).getText();

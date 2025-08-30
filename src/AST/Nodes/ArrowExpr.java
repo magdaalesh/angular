@@ -17,10 +17,6 @@ public final class ArrowExpr extends Expr {
         return param + " => " + body;
     }
 
-    @Override
-    public String codegenerae() {
-        return param + " => " + body.codegenerate();
-    }
 
 
     @Override

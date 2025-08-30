@@ -58,10 +58,7 @@ public final class ObjectDefinitionStmt extends MethodBody {
     }
 
 
-    @Override
-    public String codegeneratee() {
-        return "";
-    }
+
 
 
 }

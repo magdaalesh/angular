@@ -20,7 +20,7 @@ public class TextContent extends Value {
     }
 
     @Override
-    public String codegeneratre() {
+    public String codegenerateInternal() {
         return "\"" + text + "\""; // يولّدها كسلسلة نصية في JS
     }
 

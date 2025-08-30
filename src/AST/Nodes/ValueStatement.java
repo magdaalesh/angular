@@ -29,8 +29,5 @@ public final class ValueStatement extends MethodBody {
         return (code == null || code.isBlank()) ? ";" : (code + ";");
     }
 
-    @Override
-    public String codegeneratee() {
-        return "";
-    }
+
 }

@@ -1,6 +1,6 @@
 package AST.Nodes;
 
-import java.util.List;
+import java.util.*;
 
 public class CallExprNode extends Expr {
     private String functionName;
@@ -27,8 +27,13 @@ public class CallExprNode extends Expr {
                 '}';
     }
 
+    /**
+     * @return
+     */
+  
+
     @Override
-    public String codegenerae() {
+    public String codegenerateInternal() {
         // ✅ Special case: convert navigate to window.location.href
         if (functionName.contains("navigate")) {
             String page = "";

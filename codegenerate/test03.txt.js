@@ -15,11 +15,11 @@ class AddProductComponent {
   
   addProduct() {
     if (!this.name || !this.image || !this.description) {
-    alert("ParameterNode{name=''Pleasefillallfields.'', type='null'}");
+    alert('Pleasefillallfields.');;
     return;
   }
-    ;
-    ;
+    this.productService.add(const id = name;, const id = this.name;, const id = image;, const id = this.image;, const id = description;, const id = this.description;);
+    window.location.href = "/.html";
   }
 }
 

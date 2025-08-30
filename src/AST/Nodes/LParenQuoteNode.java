@@ -50,8 +50,10 @@ public class LParenQuoteNode extends Value {
         return new CallExprNode(functionName, args);
     }
 
+
+
     @Override
-    public String codegeneratre() {
+    public String codegenerateInternal() {
         // ✅ special case for navigate
         if (functionName.equals("this.router.navigate")) {
             String page = "";

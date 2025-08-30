@@ -19,16 +19,7 @@ public final class ArrayLiteralExpr extends Expr {
                 .collect(Collectors.joining(", ")) + "]";
     }
 
-    @Override
-    public String codegenerae() {
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < items.size(); i++) {
-            sb.append(items.get(i).codegenerate());
-            if (i < items.size() - 1) sb.append(", ");
-        }
-        sb.append("]");
-        return sb.toString();
-    }
+
 
 
     @Override

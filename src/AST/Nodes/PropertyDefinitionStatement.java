@@ -26,8 +26,4 @@ public final class PropertyDefinitionStatement extends MethodBody {
     }
 
 
-    @Override
-    public String codegeneratee() {
-        return "";
-    }
 }

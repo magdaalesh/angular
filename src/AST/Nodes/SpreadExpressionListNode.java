@@ -17,10 +17,7 @@ public final class SpreadExpressionListNode extends Expr {
         return items.stream().map(Object::toString).collect(Collectors.joining(", "));
     }
 
-    @Override
-    public String codegenerae() {
-        return items.stream().map(SpreadItem::codegenerate).collect(java.util.stream.Collectors.joining(", "));
-    }
+
 
 
     @Override

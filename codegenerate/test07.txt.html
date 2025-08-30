@@ -121,5 +121,17 @@ Save</button></div><br />
 <button  onclick="saveChanges()">Save</button></div><br />
 </div>
 
+<div ngIf="product"><h2>{{product.name}}</h2><img src="product.image" width="200"><p>{{product.description}}</p><button  onclick="toggleEdit()">Edit</button><div ngIf="isEditing"><h3>EditProduct</h3><input type="text" id="edited.name" placeholder="Name" />
+<input type="text" id="edited.image" placeholder="Image path e.g. assets product4.jpg Image path e.g. assets product4.jpg" />
+<textarea  id="edited.description"  placeholder="Description"></textarea><br />
+<button  onclick="saveChanges()">Save</button></div><br />
+</div>
+
+<div ngIf="product"><h2>{{product.name}}</h2><img src="product.image" width="200"><p>{{product.description}}</p><button  onclick="toggleEdit()">Edit</button><div ngIf="isEditing"><h3>EditProduct</h3><input type="text" id="edited.name" placeholder="Name" />
+<input type="text" id="edited.image" placeholder="Image path e.g. assets product4.jpg Image path e.g. assets product4.jpg" />
+<textarea  id="edited.description"  placeholder="Description"></textarea><br />
+<button  onclick="saveChanges()">Save</button></div><br />
+</div>
+
 </body>
 </html>

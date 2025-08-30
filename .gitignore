@@ -27,3 +27,10 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+# Ignore generated parser files
+gen/
+
+# Ignore generated HTML/JS files
+codegenerate/*.html
+codegenerate/*.js

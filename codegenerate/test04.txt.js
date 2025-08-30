@@ -36,9 +36,9 @@ class ProductDetailsComponent {
   }
   saveChanges() {
     if (this.product) {
-    this.productService.update("ParameterNode{name='this.product.id,', type='null'}", "this.edited");
+    this.productService.update("this.edited", this.product.id,);;
     this.isEditing = false;
-    this.router.navigate();
+    window.location.href = "/.html";
   }
   }
 }

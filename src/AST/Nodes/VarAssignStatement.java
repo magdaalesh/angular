@@ -24,8 +24,4 @@ public final class VarAssignStatement extends MethodBody {
     }
 
 
-    @Override
-    public String codegeneratee() {
-        return "";
-    }
 }

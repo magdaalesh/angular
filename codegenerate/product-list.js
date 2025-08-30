@@ -16,7 +16,7 @@ class ProductService {
   }
   add(product) {
     const newProduct = { id:this.nextId++, ...product }
-    ;
+    this.products.push(this.products.push, newProduct);
   }
   deleteById(id) {
     this.products = this.products.filter(p => p.id !== id);

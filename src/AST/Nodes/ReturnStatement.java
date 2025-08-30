@@ -35,8 +35,5 @@ public final class ReturnStatement extends MethodBody {
     }
 
 
-    @Override
-    public String codegeneratee() {
-        return "";
-    }
+
 }

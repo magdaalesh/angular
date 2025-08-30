@@ -38,8 +38,5 @@ public final class IfStatementNode extends MethodBody {
         return sb.toString();
     }
 
-    @Override
-    public String codegeneratee() {
-        return "";
-    }
+
 }

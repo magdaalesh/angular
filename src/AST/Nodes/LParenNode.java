@@ -23,20 +23,11 @@ public class LParenNode extends Value {
                 '}';
     }
 
+    /**
+     * @return
+     */
     @Override
-    public Expr asExpr() {
-        List<Expr> args = new ArrayList<>();
-        args.add(new ValueExpr(null, new IdValue(List.of(getName()))));
-
-        for (Node arg : arguments) {
-            args.add(arg.asExpr());
-        }
-
-        return new CallExprNode(name, args);
-    }
-
-    @Override
-    public String codegeneratre() {
+    protected String codegenerateInternal() {
         // تحويل navigate تلقائيًا
         if (name.contains("navigate")) {
             String page = "";
@@ -73,4 +64,19 @@ public class LParenNode extends Value {
         sb.append(");");
         return sb.toString();
     }
+
+    @Override
+    public Expr asExpr() {
+        List<Expr> args = new ArrayList<>();
+        args.add(new ValueExpr(null, new IdValue(List.of(getName()))));
+
+        for (Node arg : arguments) {
+            args.add(arg.asExpr());
+        }
+
+        return new CallExprNode(name, args);
+    }
+
+
+
 }

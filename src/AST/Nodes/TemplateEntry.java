@@ -27,8 +27,10 @@ public class TemplateEntry extends MetadataEntry {
 
     @Override
     public String codegenerate() {
+        // لا ترجّع HTML ولا نص حر، فقط تعليق
         return "// templateUrl: ./product-list.html";
     }
+
 
     @Override
     public String getKey() {

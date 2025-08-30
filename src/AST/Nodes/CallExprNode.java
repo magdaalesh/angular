@@ -22,20 +22,14 @@ public final class CallExprNode extends Expr {
 
     @Override
     public String codegenerae() {
-        // معالجة خاصة للـ navigate
-        if (functionName.endsWith(".navigate")) {
-            return generateNavigateCall();
-        }
-        // الاستدعاء العادي
+        if (functionName.endsWith(".navigate")) return generateNavigateCall();
         StringBuilder sb = new StringBuilder();
         sb.append(functionName).append("(");
         if (arguments != null && !arguments.isEmpty()) {
             for (int i = 0; i < arguments.size(); i++) {
-                Expr arg = arguments.get(i);
-                if (arg == null) continue;
-                String rendered = arg.codegenerate();
-                if (rendered == null) rendered = "";
-                sb.append(rendered.trim());
+                String a = arguments.get(i) == null ? "" : arguments.get(i).codegenerate();
+                if (a == null) a = "";
+                sb.append(a.trim());
                 if (i < arguments.size() - 1) sb.append(", ");
             }
         }
@@ -43,19 +37,15 @@ public final class CallExprNode extends Expr {
         return sb.toString();
     }
 
-    // ---------- helpers ----------
+
     private String generateNavigateCall() {
         if (arguments == null || arguments.isEmpty()) {
             return functionName + "([])";
         }
-
         String first = safe(arguments.get(0));
-
-        // لو أصلاً مصفوفة، استخدم الاستدعاء العادي
         if (first.startsWith("[") && first.endsWith("]")) {
             return normalCall();
         }
-
         String route = stripQuotes(first);
         if (!route.startsWith("/")) route = "/" + route;
 
@@ -68,6 +58,7 @@ public final class CallExprNode extends Expr {
         }
         return functionName + "(" + routeArray + ")";
     }
+
 
     private String normalCall() {
         StringBuilder sb = new StringBuilder();

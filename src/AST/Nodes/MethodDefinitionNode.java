@@ -38,11 +38,11 @@ public class MethodDefinitionNode extends ClassBodyEntry {
             for (MethodBody item : bodyItems) {
                 if (item == null) continue;
 
-                String line = item.codegenerate();
+                String line = item.codegenerate();  //
                 if (line == null) continue;
 
                 line = line.trim();
-                if (line.isEmpty()) continue; // 👈 أهم سطر: لا تضيف شيء إذا فاضي
+                if (line.isEmpty()) continue; //
 
                 boolean needsSemicolon = !(line.endsWith(";") || line.endsWith("{") || line.endsWith("}"));
                 if (needsSemicolon) line += ";";
@@ -53,6 +53,7 @@ public class MethodDefinitionNode extends ClassBodyEntry {
 
         return methodName + "(" + paramsStr + ") {\n" + bodySb + "}";
     }
+
 
 
     @Override

@@ -24,4 +24,10 @@ public final class PropertyDefinitionStatement extends MethodBody {
     protected String codegenerateInternal() {
         return property.codegenerate();
     }
+
+
+    @Override
+    public String codegeneratee() {
+        return "";
+    }
 }

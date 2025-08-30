@@ -15,7 +15,7 @@ class ProductService {
     return this.products.find(p => p.id === id);
   }
   add(product) {
-    const newProduct = {id:this.nextId++,, ...product}
+    const newProduct = { id:this.nextId++, ...product }
     ;
   }
   deleteById(id) {
@@ -24,7 +24,7 @@ class ProductService {
   update(id, updated) {
     const index = this.products.findIndex(p => p.id === id);
     if (index  > -1) {
-    const this.products = [id,, ...updated]
+    this.products = {id, ...updated}
   }
   }
 }

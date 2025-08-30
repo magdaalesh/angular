@@ -19,8 +19,9 @@ public final class ArrowExpr extends Expr {
 
     @Override
     public String codegenerae() {
-        return "";
+        return param + " => " + body.codegenerate();
     }
+
 
     @Override
     protected String codegenerateInternal() {

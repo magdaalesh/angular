@@ -13,13 +13,24 @@ public final class ValueStatement extends MethodBody {
         this(new ValueExpr(null, Objects.requireNonNull(value)));
     }
 
-    public Expr getExpr() { return expr; }
+    public Expr getExpr() {
+        return expr;
+    }
 
     @Override
-    public String toString() { return "ValueStmt(" + expr + ")"; }
+    public String toString() {
+        return "ValueStmt(" + expr + ")";
+    }
 
     @Override
     protected String codegenerateInternal() {
-        return expr.codegenerate() + ";";
+        // نضمن دوماً سطر صالح، ونضيف ; كونها جملة statement
+        String code = expr.codegenerate();
+        return (code == null || code.isBlank()) ? ";" : (code + ";");
+    }
+
+    @Override
+    public String codegeneratee() {
+        return "";
     }
 }

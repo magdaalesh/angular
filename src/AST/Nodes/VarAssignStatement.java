@@ -18,9 +18,14 @@ public final class VarAssignStatement extends MethodBody {
     public String toString() {
         return "VarAssign(" + name + " = " + value + ")";
     }
-
     @Override
     protected String codegenerateInternal() {
-        return name + " = " + value.codegenerate() + ";";
+        return (name + " = " + value.codegenerate()).trim();
+    }
+
+
+    @Override
+    public String codegeneratee() {
+        return "";
     }
 }

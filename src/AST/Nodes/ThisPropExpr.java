@@ -16,8 +16,9 @@ public final class ThisPropExpr extends Expr {
 
     @Override
     public String codegenerae() {
-        return "";
+        return name;
     }
+
 
     // هذا الذي يرثه Expr
     @Override

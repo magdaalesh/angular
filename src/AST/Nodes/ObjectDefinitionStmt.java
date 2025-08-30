@@ -37,24 +37,31 @@ public final class ObjectDefinitionStmt extends MethodBody {
     @Override
     protected String codegenerateInternal() {
         StringBuilder sb = new StringBuilder();
-
-        sb.append("const ").append(name);
-        if (arrayTyped) {
-            sb.append(" = [");
-            sb.append(String.join(", ", entries));
-            sb.append("]");
+        if (explicitType != null) {
+            sb.append("const ").append(name).append(" = ");
         } else {
-            sb.append(" = {");
+            sb.append(name).append(" = ");
+        }
+        if (arrayTyped) {
+            sb.append("{");
+            sb.append(String.join(" ", entries));
+            sb.append("}");
+        } else {
+            sb.append("{ ");
             for (int i = 0; i < entries.size(); i++) {
                 sb.append(entries.get(i));
-                if (i < entries.size() - 1) sb.append(", ");
+                if (i < entries.size() - 1) sb.append(" ");
             }
-            sb.append("}");
+            sb.append(" }");
         }
-
         return sb.toString();
     }
 
+
+    @Override
+    public String codegeneratee() {
+        return "";
+    }
 
 
 }

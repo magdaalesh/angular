@@ -11,4 +11,6 @@ public abstract class MethodBody extends StatementNode {
 
 
     protected abstract String codegenerateInternal();
+
+    public abstract String codegeneratee();
 }

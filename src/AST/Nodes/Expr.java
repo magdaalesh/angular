@@ -3,14 +3,10 @@ package AST.Nodes;
 public abstract class Expr extends MethodBody {
 
     @Override
-    public String codegenerate() {
-
-        System.out.println("exp : " + this.codegenerateInternal());
-        return this.codegenerateInternal();
+    public final String codegeneratee() {
+        String out = codegenerae();
+        return (out == null) ? "" : out.trim();
     }
 
-
     public abstract String codegenerae();
-
-    protected abstract String codegenerateInternal();
 }

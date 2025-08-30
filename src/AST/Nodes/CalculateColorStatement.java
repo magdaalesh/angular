@@ -58,7 +58,15 @@ public class CalculateColorStatement extends StatementNode {
     }
     @Override
     protected String codegenerateInternal() {
-        return codegenerate();
+        String target = targetVariable;
+        if (arrayAccessKey != null && !arrayAccessKey.isEmpty()) {
+            target += "[" + arrayAccessKey + "]";
+        }
+        String value = (innerFunction != null && !innerFunction.isEmpty())
+                ? innerFunction + "(" + operand + ")"
+                : operand;
+
+        return target + " = " + functionName + "(" + target + " " + calculationOperator + " " + value + ")";
     }
 
 }

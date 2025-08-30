@@ -16,7 +16,7 @@ class AddProductComponent {
   addProduct() {
     if (!this.name || !this.image || !this.description) {
     alert("ParameterNode{name=''Pleasefillallfields.'', type='null'}");
-    return
+    return;
   }
     ;
     ;

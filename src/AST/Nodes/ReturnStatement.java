@@ -23,18 +23,20 @@ public final class ReturnStatement extends MethodBody {
     @Override
     protected String codegenerateInternal() {
         StringBuilder sb = new StringBuilder();
-
-        if (hasReturn) {
-            sb.append("return");
-            if (!expressions.isEmpty()) sb.append(" ");
+        if (hasReturn) sb.append("return");
+        if (!expressions.isEmpty()) {
+            if (hasReturn) sb.append(" ");
+            for (int i = 0; i < expressions.size(); i++) {
+                sb.append(expressions.get(i).codegenerate());
+                if (i < expressions.size() - 1) sb.append(", ");
+            }
         }
+        return sb.toString().trim();
+    }
 
-        for (int i = 0; i < expressions.size(); i++) {
-            Expr expr = expressions.get(i);
-            sb.append(expr.codegenerate());
-            if (i < expressions.size() - 1) sb.append(", ");
-        }
 
-        return sb.toString();
+    @Override
+    public String codegeneratee() {
+        return "";
     }
 }

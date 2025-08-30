@@ -39,7 +39,19 @@ public class AssignmentStatement extends StatementNode {
     }
     @Override
     protected String codegenerateInternal() {
-        return codegenerate();
+        String rhs;
+        if (value instanceof String) {
+            rhs = "\"" + value + "\"";
+        } else if (value instanceof Number || value instanceof Boolean) {
+            rhs = String.valueOf(value);
+        } else if (value instanceof Node) {
+            rhs = ((Node) value).codegenerate();
+        } else {
+            rhs = String.valueOf(value);
+        }
+        return (variableName + " = " + rhs).trim();
     }
+
+
 
 }

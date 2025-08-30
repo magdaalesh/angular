@@ -7,20 +7,15 @@ public class SpareteddNode extends ContenttNode {
         this.expression = expression;
     }
 
-    public String getExpression() {
-        return expression;
-    }
+    public String getExpression() { return expression; }
 
     @Override
     public String toString() {
-        return "SpareteddNode{" +
-                "expression='" + expression + '\'' +
-                '}';
+        return "SpareteddNode{expression='" + expression + "'}";
     }
 
     @Override
-    public String codegenerate() {
-        return "..." + expression;
+    public String codegenerae() {  // <-- هنا الاسم صحيح
+        return expression != null ? "..." + expression : "";
     }
-
 }

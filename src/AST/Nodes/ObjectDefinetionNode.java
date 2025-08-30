@@ -16,8 +16,13 @@ public class ObjectDefinetionNode extends Node {
     }
 
     public void addContent(ContenttNode content) {
-        contentList.add(content);
+        if (content != null) contentList.add(content);
     }
+
+    public String getName() { return name; }
+    public String getType() { return type; }
+    public boolean isArray() { return isArray; }
+    public List<ContenttNode> getContentList() { return contentList; }
 
     @Override
     public String toString() {
@@ -32,31 +37,22 @@ public class ObjectDefinetionNode extends Node {
     @Override
     public String codegenerate() {
         StringBuilder js = new StringBuilder();
-
         if (isArray) {
-
             js.append("const ").append(name).append(" = [\n");
-            for (int i = 0; i < contentList.size(); i++) {
-                ContenttNode content = contentList.get(i);
-                js.append("  ").append(content.codegenerate());
-                if (i < contentList.size() - 1) js.append(",");
-                js.append("\n");
-            }
-            js.append("];\n");
         } else {
-
             js.append("const ").append(name).append(" = {\n");
-            for (int i = 0; i < contentList.size(); i++) {
-                ContenttNode content = contentList.get(i);
-                js.append("  ").append(content.codegenerate());
-                if (i < contentList.size() - 1) js.append(",");
-                js.append("\n");
-            }
-            js.append("};\n");
         }
+
+        for (int i = 0; i < contentList.size(); i++) {
+            ContenttNode content = contentList.get(i);
+            js.append("  ").append(content.codegenerate());
+            if (i < contentList.size() - 1) js.append(",");
+            js.append("\n");
+        }
+
+        if (isArray) js.append("];\n");
+        else js.append("};\n");
 
         return js.toString();
     }
-
-
 }

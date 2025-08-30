@@ -19,7 +19,15 @@ public final class PropertyDefinitionStatement extends MethodBody {
                 "property=" + property +
                 '}';
     }
-   public String codegeneratee(){
-        return  property.codegenerate();
+
+    @Override
+    protected String codegenerateInternal() {
+        return property.codegenerate();
+    }
+
+
+    @Override
+    public String codegeneratee() {
+        return "";
     }
 }

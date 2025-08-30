@@ -13,17 +13,11 @@ public class ImageContent extends Content {
 
     @Override
     public String toString() {
-        return "ImageContent{" +
-                "image=" + image +
-                '}';
+        return "ImageContent{" + "image=" + image + '}';
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
         return image.codegenerate();
     }
 }
-

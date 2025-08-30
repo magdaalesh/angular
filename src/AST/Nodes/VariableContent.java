@@ -4,6 +4,7 @@ import java.util.List;
 
 public class VariableContent extends Content {
     private List<String> path;
+
     public VariableContent(List<String> path) {
         this.path = path;
     }
@@ -14,16 +15,12 @@ public class VariableContent extends Content {
 
     @Override
     public String toString() {
-        return "VariableContent{" +
-                "path=" + path +
-                '}';
+        return "VariableContent{" + "path=" + path + '}';
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return " $"+path;
+
+        return "$" + String.join(".", path);
     }
 }

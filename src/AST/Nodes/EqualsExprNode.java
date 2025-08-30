@@ -18,25 +18,11 @@ public class EqualsExprNode extends Value {
         this.rightVar = rightVar;
     }
 
-    public String getFunctionName() {
-        return functionName;
-    }
-
-    public String getLambdaVar() {
-        return lambdaVar;
-    }
-
-    public String getLeftVar() {
-        return leftVar;
-    }
-
-    public String getOperation() {
-        return operation;
-    }
-
-    public String getRightVar() {
-        return rightVar;
-    }
+    public String getFunctionName() { return functionName; }
+    public String getLambdaVar()    { return lambdaVar; }
+    public String getLeftVar()      { return leftVar; }
+    public String getOperation()    { return operation; }
+    public String getRightVar()     { return rightVar; }
 
     public Map<String, String> getArguments() {
         Map<String, String> args = new HashMap<>();
@@ -56,14 +42,10 @@ public class EqualsExprNode extends Value {
     }
 
     @Override
-    public String codegeneratre() {
-
+    protected String codegenerateInternal() {
         if (functionName != null && lambdaVar != null && leftVar != null && rightVar != null) {
-
             return functionName + "(" + lambdaVar + " => " + leftVar + " " + operation + " " + rightVar + ")";
         }
-
         return "";
     }
-
 }

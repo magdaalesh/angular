@@ -1,6 +1,6 @@
 package AST.Nodes;
 
-public class NgForAttribute extends CssAttribute  {
+public class NgForAttribute extends CssAttribute {
     private String variable;
     private String collection;
 
@@ -9,13 +9,8 @@ public class NgForAttribute extends CssAttribute  {
         this.collection = collection;
     }
 
-    public String getVariable() {
-        return variable;
-    }
-
-    public String getCollection() {
-        return collection;
-    }
+    public String getVariable() { return variable; }
+    public String getCollection() { return collection; }
 
     @Override
     public String toString() {
@@ -23,20 +18,16 @@ public class NgForAttribute extends CssAttribute  {
     }
 
     @Override
-    public String getname() {
-        return "ngfor";
-    }
+    public String getname() { return "ngFor"; }
 
     @Override
     public String getvalue() {
-        return"let " + getVariable()+ " of "+getCollection()  ;
+        return "let " + variable + " of " + collection;
     }
 
-    /**
-     * @return
-     */
     @Override
     public String code() {
-        return "";
+        // توليد كود Angular attribute
+        return getname() + "=\"" + getvalue() + "\"";
     }
 }

@@ -21,18 +21,25 @@ public final class IfStatementNode extends MethodBody {
     public String toString() {
         return "If(" + condition + ") " + thenBody;
     }
+
+
     @Override
-    public String codegeneratee() {
+    protected String codegenerateInternal() {
         StringBuilder sb = new StringBuilder();
-
         sb.append("if (").append(condition.codegenerate()).append(") {\n");
-
         for (MethodBody stmt : thenBody) {
-            sb.append("  ").append(stmt.codegeneratee()).append(";\n");
+            String line = stmt.codegenerate();
+            if (line == null || line.trim().isEmpty()) continue;
+            boolean needsSemi = !(line.endsWith(";") || line.endsWith("{") || line.endsWith("}"));
+            if (needsSemi) line += ";";
+            sb.append("  ").append(line).append("\n");
         }
-
         sb.append("}");
         return sb.toString();
     }
 
+    @Override
+    public String codegeneratee() {
+        return "";
+    }
 }

@@ -1,6 +1,6 @@
 package AST.Nodes;
 
-import java.util.*;
+import java.util.Map;
 
 public class ArrayItemNode {
     private Map<String, Value> properties;
@@ -9,11 +9,16 @@ public class ArrayItemNode {
         this.properties = properties;
     }
 
+    public Map<String, Value> getProperties() {
+        return properties;
+    }
+
     public String codegenerate() {
         if (properties == null || properties.isEmpty()) return "{}";
 
         StringBuilder sb = new StringBuilder();
         sb.append("{ ");
+
         int i = 0;
         for (Map.Entry<String, Value> entry : properties.entrySet()) {
             sb.append(entry.getKey()).append(": ");
@@ -25,6 +30,7 @@ public class ArrayItemNode {
             if (i < properties.size() - 1) sb.append(", ");
             i++;
         }
+
         sb.append(" }");
         return sb.toString();
     }

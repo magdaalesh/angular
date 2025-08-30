@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AngularInterfaces/AngularInterfaces.iml" filepath="$PROJECT_DIR$/AngularInterfaces/AngularInterfaces.iml" />
       <module fileurl="file://$PROJECT_DIR$/angular.iml" filepath="$PROJECT_DIR$/angular.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gen/gen.iml" filepath="$PROJECT_DIR$/gen/gen.iml" />
     </modules>
   </component>
 </project>

@@ -1,7 +1,7 @@
 package AST.Nodes;
 
-public class value2 extends PropertyDefinitionNode{
-  private String name ;
+public class value2 extends PropertyDefinitionNode {
+    private String name;
     private String modifier;
     private Value value;
 
@@ -16,15 +16,19 @@ public class value2 extends PropertyDefinitionNode{
 
     @Override
     public String toString() {
-        return "PropertyWithModifierNode{name='" + name + "', modifier='" + modifier + "', value=" + value + "}";
+        return "PropertyWithModifierNode{" +
+                "name='" + name + '\'' +
+                ", modifier='" + modifier + '\'' +
+                ", value=" + value +
+                '}';
     }
-
     @Override
     public String codegenerate() {
+        return codegenerae();
+    }
+    @Override
+    public String codegenerae() {
         StringBuilder sb = new StringBuilder();
-
-
-
         sb.append(name).append(" = ");
 
         if (value != null) {
@@ -34,16 +38,8 @@ public class value2 extends PropertyDefinitionNode{
         }
 
         sb.append(";");
-
         return sb.toString();
     }
 
-    /**
-     * @return
-     */
-    @Override
-    public String codegenerae() {
-        return "";
-    }
 
 }

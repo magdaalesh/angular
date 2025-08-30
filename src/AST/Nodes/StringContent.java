@@ -16,9 +16,13 @@ public class StringContent extends HtmlNode {
         return text;
     }
 
-
     @Override
     public String code() {
         return text;
+    }
+
+    @Override
+    public String codegenerate() {
+        return code();
     }
 }

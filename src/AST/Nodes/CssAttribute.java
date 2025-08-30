@@ -1,9 +1,10 @@
 package AST.Nodes;
 
 public abstract class CssAttribute extends HtmlAttribute {
+    @Override
     public abstract String toString();
-    public abstract String getname();
-    public abstract String getvalue() ;
-    public abstract String code() ;
 
+    public abstract String getname();
+    public abstract String getvalue();
+    public abstract String code();
 }

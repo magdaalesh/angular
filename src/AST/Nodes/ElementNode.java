@@ -11,23 +11,16 @@ public class ElementNode extends HtmlNode {
         this.attributes = attributes;
         this.children = children;
     }
+
     public ElementNode() {
         this.tagName = " ";
         this.attributes = null;
         this.children = null;
     }
 
-    public String getTagName() {
-        return tagName;
-    }
-
-    public List<HtmlAttribute> getAttributes() {
-        return attributes;
-    }
-
-    public List<HtmlNode> getChildren() {
-        return children;
-    }
+    public String getTagName() { return tagName; }
+    public List<HtmlAttribute> getAttributes() { return attributes; }
+    public List<HtmlNode> getChildren() { return children; }
 
     @Override
     public String toString() {
@@ -38,32 +31,31 @@ public class ElementNode extends HtmlNode {
                 '}';
     }
 
-    @Override
-    public String code() {
+    public String codegenerate() {
         StringBuilder sb = new StringBuilder();
-
 
         sb.append("<").append(tagName);
 
         if (attributes != null) {
             for (HtmlAttribute attr : attributes) {
-                sb.append(attr.code());
+                sb.append(" ").append(attr.code());
             }
         }
 
-        sb.append(">").append("\n");
-
+        sb.append(">");
 
         if (children != null) {
             for (HtmlNode child : children) {
-                sb.append(child.codegenerate());
+                sb.append(child.code());
             }
         }
 
-
         sb.append("</").append(tagName).append(">");
-
         return sb.toString();
     }
 
+    @Override
+    public String code() {
+        return codegenerate();
+    }
 }

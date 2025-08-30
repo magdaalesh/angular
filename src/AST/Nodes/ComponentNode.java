@@ -6,31 +6,21 @@ public class ComponentNode extends Node {
     public ComponentNode(ComponentMetadata metadata) {
         this.metadata = metadata;
     }
-    public ComponentNode(){
-        this.metadata=null;
+
+    public ComponentNode() {
+        this.metadata = null;
     }
 
-    public ComponentMetadata getMetadata() {
-        return metadata;
-    }
-
-    public void setMetadata(ComponentMetadata metadata) {
-        this.metadata = metadata;
-    }
+    public ComponentMetadata getMetadata() { return metadata; }
+    public void setMetadata(ComponentMetadata metadata) { this.metadata = metadata; }
 
     @Override
     public String toString() {
-        return "ComponentNode{" +
-                "metadata=" + metadata +
-                '}';
+        return "ComponentNode{" + "metadata=" + metadata + '}';
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return metadata.codegenerate() ;
+        return metadata != null ? metadata.codegenerate() : "";
     }
 }
-

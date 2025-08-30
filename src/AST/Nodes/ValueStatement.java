@@ -1,4 +1,3 @@
-// ValueStatement.java
 package AST.Nodes;
 
 import java.util.Objects;
@@ -14,15 +13,24 @@ public final class ValueStatement extends MethodBody {
         this(new ValueExpr(null, Objects.requireNonNull(value)));
     }
 
-    public Expr getExpr() { return expr; }
+    public Expr getExpr() {
+        return expr;
+    }
 
-    @Override public String toString() { return "ValueStmt(" + expr + ")"; }
+    @Override
+    public String toString() {
+        return "ValueStmt(" + expr + ")";
+    }
 
-    /**
-     * @return
-     */
+    @Override
+    protected String codegenerateInternal() {
+        // نضمن دوماً سطر صالح، ونضيف ; كونها جملة statement
+        String code = expr.codegenerate();
+        return (code == null || code.isBlank()) ? ";" : (code + ";");
+    }
+
     @Override
     public String codegeneratee() {
-        return expr.codegenerate();
+        return "";
     }
 }

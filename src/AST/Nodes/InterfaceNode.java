@@ -1,15 +1,14 @@
 package AST.Nodes;
 
-
-public class InterfaceNode extends  Node{
-
+public class InterfaceNode extends Node {
 
     private String interfaceName;
     private interfacescontent properties;
 
     public InterfaceNode(String interfaceName, interfacescontent properties) {
         this.interfaceName = interfaceName;
-        this.properties = properties;}
+        this.properties = properties;
+    }
 
     public InterfaceNode(String interfaceName) {
         this.interfaceName = interfaceName;
@@ -33,7 +32,6 @@ public class InterfaceNode extends  Node{
         this.properties = properties;
     }
 
-
     @Override
     public String toString() {
         return "InterfaceNode{" +
@@ -42,11 +40,9 @@ public class InterfaceNode extends  Node{
                 '}';
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+
+        return ("");
     }
 }

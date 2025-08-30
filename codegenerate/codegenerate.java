@@ -58,7 +58,6 @@ public class codegenerate {
                 throw new RuntimeException(e);
             }
         } else {
-            // الملف غير موجود → نكتب HTML جديد
             htmlContent = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n" +
                     "  <meta charset=\"UTF-8\">\n" +
                     "  <title>" + filename + "</title>\n</head>\n<body>\n" +

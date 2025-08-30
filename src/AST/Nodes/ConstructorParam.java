@@ -12,8 +12,8 @@ public class ConstructorParam extends Node {
     }
 
     public String getModifier() { return modifier; }
-    public String getName()     { return name; }
-    public String getType()     { return type; }
+    public String getName() { return name; }
+    public String getType() { return type; }
 
     @Override
     public String toString() {
@@ -24,11 +24,8 @@ public class ConstructorParam extends Node {
                 '}';
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return getName();
+        return name;  // اسم المعامل فقط
     }
 }

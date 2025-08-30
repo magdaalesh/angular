@@ -1,7 +1,7 @@
 package AST.Nodes;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.*;
 
 public class CallFunNode extends Node {
     private String functionName;
@@ -12,45 +12,32 @@ public class CallFunNode extends Node {
         this.arguments = arguments;
     }
 
-    public String getFunctionName() {
-        return functionName;
-    }
-
-    public List<String> getArguments() {
-        return arguments;
-    }
+    public String getFunctionName() { return functionName; }
+    public List<String> getArguments() { return arguments; }
 
     @Override
     public String toString() {
-        return "CallFunNode{" +
-                "functionName='" + functionName + '\'' +
-                ", arguments=" + arguments +
-                '}';
+        return "CallFunNode{" + "functionName='" + functionName + '\'' + ", arguments=" + arguments + '}';
     }
 
     @Override
     public Expr asExpr() {
         List<Expr> args = new ArrayList<>();
-
         for (String arg : arguments) {
-
             args.add(new ValueExpr(null, new IdValue(List.of(arg))));
         }
-
         return new CallExprNode(functionName, args);
     }
 
-
     @Override
     public String codegenerate() {
+
         StringBuilder sb = new StringBuilder();
         sb.append(functionName).append("(");
-
         if (arguments != null && !arguments.isEmpty()) {
             sb.append(String.join(", ", arguments));
         }
-
-        sb.append(")");
+        sb.append(");");
         return sb.toString();
     }
 }

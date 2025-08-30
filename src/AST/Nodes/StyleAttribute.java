@@ -8,13 +8,14 @@ public class StyleAttribute extends CssAttribute {
     public StyleAttribute(Map<String, String> styles) {
         this.styles = styles;
     }
+
     @Override
     public String getvalue() {
         StringBuilder result = new StringBuilder();
         for (Map.Entry<String, String> entry : styles.entrySet()) {
             result.append(entry.getKey())
                     .append(": ")
-                    .append(entry.getValue()).append(" ")
+                    .append(entry.getValue())
                     .append("; ");
         }
         return result.toString().trim();
@@ -22,16 +23,14 @@ public class StyleAttribute extends CssAttribute {
 
     @Override
     public String code() {
-
         StringBuilder styleString = new StringBuilder();
         for (Map.Entry<String, String> entry : styles.entrySet()) {
             styleString.append(entry.getKey())
                     .append(": ")
-                    .append(entry.getValue()).append(" ")
+                    .append(entry.getValue())
                     .append("; ");
         }
-
-        return " style=\"" + styleString.toString() + "\"";
+        return " style=\"" + styleString.toString().trim() + "\"";
     }
 
     @Override

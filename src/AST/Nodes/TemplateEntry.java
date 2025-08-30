@@ -22,21 +22,18 @@ public class TemplateEntry extends MetadataEntry {
 
     @Override
     public String getValue() {
-        return template.toString();
+        return template != null ? template.toString() : "";
     }
 
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+        // لا ترجّع HTML ولا نص حر، فقط تعليق
+        return "// templateUrl: ./product-list.html";
     }
+
 
     @Override
     public String getKey() {
         return "template:";
     }
 }
-
-

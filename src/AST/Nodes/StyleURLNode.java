@@ -26,23 +26,20 @@ public class StyleURLNode extends MetadataEntry {
                 '}';
     }
 
-
     @Override
     public String getKey() {
         return "styleUrls";
     }
 
-
     @Override
     public String getValue() {
         return stylePath;
     }
-
-    /**
-     * @return
-     */
     @Override
     public String codegenerate() {
-        return "";
+        if (stylePath == null || stylePath.isEmpty()) return "";
+        return "// styleUrls: [" + stylePath + "]";
     }
+
+
 }

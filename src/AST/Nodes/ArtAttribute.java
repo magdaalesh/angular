@@ -15,15 +15,13 @@ public class ArtAttribute extends HtmlAttribute {
 
     @Override
     public String toString() {
-        return "ArtAttribute{ routerLink='/ " + String.join(" ", values) + " ' }";
+        return "ArtAttribute{ routerLink='/" + String.join(" ", values) + "' }";
     }
-
 
     @Override
     public String getname() {
         return "a";
     }
-
 
     @Override
     public String getvalue() {
@@ -32,10 +30,8 @@ public class ArtAttribute extends HtmlAttribute {
 
     @Override
     public String code() {
-
+        // يولّد href مرتب لأي رابط Angular
         String hrefValue = "/" + String.join("/", values).replaceAll("//", "/");
         return " href=\"" + hrefValue + "\"";
     }
-
-
 }

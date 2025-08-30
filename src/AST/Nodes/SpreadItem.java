@@ -8,22 +8,18 @@ public final class SpreadItem {
 
     public SpreadItem(boolean spread, Expr expr) {
         this.spread = spread;
-        this.expr   = Objects.requireNonNull(expr, "expr");
+        this.expr = Objects.requireNonNull(expr, "expr");
     }
 
     public boolean isSpread() { return spread; }
-    public Expr getExpr()     { return expr; }
+    public Expr getExpr() { return expr; }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return (spread ? "..." : "") + expr;
     }
 
     public String codegenerate() {
-
-        if (expr == null) return "";
-
-
-        return " ["+(spread ? "..." : "") + expr.codegenerate() +"]" ;
+        return (expr != null ? (spread ? "..." : "") + expr.codegenerate() : "");
     }
-
 }

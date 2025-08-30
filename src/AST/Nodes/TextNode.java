@@ -16,9 +16,13 @@ public class TextNode extends HtmlNode {
         return "TextNode{text='" + text + "'}";
     }
 
-
     @Override
     public String code() {
-        return text;
+        return text != null ? text : "";
+    }
+
+    @Override
+    public String codegenerate() {
+        return code();
     }
 }

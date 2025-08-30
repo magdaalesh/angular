@@ -1,15 +1,17 @@
 package AST.Nodes;
 
-public abstract class Value  extends Node {
-    public abstract String toString();
+public abstract class Value extends Node {
+
+    @Override
+    public String toString() {
+        return this.codegenerate();
+    }
 
     @Override
     public String codegenerate() {
-        System.out.println(codegeneratre());
-
-        return  codegeneratre();
+        System.out.println(this.codegenerateInternal());
+        return this.codegenerateInternal();
     }
 
-    public   abstract String codegeneratre() ;
-
+    protected abstract String codegenerateInternal();
 }

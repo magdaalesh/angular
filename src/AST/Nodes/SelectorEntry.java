@@ -21,21 +21,19 @@ public class SelectorEntry extends MetadataEntry {
     }
 
     @Override
-    public String getValue() {
-        return selector;
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public String codegenerate() {
-        return "";
-    }
-
-    @Override
     public String getKey() {
         return "selector:";
     }
-}
 
+    @Override
+    public String getValue() {
+        return selector;
+    }
+    @Override
+    public String codegenerate() {
+        if (selector == null || selector.isEmpty()) return "";
+        return "// component: " + selector;
+    }
+
+
+}

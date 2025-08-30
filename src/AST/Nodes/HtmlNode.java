@@ -11,12 +11,12 @@ public abstract class HtmlNode extends Node {
     }
 
     public abstract String code();
+
     @Override
     public String codegenerate() {
         StringBuilder sb = new StringBuilder();
 
         sb.append(code());
-
 
         for (HtmlNode child : children) {
             sb.append(child.codegenerate());

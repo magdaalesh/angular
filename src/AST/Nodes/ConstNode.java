@@ -19,29 +19,14 @@ public class ConstNode extends PropertyDefinitionNode {
         this.parameters = null;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getTypeOrValue() { return typeOrValue; }
+    public void setTypeOrValue(String typeOrValue) { this.typeOrValue = typeOrValue; }
 
-    public String getTypeOrValue() {
-        return typeOrValue;
-    }
-
-    public void setTypeOrValue(String typeOrValue) {
-        this.typeOrValue = typeOrValue;
-    }
-
-    public List<ParameterNode> getParameters() {
-        return parameters;
-    }
-
-    public void setParameters(List<ParameterNode> parameters) {
-        this.parameters = parameters;
-    }
+    public List<ParameterNode> getParameters() { return parameters; }
+    public void setParameters(List<ParameterNode> parameters) { this.parameters = parameters; }
 
     @Override
     public String toString() {
@@ -51,41 +36,33 @@ public class ConstNode extends PropertyDefinitionNode {
                 ", parameters=" + parameters +
                 '}';
     }
-
-
     @Override
     public String codegenerate() {
+        return codegenerae();
+    }
+    @Override
+    public String codegenerae() {
         if (name == null || name.isEmpty()) return "";
 
         StringBuilder sb = new StringBuilder();
         sb.append("const ").append(name);
 
-        // إذا كان هناك parameters يتم توليد دالة Arrow
         if (parameters != null && !parameters.isEmpty()) {
             sb.append(" = (");
             for (int i = 0; i < parameters.size(); i++) {
                 sb.append(parameters.get(i).codegenerate());
-                if (i < parameters.size() - 1) {
-                    sb.append(", ");
-                }
+                if (i < parameters.size() - 1) sb.append(", ");
             }
             sb.append(") => ");
             sb.append(typeOrValue != null ? typeOrValue : "null");
         } else {
-            // إذا لا يوجد parameters نعتبرها مجرد تعيين قيمة
             if (typeOrValue != null && !typeOrValue.isEmpty()) {
                 sb.append(" = ").append(typeOrValue);
             }
         }
 
-        sb.append(" ");
+        sb.append(";");
         return sb.toString();
     }
 
-
-
-    @Override
-    public String codegenerae() {
-        return "";
-    }
 }

@@ -11,13 +11,8 @@ public class URLTemplateNode extends MetadataEntry {
         this.template = null;
     }
 
-    public String getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(String template) {
-        this.template = template;
-    }
+    public String getTemplate() { return template; }
+    public void setTemplate(String template) { this.template = template; }
 
     @Override
     public String toString() {
@@ -26,24 +21,15 @@ public class URLTemplateNode extends MetadataEntry {
                 '}';
     }
 
+    @Override
+    public String getKey() { return "templateUrl"; }
 
     @Override
-    public String getKey() {
-        return "templateUrl";
-    }
-
-
-    @Override
-    public String getValue() {
-        return template;
-
-    }
-
+    public String getValue() { return template != null ? template : ""; }
 
     @Override
     public String codegenerate() {
-        return "";
+        // توليد كود URL template كمثال
+        return template != null ? template : "";
     }
-
 }
-

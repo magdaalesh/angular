@@ -24,29 +24,12 @@ public class CalculateColorStatement extends StatementNode {
         this.arrayAccessKey = arrayAccessKey;
     }
 
-    public String getTargetVariable() {
-        return targetVariable;
-    }
-
-    public String getFunctionName() {
-        return functionName;
-    }
-
-    public String getInnerFunction() {
-        return innerFunction;
-    }
-
-    public String getCalculationOperator() {
-        return calculationOperator;
-    }
-
-    public String getOperand() {
-        return operand;
-    }
-
-    public String getArrayAccessKey() {
-        return arrayAccessKey;
-    }
+    public String getTargetVariable() { return targetVariable; }
+    public String getFunctionName() { return functionName; }
+    public String getInnerFunction() { return innerFunction; }
+    public String getCalculationOperator() { return calculationOperator; }
+    public String getOperand() { return operand; }
+    public String getArrayAccessKey() { return arrayAccessKey; }
 
     @Override
     public String toString() {
@@ -62,33 +45,28 @@ public class CalculateColorStatement extends StatementNode {
 
     @Override
     public String codegenerate() {
-        StringBuilder js = new StringBuilder();
-
         String target = targetVariable;
         if (arrayAccessKey != null && !arrayAccessKey.isEmpty()) {
             target += "[" + arrayAccessKey + "]";
         }
 
-        String value = "";
-        if (innerFunction != null && !innerFunction.isEmpty()) {
-            value = innerFunction + "(" + operand + ")";
-        } else {
-            value = operand;
+        String value = (innerFunction != null && !innerFunction.isEmpty())
+                ? innerFunction + "(" + operand + ")"
+                : operand;
+
+        return target + " = " + functionName + "(" + target + " " + calculationOperator + " " + value + ");";
+    }
+    @Override
+    protected String codegenerateInternal() {
+        String target = targetVariable;
+        if (arrayAccessKey != null && !arrayAccessKey.isEmpty()) {
+            target += "[" + arrayAccessKey + "]";
         }
+        String value = (innerFunction != null && !innerFunction.isEmpty())
+                ? innerFunction + "(" + operand + ")"
+                : operand;
 
-        // توليد جملة JS
-        js.append(target)
-                .append(" = ")
-                .append(functionName)
-                .append("(")
-                .append(target)
-                .append(" ")
-                .append(calculationOperator)
-                .append(" ")
-                .append(value)
-                .append(");");
-
-        return js.toString();
+        return target + " = " + functionName + "(" + target + " " + calculationOperator + " " + value + ")";
     }
 
 }

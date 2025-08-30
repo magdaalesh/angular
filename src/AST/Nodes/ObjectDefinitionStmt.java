@@ -4,9 +4,9 @@ import java.util.*;
 
 public final class ObjectDefinitionStmt extends MethodBody {
     private final String name;
-    private final String explicitType;  //
-    private final boolean arrayTyped;   //
-    private final String arrayType;     //
+    private final String explicitType;
+    private final boolean arrayTyped;
+    private final String arrayType;
     private final List<String> entries;
 
     public ObjectDefinitionStmt(String name,
@@ -14,18 +14,18 @@ public final class ObjectDefinitionStmt extends MethodBody {
                                 boolean arrayTyped,
                                 String arrayType,
                                 List<String> entries) {
-        this.name        = Objects.requireNonNull(name);
-        this.explicitType= explicitType;
-        this.arrayTyped  = arrayTyped;
-        this.arrayType   = arrayType;
-        this.entries     = Collections.unmodifiableList(new ArrayList<>(entries));
+        this.name = Objects.requireNonNull(name);
+        this.explicitType = explicitType;
+        this.arrayTyped = arrayTyped;
+        this.arrayType = arrayType;
+        this.entries = Collections.unmodifiableList(new ArrayList<>(entries));
     }
 
-    public String getName()        { return name; }
-    public String getExplicitType(){ return explicitType; }
-    public boolean isArrayTyped()  { return arrayTyped; }
-    public String getArrayType()   { return arrayType; }
-    public List<String> getEntries(){ return entries; }
+    public String getName() { return name; }
+    public String getExplicitType() { return explicitType; }
+    public boolean isArrayTyped() { return arrayTyped; }
+    public String getArrayType() { return arrayType; }
+    public List<String> getEntries() { return entries; }
 
     @Override
     public String toString() {
@@ -33,31 +33,35 @@ public final class ObjectDefinitionStmt extends MethodBody {
                 : (arrayTyped ? ("[" + arrayType + "]") : "");
         return "ObjectDef " + name + t + " { " + String.join(", ", entries) + " }";
     }
+
     @Override
-    public String codegeneratee() {
+    protected String codegenerateInternal() {
         StringBuilder sb = new StringBuilder();
-       if(explicitType!=null){ sb.append("const").append(" ");}
-
+        if (explicitType != null) {
+            sb.append("const ").append(name).append(" = ");
+        } else {
+            sb.append(name).append(" = ");
+        }
         if (arrayTyped) {
-
-            sb.append(name).append("[ ").append(arrayType).append(" ]").append(" = {");
+            sb.append("{");
             sb.append(String.join(" ", entries));
             sb.append("}");
-        } else { // object
-            sb.append(name).append(" = { ");
-
+        } else {
+            sb.append("{ ");
             for (int i = 0; i < entries.size(); i++) {
-                String entry = entries.get(i);
-                sb.append(entry);
+                sb.append(entries.get(i));
                 if (i < entries.size() - 1) sb.append(" ");
             }
-
             sb.append(" }");
         }
-
         return sb.toString();
     }
 
+
+    @Override
+    public String codegeneratee() {
+        return "";
+    }
 
 
 }

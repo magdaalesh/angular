@@ -18,14 +18,13 @@ public final class IdCondNode extends ConditionNode {
     public String getSign()  { return sign; }
     public String getRight() { return right; }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return left + " " + op + " " + (sign == null ? "" : sign) + right;
     }
 
     @Override
     public String codegenerate() {
-
         return left + " " + op + " " + (sign == null ? "" : sign) + right;
     }
-
 }

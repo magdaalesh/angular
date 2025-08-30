@@ -30,11 +30,11 @@ public class CallExprNode extends Expr {
     /**
      * @return
      */
-  
+
 
     @Override
     public String codegenerateInternal() {
-        // ✅ Special case: convert navigate to window.location.href
+
         if (functionName.contains("navigate")) {
             String page = "";
             String param = null;

@@ -47,9 +47,7 @@ public class value1 extends PropertyDefinitionNode {
         StringBuilder sb = new StringBuilder();
         sb.append(name);
 
-        if (isOptional) {
-            sb.append("?");
-        }
+      
 
         if (type != null && !type.isEmpty()) {
             sb.append(" /* type: ").append(type).append(" */");

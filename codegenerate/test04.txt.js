@@ -10,7 +10,7 @@
 // styleUrls: [./product-details.css]
 
 class ProductDetailsComponent {
-  product? /* type: Product */;
+  product /* type: Product */;
   isEditing: false;
   edited = {
     edited: null,
@@ -18,7 +18,11 @@ class ProductDetailsComponent {
     image: null,
     description: null
   };
-  
+  constructor(route, router, productService) {
+    this.route = route;
+    this.router = router;
+    this.productService = productService;
+  }
   ngOnInit() {
     const id = (this.route.snapshot.paramMap.get('id')) => Number;
     this.product = this.productService.getById("id");

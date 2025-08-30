@@ -54,7 +54,7 @@ public class LParenNode extends Value {
             return sb.toString();
         }
 
-        // أي دوال أخرى
+
         StringBuilder sb = new StringBuilder();
         sb.append(name).append("(");
         for (int i = 0; i < arguments.size(); i++) {

@@ -12,7 +12,10 @@ class AddProductComponent {
   name /* type: string */;
   image /* type: string */;
   description /* type: string */;
-  
+  constructor(productService, router) {
+    this.productService = productService;
+    this.router = router;
+  }
   addProduct() {
     if (!this.name || !this.image || !this.description) {
     alert('Pleasefillallfields.');;

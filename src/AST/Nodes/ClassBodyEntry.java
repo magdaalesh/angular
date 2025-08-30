@@ -6,7 +6,7 @@ public abstract class ClassBodyEntry extends Node {
     public abstract String toString();
 
     @Override
-    public abstract String codegenerate();
-
+    public  String codegenerate(){return codegenerae();};
+;
     public abstract String codegenerae();
 }

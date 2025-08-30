@@ -10,7 +10,10 @@
 
 class ProductListComponent /* implements OnInit */ {
   products /* type: Product[] */ = [];
-  
+  constructor(productService, router) {
+    this.productService = productService;
+    this.router = router;
+  }
   ngOnInit() {
     this.loadProducts(this.loadProducts);
   }

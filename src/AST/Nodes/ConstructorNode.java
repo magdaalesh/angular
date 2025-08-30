@@ -20,12 +20,12 @@ public class ConstructorNode extends ClassBodyEntry {
     }
 
     @Override
-    public String codegenerate() {
+    public String codegenerae() {
         return "";
     }
 
     @Override
-    public String codegenerae() {
+    public String codegenerate() {
         String params = parameters.stream()
                 .map(ConstructorParam::getName)
                 .collect(Collectors.joining(", "));

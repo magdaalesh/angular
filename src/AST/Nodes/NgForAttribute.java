@@ -27,7 +27,7 @@ public class NgForAttribute extends CssAttribute {
 
     @Override
     public String code() {
-        // توليد كود Angular attribute
-        return getname() + "=\"" + getvalue() + "\"";
+
+        return  "";
     }
 }

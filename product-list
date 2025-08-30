@@ -1,61 +1,40 @@
-import { Injectable } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Product, ProductService } from '../../services/product.service';
+import { CommonModule } from '@angular/common';
 
-export interface Product {
-  id: number;
-  name: string;
-  image: string;
-  description: string;
-}
+@Component({
+  selector: 'app-product-list',
+  standalone: true,
 
-@Injectable({ providedIn: 'root' })
-export class ProductService {
-  private products: Product[] = [
-    {
-      id: 1,
-      name: 'Headphone',
-      image: '/assets/product1.jpg',
-      description: 'Nice headphones'
-    },
-    {
-      id: 2,
-      name: 'Sunglasses',
-      image: '/assets/product2.jpg',
-      description: 'Stylish sunglasses'
-    },
-    {
-      id: 3,
-      name: 'Smartphone',
-      image: '/assets/product3.jpg',
-      description: 'Latest smartphone'
-    }
-  ];
+  templateUrl: './product-list.html',
 
-  private nextId = 4;
+  styleUrls: ['./product-list.css'],
+  imports: [CommonModule]
+})
+export class ProductListComponent implements OnInit {
+  products: Product[] = [];
 
-  getAll(): Product[] {
-    return [...this.products];
+  constructor(private productService: ProductService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.loadProducts();
   }
 
-  getById(id: number): Product | undefined {
-    return this.products.find(p => p.id === id);
+  loadProducts() {
+    this.products = this.productService.getAll();
   }
 
-  add(product: Omit<Product, 'id'>): void {
-    const newProduct: Product = {
-      id: this.nextId++,
-      ...product
-    };
-    this.products.push(newProduct);
+  deleteProduct(id: number) {
+    this.productService.deleteById(id);
+    this.loadProducts();
   }
 
-  deleteById(id: number): void {
-    this.products = this.products.filter(p => p.id !== id);
+  goToDetails(id: number) {
+    this.router.navigate(['/details', id]);
   }
 
-  update(id: number, updated: Omit<Product, 'id'>): void {
-    const index = this.products.findIndex(p => p.id === id);
-    if (index > -1) {
-      this.products[index] = { id, ...updated };
-    }
+  goToAdd() {
+    this.router.navigate(['/add']);
   }
 }

@@ -23,8 +23,8 @@ public class NgIfAttribute extends CssAttribute {
 
     @Override
     public String code() {
-        // توليد كود HTML attribute لـ Angular
-        return getname() + "=\"" + getvalue() + "\"";
+
+        return  "";
     }
 
     @Override

@@ -18,13 +18,15 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Componentuniqselector componentuniqselector = new  Componentuniqselector();
         codegenerate generator = new codegenerate();
-        String source = "product-list";
-        String source2 ="test02.txt";
-        String source3 ="test03.txt";
-        String source4 ="test04.txt";
+        String source = "product.server";
+        String source2 = "product-list";
+        String source3 = "add-product";
+        String source4 = "product-details";
         String source5 ="product-list.html";
-        String source6 ="test06.txt";
-        String source7 ="test07.txt";
+        String source6 = "add-product.html";
+
+
+        String source7 = "product-details.html";
         List<String> programm = new ArrayList<>();
         programm.add(source);
         programm.add(source2);

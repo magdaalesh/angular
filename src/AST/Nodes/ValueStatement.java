@@ -24,10 +24,14 @@ public final class ValueStatement extends MethodBody {
 
     @Override
     protected String codegenerateInternal() {
-        // نضمن دوماً سطر صالح، ونضيف ; كونها جملة statement
+
         String code = expr.codegenerate();
-        return (code == null || code.isBlank()) ? ";" : (code + ";");
+        return (code == null || code.isBlank()) ? " " : (code + ";");
     }
 
 
+    @Override
+    public String codegenerate() {
+        return super.codegenerate();
+    }
 }

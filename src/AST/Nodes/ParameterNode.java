@@ -1,9 +1,21 @@
 package AST.Nodes;
 
+import java.util.List;
+
 public class ParameterNode extends Node {
     private String name;
     private String type;
     private Value value;
+
+    public ParameterNode(List<String> name, String type) {
+        // نخزن الاسم كنص مفصول بمسافات وملفوف بعلامات ''
+        this.name = name.stream()
+                .map(n -> "'" + n + "'")
+                .reduce((a, b) -> a + " " + b)
+                .orElse("");
+        this.type = type;
+        this.value = null;
+    }
 
     public ParameterNode(String name, String type) {
         this.name = name;
@@ -29,8 +41,11 @@ public class ParameterNode extends Node {
 
     @Override
     public String codegenerate() {
-        if (value != null) return value.codegenerate();
-        else if (name != null) return name;
+        if (value != null) {
+            return value.codegenerate();
+        } else if (name != null && !name.isEmpty()) {
+            return name; // الاسم هنا مفصول بالفعل بمسافات وملفوف بعلامات ''
+        }
         return "";
     }
 }

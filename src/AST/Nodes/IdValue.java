@@ -19,7 +19,7 @@ public class IdValue extends Value {
     }
 
     @Override
-    protected String codegenerateInternal() {
+    public String codegenerateInternal() {
         return String.join(".", identifiers);
     }
 }

@@ -17,7 +17,7 @@ public class PathValue extends Value {
     }
 
     @Override
-    protected String codegenerateInternal() {
+    public String codegenerateInternal() {
         return path != null ? path : "";
     }
 }

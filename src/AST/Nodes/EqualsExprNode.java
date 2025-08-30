@@ -42,7 +42,7 @@ public class EqualsExprNode extends Value {
     }
 
     @Override
-    protected String codegenerateInternal() {
+    public String codegenerateInternal() {
         if (functionName != null && lambdaVar != null && leftVar != null && rightVar != null) {
             return functionName + "(" + lambdaVar + " => " + leftVar + " " + operation + " " + rightVar + ")";
         }

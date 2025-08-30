@@ -28,6 +28,16 @@ public class ConstNode extends PropertyDefinitionNode {
     public List<ParameterNode> getParameters() { return parameters; }
     public void setParameters(List<ParameterNode> parameters) { this.parameters = parameters; }
 
+
+
+    /**
+     * @return
+     */
+    @Override
+    public String codegenerae() {
+        return "";
+    }
+
     @Override
     public String toString() {
         return "ConstNode{" +
@@ -38,31 +48,31 @@ public class ConstNode extends PropertyDefinitionNode {
     }
     @Override
     public String codegenerate() {
-        return codegenerae();
-    }
-    @Override
-    public String codegenerae() {
         if (name == null || name.isEmpty()) return "";
 
         StringBuilder sb = new StringBuilder();
-        sb.append("const ").append(name);
-
+        sb.append(name).append(" = ");
+        sb.append(typeOrValue);
         if (parameters != null && !parameters.isEmpty()) {
-            sb.append(" = (");
+            // لو عندنا parameters نولدها مع فصل بالفاصلة
+            sb.append("(");
             for (int i = 0; i < parameters.size(); i++) {
                 sb.append(parameters.get(i).codegenerate());
                 if (i < parameters.size() - 1) sb.append(", ");
             }
-            sb.append(") => ");
-            sb.append(typeOrValue != null ? typeOrValue : "null");
-        } else {
-            if (typeOrValue != null && !typeOrValue.isEmpty()) {
-                sb.append(" = ").append(typeOrValue);
-            }
+            sb.append(")");
         }
 
-        sb.append(";");
+
+
+
+
         return sb.toString();
     }
+
+
+
+
+
 
 }

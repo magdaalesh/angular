@@ -652,7 +652,6 @@ String filename ;
         String name  = ctx.ID().getText();
         Object raw = visit(ctx.value());
         Value value = asValue(raw);
-
         VarAssignStatement varAssignStatement = new VarAssignStatement(name, value);
         return varAssignStatement;
     }
@@ -902,7 +901,7 @@ String filename ;
             if (p instanceof AST.Nodes.ParameterNode) {
                 params.add((AST.Nodes.ParameterNode) p);
             } else if (p != null) {
-                params.add(new AST.Nodes.ParameterNode(p.toString(), null));
+                params.add(new AST.Nodes.ParameterNode(p.toString(),null));
             }
         }
 
@@ -957,10 +956,16 @@ String filename ;
         else type = ctx.getText();
         return new AST.Nodes.ParameterNode(paramName, type);
     }
+
     @Override
     public Object visitType21(gen.myParser.Type21Context ctx) {
-        return new AST.Nodes.ParameterNode(ctx.getText(), null);
+        AST.Nodes.Value valueNode = (AST.Nodes.Value) visit(ctx.value());
+
+        String ids = valueNode.codegenerate(); // لو Value يدعم هذا
+        return new AST.Nodes.ParameterNode(ids, null);
     }
+
+
     @Override
     public Object visitCalcolor(myParser.CalcolorContext ctx) {
         return visitCalcualtecolor(ctx.calcualtecolor());
@@ -991,7 +996,7 @@ ColorValue colorValue = null;
 //
 // value  -> #valuedata
 @Override
-public AST.Nodes.MethodBody visitValuedata(gen.myParser.ValuedataContext ctx) {
+public Object visitValuedata(gen.myParser.ValuedataContext ctx) {
     Object r = visit(ctx.value());
     AST.Nodes.Expr e = asExpr(r);
     return new AST.Nodes.ValueStatement(e);
@@ -1251,15 +1256,16 @@ public Object visitSparedExpr(gen.myParser.SparedExprContext ctx) {
     }
     @Override
     public Object visitMapdefinition(myParser.MapdefinitionContext ctx) {
-        String name = ctx.ID(0).getText();
-        MapDefinitionNode mapNode = new MapDefinitionNode(name);
+        String mapName = ctx.ID(0).getText();
+        MapDefinitionNode mapNode = new MapDefinitionNode(mapName);
 
-        for (int i = 0; i < ctx.ID().size(); i++) {
+        // ابدأ من 1 لأن 0 هو اسم الـ Map
+        for (int i = 1; i < ctx.ID().size(); i++) {
             String key = ctx.ID(i).getText();
             Value value = null;
 
-            if (ctx.value(i) != null) {
-                Object val = visit(ctx.value(i));
+            if (ctx.value(i - 1) != null) { // الـ value يقابل المفتاح الثاني وما بعده
+                Object val = visit(ctx.value(i - 1));
                 value = val != null ? (Value) val : null;
             }
 
@@ -1268,6 +1274,7 @@ public Object visitSparedExpr(gen.myParser.SparedExprContext ctx) {
 
         return mapNode;
     }
+
     @Override
     public Object visitBooleanvalue(myParser.BooleanvalueContext ctx) {
         String name = ctx.ID().getText();

@@ -18,7 +18,7 @@ class AddProductComponent {
   }
   addProduct() {
     if (!this.name || !this.image || !this.description) {
-    alert('Pleasefillallfields.');;
+    alert(Please fill all fields.);
     return;
   }
     this.productService.add(const id = name;, const id = this.name;, const id = image;, const id = this.image;, const id = description;, const id = this.description;);

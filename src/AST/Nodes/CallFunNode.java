@@ -1,6 +1,7 @@
 package AST.Nodes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CallFunNode extends Node {
@@ -24,7 +25,7 @@ public class CallFunNode extends Node {
     public Expr asExpr() {
         List<Expr> args = new ArrayList<>();
         for (String arg : arguments) {
-            args.add(new ValueExpr(null, new IdValue(List.of(arg))));
+            args.add(new ValueExpr(null, new IdValue(Collections.singletonList(arg))));
         }
         return new CallExprNode(functionName, args);
     }
@@ -37,7 +38,7 @@ public class CallFunNode extends Node {
         if (arguments != null && !arguments.isEmpty()) {
             sb.append(String.join(", ", arguments));
         }
-        sb.append(");");
+        sb.append(")");
         return sb.toString();
     }
 }

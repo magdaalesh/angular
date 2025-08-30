@@ -22,7 +22,7 @@ public class Type1Node extends ContenttNode {
 
     @Override
     public String codegenerae() {
-        // توليد كود كخاصية object
+
         return left + ": " + right;
     }
 }

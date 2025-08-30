@@ -59,10 +59,11 @@ public class CallExprNode extends Expr {
         }
 
         StringBuilder sb = new StringBuilder();
+        System.out.println(arguments.get(0).codegenerate());
         sb.append(functionName).append("(");
 
         for (int i = 0; i < arguments.size(); i++) {
-            sb.append(arguments.get(i).codegenerate());
+            sb.append(arguments.get(i).codegenerateInternal());
             if (i < arguments.size() - 1) sb.append(", ");
         }
 

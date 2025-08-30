@@ -22,7 +22,7 @@ public class BooleanValue extends Value {
     }
 
     @Override
-    protected String codegenerateInternal() {
+    public String codegenerateInternal() {
         return codegenerate();
     }
 }

@@ -13,7 +13,6 @@ class ProductDetailsComponent {
   product /* type: Product */;
   isEditing: false;
   edited = {
-    edited: null,
     name: null,
     image: null,
     description: null
@@ -24,14 +23,13 @@ class ProductDetailsComponent {
     this.productService = productService;
   }
   ngOnInit() {
-    const id = (this.route.snapshot.paramMap.get('id')) => Number;
+    id = Number(this.route.snapshot.paramMap.get(id));
     this.product = this.productService.getById("id");
     if (this.product) {
     this.edited = {
-    this.edited: this.product.name,
-    name: this.product.image,
-    image: this.product.description,
-    description: null
+    name: this.product.name,
+    image: this.product.image,
+    description: this.product.description
   };
   }
   }
@@ -40,7 +38,7 @@ class ProductDetailsComponent {
   }
   saveChanges() {
     if (this.product) {
-    this.productService.update("this.edited", this.product.id,);;
+    this.productService.update("this.edited", this.product.id);
     this.isEditing = false;
     window.location.href = "/.html";
   }

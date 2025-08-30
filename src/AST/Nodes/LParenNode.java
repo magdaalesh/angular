@@ -27,7 +27,7 @@ public class LParenNode extends Value {
      * @return
      */
     @Override
-    protected String codegenerateInternal() {
+    public String codegenerateInternal() {
         // تحويل navigate تلقائيًا
         if (name.contains("navigate")) {
             String page = "";
@@ -61,7 +61,7 @@ public class LParenNode extends Value {
             sb.append(arguments.get(i).codegenerate());
             if (i < arguments.size() - 1) sb.append(", ");
         }
-        sb.append(");");
+        sb.append(")");
         return sb.toString();
     }
 
